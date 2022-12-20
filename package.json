@@ -1,0 +1,7 @@
+{
+  "name": "infowaste",
+  "dependencies": {
+    "create-nuxt-app": "^5.0.0",
+    "nuxt": "^2.15.8"
+  }
+}

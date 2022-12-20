@@ -1,0 +1,13 @@
+todo
+export dati comune su ONEDRIVE
+InfoWaste1960.
+salvataggio file su ONEDRIVE
+messaggio tasto help
+colori tasti compilazione dati comuni
+creazione tabella excel per ogni dato di ogni comune per ogni azienda
+
+abilitazione tasto invia dati
+
+prefisso it partita iva
+
+se pef misurato aggiungere tasto importa dati -> preleva dati da tabella esterna .json
