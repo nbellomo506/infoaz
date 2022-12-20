@@ -1,0 +1,56 @@
+
+:root {
+  --theme: #044A92;
+  --white: #ffffff;
+}
+
+
+.bg-infowaste
+{
+  background-color:var(--theme);
+}
+
+.btn-infowaste
+{
+  color: var(--white);
+  background-color:var(--theme);
+
+}
+.btn-infowaste:hover
+{
+  color: var(--white);
+  background-color:var(--theme);
+  transition: 0.2s;
+  opacity:0.7;
+
+}
+.btn-infowaste:active
+{
+  color: var(--white);
+  background-color:var(--theme);
+  transition: 0.2s;
+  opacity:0.7;
+}
+
+.btn-infowaste-2
+{
+  border: 1px solid var(--theme);
+  color:var(--theme) ;
+  background-color:var(--white);
+
+}
+.btn-infowaste-2:hover
+{
+  color:var(--theme) ;
+  background-color:var(--white);
+  transition: 0.2s;
+  opacity:0.7;
+
+}
+.btn-infowaste-2:active
+{
+  color:var(--theme) ;
+  background-color:var(--white);
+  transition: 0.2s;
+  opacity:0.7;
+}

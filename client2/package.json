@@ -1,0 +1,28 @@
+{
+  "name": "client",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "nuxt",
+    "build": "nuxt build",
+    "start": "nuxt start",
+    "generate": "nuxt generate"
+  },
+  "dependencies": {
+    "@nuxtjs/auth": "^4.9.1",
+    "@nuxtjs/auth-next": "^5.0.0-1648802546.c9880dc",
+    "@nuxtjs/axios": "^5.3.6",
+    "bootstrap": "^4.6.2",
+    "bootstrap-icons": "^1.10.2",
+    "bootstrap-vue": "^2.22.0",
+    "core-js": "^3.25.3",
+    "cross-env": "^5.2.0",
+    "nuxt": "^2.15.8",
+    "qs": "^6.11.0",
+    "vue": "^2.7.10",
+    "vue-json-excel": "^0.3.0",
+    "vue-server-renderer": "^2.7.10",
+    "vue-template-compiler": "^2.7.10",
+    "xlsx": "https://cdn.sheetjs.com/xlsx-0.19.1/xlsx-0.19.1.tgz"
+  }
+}
