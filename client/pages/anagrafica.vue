@@ -155,7 +155,13 @@ import TownSelect from '../components/TownSelect'
       {
         try
         {
-          let regioni_req = await $axios.$get(`/comuni_italiani/elenco/regioni/`);
+          let regioni_req = await $axios.$get(`/comuni_italiani/elenco/regioni/`)
+            .then(response => {
+               console.log(response.data);
+           }).catch(error => {
+               console.log(error.response.data);
+           });
+
           let comuni_azienda = await $axios.$get(`/dati_comuni/`);
           //let province_req = await $axios.$get(`/comuni_italiani/elenco/province/regione/`+1);
           //let comuni_req = await $axios.$get(`/comuni_italiani/elenco/comuni/provincia/`+1);
