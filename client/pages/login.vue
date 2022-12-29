@@ -120,11 +120,10 @@ export default {
 
 
               .then((response) => {
-                if(response.status >= 200 && response.status < 300)
-                {
-                  alert(response.data)
+              //  if(response.status >= 200 && response.status < 300){
+              //    alert(response.data)
                   window.location.replace("./home")
-                }
+              //  }
               })
               .catch((error) => {
 
