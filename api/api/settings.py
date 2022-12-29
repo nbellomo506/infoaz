@@ -85,7 +85,7 @@ MIDDLEWARE = [
 ]
 
 # add this block below MIDDLEWARE
-CORS_ORIGIN_WHITELIST = ('http://127.0.0.1:3000', 'http://localhost:3000')
+CORS_ORIGIN_WHITELIST = ('http://127.0.0.1:3000', 'http://localhost:3000', 'http://localhost:80','http://127.0.0.1:80')
 #CSRF_TRUSTED_ORIGINS = ['https://*.mydomain.com','https://*.127.0.0.1','http://localhost:3000']
 ROOT_URLCONF = 'api.urls'
 #CSRF_COOKIE_HTTPONLY = True

@@ -1,4 +1,4 @@
-
+﻿
 import Header from '../components/Header'
 import Field from '../components/Field'
 
@@ -180,6 +180,7 @@ import Field from '../components/Field'
             let dati_comuni = await $axios.$get(`/dati_comuni/`);
             return { dati_comuni };
           } catch (e) {
+	      console.log(e)
               return { dati_comuni: [] };
         }
       },
