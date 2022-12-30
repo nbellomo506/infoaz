@@ -23,7 +23,7 @@ import Field from '../components/Field'
                   </a>
                 </b-container>
 
-                <b-container class="p-4 pl-1 mt-2 rounded bg-light" v-for="(dati_comune,index) in dati_comuni">
+                <b-container class="p-4 pl-1 mt-2 rounded bg-light" v-for="(dati_comune,index) in dati_comuni" :key="dati_comune.id">
                   <b-row>
                     <b-col xl="11">
                       <a :href="`/compila_dati_comune/${dati_comune.id}/`">

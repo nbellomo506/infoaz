@@ -81,26 +81,25 @@ import TownSelect from '../components/TownSelect'
                       <h2>Comuni su cui opera l'azienda:</h2>
                     </b-col>
                   </b-row>
-
                   <b-row class="mt-2 mb-4">
                     <b-col xl="3" sm="12" class="mt-1 mb-1">
-                      <b-select block v-for="regioni in regioni_req"  v-model="luogo.reg" v-if="typeof regioni === 'object'" @change=updateReg(luogo.reg)>
-                        <option v-for="regione in regioni"  :value="regione.codice_regione" >
+                      <b-select block v-model="luogo.reg" @change=updateReg(luogo.reg)>
+                        <option v-for="regione in regioni_req.regioni" :key="regione.codice_regione" :value="regione.codice_regione" >
                            {{ regione.name }}
                         </option>
                       </b-select>
                     </b-col>
                     <b-col xl="3" sm="12" class="mt-1 mb-1">
-                      <b-select block v-for="province in province_req" v-model="luogo.prov" v-if="typeof province === 'object'" @change=updateProv(luogo.prov)>
-                        <option  v-for="provincia in province"  :value="provincia.codice_provincia">
+                      <b-select block v-model="luogo.prov" @change=updateProv(luogo.prov)>
+                        <option  v-for="provincia in province_req.province" :key="provincia.id" :value="provincia.codice_provincia">
                             {{ provincia.name }}
                         </option>
                       </b-select>
                     </b-col>
                     <b-col xl="4" sm="12" class="mt-1 mb-1">
-                      <b-select block v-for="comuni in comuni_req" v-model="luogo.com" v-if="typeof comuni === 'object'">
-                        <option v-for="comune in comuni" :value="comune.id">
-                          {{ comune.name }}
+                      <b-select block v-model="luogo.com" >
+                        <option v-for="comune in comuni_req.comuni" :key="comune.id" :value="comune.id">
+                            {{ comune.name }}
                         </option>
                       </b-select>
                     </b-col>
@@ -122,7 +121,7 @@ import TownSelect from '../components/TownSelect'
                       <h6>Comune</h6>
                     </b-col>
                   </b-row>
-                  <b-row class="m-0 mt-2 mb-4" v-for="comune_azienda,index in comuni_azienda" :key="comune_azienda">
+                  <b-row class="m-0 mt-2 mb-4" v-for="comune_azienda,index in comuni_azienda" :key="comune_azienda.id">
                     <b-col xl="3" sm="12" class="mt-1 mb-1">
                     {{comune_azienda.nome_regione}}
                     </b-col>
