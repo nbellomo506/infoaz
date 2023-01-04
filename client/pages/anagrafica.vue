@@ -173,7 +173,6 @@ import TownSelect from '../components/TownSelect'
     methods:
     {
 
-
         async updateReg(reg)
         {
               let province_req = await this.$axios.$get(`/comuni_italiani/elenco/province/regione/`+reg);
