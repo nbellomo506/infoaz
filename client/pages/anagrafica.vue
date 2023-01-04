@@ -147,19 +147,18 @@ import TownSelect from '../components/TownSelect'
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 
   <script>
-  import axios from '@nuxtjs/axios'
+  import axios from 'axios'
 
   export default {
     async asyncData({ $axios, params })
       {
+
         try
         {
           let regioni_req = await $axios.$get(`/comuni_italiani/elenco/regioni/`);
-
           let comuni_azienda = await $axios.$get(`/dati_comuni/`);
-          //let province_req = await $axios.$get(`/comuni_italiani/elenco/province/regione/`+1);
-          //let comuni_req = await $axios.$get(`/comuni_italiani/elenco/comuni/provincia/`+1);
-          return { regioni_req,comuni_azienda};
+
+          return { regioni_req,comuni_azienda };
         }
               catch (e)
               {
@@ -180,6 +179,7 @@ import TownSelect from '../components/TownSelect'
               let province_req = await this.$axios.$get(`/comuni_italiani/elenco/province/regione/`+reg);
               this.province_req = province_req
               this.comuni_req = 0
+ 
         },
 
         async updateProv(prov)
