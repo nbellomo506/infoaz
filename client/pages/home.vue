@@ -13,8 +13,32 @@ import Field from '../components/Field'
         <b-row>
           <b-col bg-variant="info" offset-xl="1" xl="10">
 
-            <h1>Benvenuto</h1>
-            <h3>Compilazione in corso</h3>
+            <b-container class="mb-3">
+              <b-row>
+                <b-col xl="6">
+                  <h1>Benvenuto</h1>
+                  <h3>Compilazione in corso</h3>
+                </b-col>
+                <b-col xl="6" class="border rounded">
+                  <h3>Legenda</h3>
+                  <hr>
+                  <b-container class="p-2 pb-4">
+                    <b-row>
+                      <b-col xl="6">
+                        <b-icon class="h4 p-0 b-0 m-0" variant="success" icon="check-circle-fill"></b-icon>
+                        Completo
+                      </b-col>
+                      <b-col xl="6">
+                        <b-icon class="h4 p-0 b-0 m-0" variant="danger" icon="x-circle-fill"></b-icon>
+                        Incompleto
+                      </b-col>
+                    </b-row>
+                  </b-container>
+                </b-col>
+              </b-row>
+            </b-container>
+
+
 
               <b-list-group vertical>
                 <b-container class="p-4 pl-1 rounded bg-light" >
@@ -31,8 +55,12 @@ import Field from '../components/Field'
                       </a>
                     </b-col>
                     <b-col xl="1">
-                      <b-icon v-if="dati_comune.sent == 1" class="h3" variant="success" icon="bookmark-check-fill"></b-icon>
-                      <b-icon v-else="dati_comune.sent == 1" class="h3" variant="danger" icon="bookmark-x-fill"></b-icon>
+                      <div v-if="dati_comune.completed == true">
+                        <b-icon class="h4 p-0 b-0 m-0" variant="success" icon="check-circle-fill"></b-icon>
+                      </div>
+                      <div v-if="dati_comune.completed == false">
+                        <b-icon class="h4 p-0 b-0 m-0" variant="danger" icon="x-circle-fill"></b-icon>
+                      </div>
                     </b-col>
                   </b-row>
 
@@ -60,107 +88,104 @@ import Field from '../components/Field'
         </b-row>
       </b-container>
 
-<table v-for="(dati_comune,index) in dati_comuni" :id="`tab${index}`" hidden>
-  <tr>
-    <td>
-      <h6>{{index+1}}. Comune:</h6>
-    </td>
-    <td>{{dati_comune.nome_comune}}</td>
-  </tr>
+      <table v-for="(dati_comune,index) in dati_comuni" :id="`tab${index}`" hidden>
+        <tr>
+          <td>
+            <h6>{{index+1}}. Comune:</h6>
+          </td>
+          <td>{{dati_comune.nome_comune}}</td>
+        </tr>
 
-  <tr>
-    <td>PEF</td>
-    <td>{{dati_comune.pef_mis_o_ric}}</td>
-  </tr>
+        <tr>
+          <td>PEF</td>
+          <td>{{dati_comune.pef_mis_o_ric}}</td>
+        </tr>
 
-  <tr>
-    <td>Oltre al Comune e all'impresa operano altri Gestori nel medesimo Comune / Ambito Tariffario?</td>
-    <td>{{dati_comune.altri_gestori}}</td>
-  </tr>
+        <tr>
+          <td>Oltre al Comune e all'impresa operano altri Gestori nel medesimo Comune / Ambito Tariffario?</td>
+          <td>{{dati_comune.altri_gestori}}</td>
+        </tr>
 
-  <tr>
-    <td>L'appalto con la configurazione attuale è stato avviato il</td>
-    <td>{{dati_comune.appalto_attuale_data}}</td>
-  </tr>
+        <tr>
+          <td>L'appalto con la configurazione attuale è stato avviato il</td>
+          <td>{{dati_comune.appalto_attuale_data}}</td>
+        </tr>
 
-  <tr>
-    <td>L'impresa opera nel Comune / Ambito Tariffario da</td>
-    <td>{{dati_comune.impresa_op_com_data}}</td>
-  </tr>
+        <tr>
+          <td>L'impresa opera nel Comune / Ambito Tariffario da</td>
+          <td>{{dati_comune.impresa_op_com_data}}</td>
+        </tr>
 
-  <tr>
-    <td>Valore del canone contrattuale IVA ESCLUSA nell'anno corrente</td>
-    <td>{{dati_comune.valore_can}}</td>
-  </tr>
+        <tr>
+          <td>Valore del canone contrattuale IVA ESCLUSA nell'anno corrente</td>
+          <td>{{dati_comune.valore_can}}</td>
+        </tr>
 
-  <tr>
-    <td>E' previsto l'adeguamento contrattuale del canone su base annua?</td>
-    <td>{{dati_comune.adeg_contr_flag}}</td>
-  </tr>
+        <tr>
+          <td>E' previsto l'adeguamento contrattuale del canone su base annua?</td>
+          <td>{{dati_comune.adeg_contr_flag}}</td>
+        </tr>
 
-  <tr>
-    <td>I ricavi dai sistemi di compliance (ricavi CONAI e altri) competono all'impresa o al Comune?</td>
-    <td>{{dati_comune.ricavi_conai_flag}}</td>
-  </tr>
-  <tr>
-    <td>L'impresa sostiene costi CTS relativi al Trattamento e Smaltimento Rifiuti?</td>
-    <td>{{dati_comune.impresa_cts_flag}}</td>
-  </tr>
-  <tr>
-    <td>L'impresa sostiene costi CTR relativi al Trattamento e Riciclo Rifiuti?</td>
-    <td>{{dati_comune.impresa_ctr_flag}}</td>
-  </tr>
-  <tr>
-    <td>Sono inclusi nel contratto e a carico dell'impresa anche i servizi di spazzamento e igiene ambientale?</td>
-    <td>{{dati_comune.spazz_e_ig_flag}}</td>
-  </tr>
-  <tr>
-    <td>Sono presenti nel contratto anche servizi non inseriti del perimetro definito da ARERA?</td>
-    <td>{{dati_comune.serv_exra_arera}}</td>
-  </tr>
-  <tr>
-    <td>L'impresa ha in essere 'lavori in corso' per come definiti da ARERA?
-</td>
-    <td>{{dati_comune.lav_in_corso}}</td>
-  </tr>
-  <tr>
-    <td>Sono previste varizioni nelle attività gestionali?
-</td>
-    <td>{{dati_comune.var_gest}}</td>
-  </tr>
-  <tr>
-    <td>Sono previsti miglioramenti nei livelli di qualità?
-</td>
-    <td>{{dati_comune.miglior_qual}}</td>
-  </tr>
-  <tr>
-    <td>Sono previsti maggiori costi per la implementazione del TQRIF?
-</td>
-    <td>{{dati_comune.costi_tqrif}}</td>
-  </tr>
-
-
-  <tr>
-    <td></td>
-  </tr>
+        <tr>
+          <td>I ricavi dai sistemi di compliance (ricavi CONAI e altri) competono all'impresa o al Comune?</td>
+          <td>{{dati_comune.ricavi_conai_flag}}</td>
+        </tr>
+        <tr>
+          <td>L'impresa sostiene costi CTS relativi al Trattamento e Smaltimento Rifiuti?</td>
+          <td>{{dati_comune.impresa_cts_flag}}</td>
+        </tr>
+        <tr>
+          <td>L'impresa sostiene costi CTR relativi al Trattamento e Riciclo Rifiuti?</td>
+          <td>{{dati_comune.impresa_ctr_flag}}</td>
+        </tr>
+        <tr>
+          <td>Sono inclusi nel contratto e a carico dell'impresa anche i servizi di spazzamento e igiene ambientale?</td>
+          <td>{{dati_comune.spazz_e_ig_flag}}</td>
+        </tr>
+        <tr>
+          <td>Sono presenti nel contratto anche servizi non inseriti del perimetro definito da ARERA?</td>
+          <td>{{dati_comune.serv_exra_arera}}</td>
+        </tr>
+        <tr>
+          <td>L'impresa ha in essere 'lavori in corso' per come definiti da ARERA?
+      </td>
+          <td>{{dati_comune.lav_in_corso}}</td>
+        </tr>
+        <tr>
+          <td>Sono previste varizioni nelle attività gestionali?
+      </td>
+          <td>{{dati_comune.var_gest}}</td>
+        </tr>
+        <tr>
+          <td>Sono previsti miglioramenti nei livelli di qualità?
+      </td>
+          <td>{{dati_comune.miglior_qual}}</td>
+        </tr>
+        <tr>
+          <td>Sono previsti maggiori costi per la implementazione del TQRIF?
+      </td>
+          <td>{{dati_comune.costi_tqrif}}</td>
+        </tr>
 
 
-  <tr>
-    <td><h6>Costi Smaltimento / Trattamento</h6></td>
-  </tr>
-
-  <tr>
-    <td>Anno</td><td>Impianto di smaltimento</td>
-    <td>Codice CER/Tipo di rifiuto</td>
-    <td>Tipologia costo</td>
-    <td>Quantitativi conferiti [ton]</td>
-    <td>Prezzo unitario con IVA</td>
-    <td>Importo IVA Inclusa</td>
-  </tr>
+        <tr>
+          <td></td>
+        </tr>
 
 
-</table>
-<b-form-file type="file" v-model="file" >Wezii</b-form-file>
+        <tr>
+          <td><h6>Costi Smaltimento / Trattamento</h6></td>
+        </tr>
+
+        <tr>
+          <td>Anno</td><td>Impianto di smaltimento</td>
+          <td>Codice CER/Tipo di rifiuto</td>
+          <td>Tipologia costo</td>
+          <td>Quantitativi conferiti [ton]</td>
+          <td>Prezzo unitario con IVA</td>
+          <td>Importo IVA Inclusa</td>
+        </tr>
+      </table>
 
     </main>
   </template>
@@ -190,7 +215,7 @@ import Field from '../components/Field'
     data() {
       return {
 
-        file:null
+        fila:'ciao'
 
       }
     },
@@ -243,17 +268,21 @@ import Field from '../components/Field'
               XLSX.utils.book_append_sheet(workbook, worksheet, this.dati_comuni[i].nome_comune)
               i++
             }
-            //workbook.Sheets.Carceri.A1.v="ciao"
-            var file = XLSX.write(workbook,{booktype:"xlsx",type:"binary"});
 
+            var file = XLSX.write(workbook,{booktype:"xlsx",type:"binary"});
             file = new File([file], nome_azienda + ".xlsx")
 
+            var formData = new FormData();
 
-            this.$axios.post('/export_aziende',{
+            formData.append("export_daticomuni", file);
 
-              export_file:file
 
+            this.$axios.put('aziende/1/', formData, {
+                headers: {
+                  'Content-Type': "multipart/form-data"
+                }
             })
+
 
             .then((response) => {
               if(response.status >= 200 && response.status < 300)

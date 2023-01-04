@@ -2,7 +2,7 @@
 
 <script>
   export default {
-  props: ['name','num','letter','description',"req"],
+  props: ['name','letter','description',"req"],
   data() {
     return {
 
@@ -16,8 +16,19 @@
   <template>
     <div>
       <div v-bind:class = "(req === 'yes')?'text-danger':'text-secondary'" class="pr-4">
-        <p :name="name"> </p>
-        <b>{{num}}{{letter}}  </b>{{description}}
+
+        <div v-if="letter === undefined">
+          <li class="field_index" >
+            <p :name="name"> </p>
+            <b>{{letter}}  </b>{{description}}
+          </li>
+        </div>
+
+        <div v-else>
+          <p :name="name"> </p>
+          <b>{{letter}}  </b>{{description}}
+        </div>
+
       </div>
     </div>
   </template>
