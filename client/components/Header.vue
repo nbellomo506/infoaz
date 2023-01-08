@@ -46,17 +46,75 @@
             -->
 
 
-        <b-navbar  type="light" variant="infowaste">
-          <b-container>
-            <b-row>
-              <b-col xl="4">
-
+          <b-container fluid class="bg-infowaste">
+            <b-row class="pt-3 pb-3">
+              <b-col class="text-white" xl="2" offset-xl="10">
+                <b-dropdown size="lg" v-if="is_logged === true" variant="light" toggle-class="text-decoration-none" no-caret>
+                    <template #button-content>
+                      <b-icon class="h4 p-0 b-0 m-0" variant="dark" icon="person-circle"></b-icon>
+                      <span class="sr-only">Search</span>
+                    </template>
+                    <b-dropdown-item href="#">Action</b-dropdown-item>
+                    <b-dropdown-item href="#">Another action</b-dropdown-item>
+                    <b-dropdown-item href="#">Something else here</b-dropdown-item>
+                    <b-dropdown-item class="bg-danger" @click="logout()" href="#"><font class="text-white">Esci</font></b-dropdown-item>
+                  </b-dropdown>
               </b-col>
             </b-row>
           </b-container>
-        </b-navbar>
 
 
       </div>
     </main>
 </template>
+<script>
+  import axios from '@nuxtjs/axios'
+
+  export default {
+    mounted () {
+      this.$axios.defaults.withCredentials = true;
+
+      this.$axios
+        .$get(`/is_logged`)
+        .then(response => (this.is_logged = response))
+    },
+
+    /*async asyncData({ $axios, params })
+      {
+        try {
+          $axios.defaults.withCredentials = true;
+          let is_logged = await $axios.$get(`/is_logged`);
+          console.log(is_logged)
+
+          return { is_logged };
+
+        } catch (e) {
+
+            console.log(e)
+            return { is_logged: false };
+      }
+    },*/
+
+    data() {
+      return {
+
+        is_logged:false,
+
+      }
+    },
+
+    methods:
+    {
+
+      async logout()
+      {
+
+        this.$axios.post('/logout')
+        window.location.replace("./login")
+
+      }
+
+    }
+
+  }
+</script>
