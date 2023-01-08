@@ -9,10 +9,9 @@ import Field from '../components/Field'
 <template>
   <main>
     <Header/>
-      <b-container class="mt-5 mb-5">
-        <b-row>
-          <b-col bg-variant="info" offset-xl="1" xl="10">
-
+      <b-container v-if="dati_comuni !== 'Not Logged'"  class="mt-5 mb-5">
+        <b-row >
+          <b-col offset-xl="1" xl="10">
             <b-container class="mb-3">
               <b-row>
                 <b-col xl="6">
@@ -63,30 +62,45 @@ import Field from '../components/Field'
                       </div>
                     </b-col>
                   </b-row>
-
                 </b-container>
               </b-list-group>
             </b-col>
           </b-row>
 
+          <b-row>
+            <b-col class="mt-4" offset-xl="1" xl="10">
+              <p dir="ltr" style="line-height:1.295;text-align: justify;margin-top:0pt;margin-bottom:8pt;"><span style="font-size:12pt;font-family:Calibri,sans-serif;color:#000000;background-color:transparent;font-weight:700;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre;white-space:pre-wrap;">SUPPORTO PEF</span><span style="font-size:12pt;font-family:Calibri,sans-serif;color:#000000;background-color:transparent;font-weight:400;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre;white-space:pre-wrap;">&nbsp;&egrave; un servizio a disposizione delle imprese che operano nel settore della gestione dei rifiuti urbani per la compilazione del&nbsp;</span><span style="font-size:12pt;font-family:Calibri,sans-serif;color:#000000;background-color:transparent;font-weight:700;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre;white-space:pre-wrap;">PEF (Piano Economico Finanziario)</span><span style="font-size:12pt;font-family:Calibri,sans-serif;color:#000000;background-color:transparent;font-weight:400;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre;white-space:pre-wrap;">&nbsp;secondo le disposizioni di ARERA (</span><span style="font-size:12pt;font-family:Calibri,sans-serif;color:#000000;background-color:transparent;font-weight:700;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre;white-space:pre-wrap;">MTR-2</span><span style="font-size:12pt;font-family:Calibri,sans-serif;color:#000000;background-color:transparent;font-weight:400;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre;white-space:pre-wrap;">). Il servizio si svolge nel rispetto della normativa sulla privacy e sulla gestione dei dati sensibili.</span></p>
+              <p dir="ltr" style="line-height:1.295;text-align: justify;margin-top:0pt;margin-bottom:8pt;"><span style="font-size:12pt;font-family:Calibri,sans-serif;color:#000000;background-color:transparent;font-weight:400;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre;white-space:pre-wrap;">L&rsquo;utente dopo essere accreditato compila la sezione&nbsp;</span><span style="font-size:12pt;font-family:Calibri,sans-serif;color:#000000;background-color:transparent;font-weight:700;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre;white-space:pre-wrap;">ANAGRAFICA</span><span style="font-size:12pt;font-family:Calibri,sans-serif;color:#000000;background-color:transparent;font-weight:400;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre;white-space:pre-wrap;">&nbsp;e dichiara i Comuni presso i quali opera con conseguente obbligo di presentazione del PEF.</span></p>
+              <p dir="ltr" style="line-height:1.295;text-align: justify;margin-top:0pt;margin-bottom:8pt;"><span style="font-size:12pt;font-family:Calibri,sans-serif;color:#000000;background-color:transparent;font-weight:400;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre;white-space:pre-wrap;">Terminata questa fase, l&rsquo;utente procede alla compilazione del PEF riferito al singolo Comune, scegliendolo fra quelli dichiarati, ed individuando una delle due possibili opzioni con cui intende procedere:&nbsp;</span><span style="font-size:12pt;font-family:Calibri,sans-serif;color:#000000;background-color:transparent;font-weight:700;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre;white-space:pre-wrap;">PEF CALCOLATO</span><span style="font-size:12pt;font-family:Calibri,sans-serif;color:#000000;background-color:transparent;font-weight:400;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre;white-space:pre-wrap;">&nbsp;ovvero&nbsp;</span><span style="font-size:12pt;font-family:Calibri,sans-serif;color:#000000;background-color:transparent;font-weight:700;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre;white-space:pre-wrap;">PEF MISURATO</span><span style="font-size:12pt;font-family:Calibri,sans-serif;color:#000000;background-color:transparent;font-weight:400;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre;white-space:pre-wrap;">. In entrambi i casi l&rsquo;elaborazione fa riferimento ai dati di bilancio, alla contabilit&agrave; di commessa e dati tecnici che dovranno essere caricati e imputati negli appositi campi dell&rsquo;applicazione.</span></p>
+              <p dir="ltr" style="line-height:1.295;text-align: justify;margin-top:0pt;margin-bottom:8pt;"><span style="font-size:12pt;font-family:Calibri,sans-serif;color:#000000;background-color:transparent;font-weight:400;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre;white-space:pre-wrap;">Nel caso del&nbsp;</span><span style="font-size:12pt;font-family:Calibri,sans-serif;color:#000000;background-color:transparent;font-weight:700;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre;white-space:pre-wrap;">PEF CALCOLATO</span><span style="font-size:12pt;font-family:Calibri,sans-serif;color:#000000;background-color:transparent;font-weight:400;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre;white-space:pre-wrap;">&nbsp;i driver attraverso cui ripartire i costi sono elaborati prendendo a riferimento valori il pi&ugrave; possibile oggettivi (ad es. numero di abitanti per Comune). Nel caso del&nbsp;</span><span style="font-size:12pt;font-family:Calibri,sans-serif;color:#000000;background-color:transparent;font-weight:700;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre;white-space:pre-wrap;">PEF MISURATO</span><span style="font-size:12pt;font-family:Calibri,sans-serif;color:#000000;background-color:transparent;font-weight:400;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre;white-space:pre-wrap;">, invece, i driver sono individuati dall&rsquo;utente sulla base di un set messo a disposizione dall&rsquo;applicazione che li elabora attingendo dall&rsquo;ERP aziendale (</span><span style="font-size:12pt;font-family:Calibri,sans-serif;color:#000000;background-color:transparent;font-weight:700;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre;white-space:pre-wrap;">WMS / INNOVAMBIENTE</span><span style="font-size:12pt;font-family:Calibri,sans-serif;color:#000000;background-color:transparent;font-weight:400;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre;white-space:pre-wrap;">): numero di ore lavorate per servizio, numero di chilometri percorsi, numero di contenitori distribuiti&hellip;</span></p>
+              <p dir="ltr" style="line-height:1.295;text-align: justify;margin-top:0pt;margin-bottom:8pt;"><span style="font-size:12pt;font-family:Calibri,sans-serif;color:#000000;background-color:transparent;font-weight:400;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre;white-space:pre-wrap;">In entrambi i casi l&rsquo;attivit&agrave; di elaborazione prevede l&rsquo;erogazione di un&nbsp;</span><span style="font-size:12pt;font-family:Calibri,sans-serif;color:#000000;background-color:transparent;font-weight:700;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre;white-space:pre-wrap;">SERVIZIO DI ASSISTENZA</span><span style="font-size:12pt;font-family:Calibri,sans-serif;color:#000000;background-color:transparent;font-weight:400;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre;white-space:pre-wrap;">&nbsp;nell&rsquo;utilizzo dell&rsquo;applicazione e &ndash; se richiesto &ndash; di un&nbsp;</span><span style="font-size:12pt;font-family:Calibri,sans-serif;color:#000000;background-color:transparent;font-weight:700;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre;white-space:pre-wrap;">SERVIZIO DI CONSULENZA</span><span style="font-size:12pt;font-family:Calibri,sans-serif;color:#000000;background-color:transparent;font-weight:400;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre;white-space:pre-wrap;">&nbsp;per la revisione dei dati e la stesura della relazione di accompagnamento.</span></p>
+            </b-col>
+          </b-row>
 
+          <b-row>
+            <b-col class="mb-5" bg-variant="info" offset-xl="7" xl="4">
+              <b-button :disabled="!is_ready" @click=inviaReport() block>Invia dati</b-button>
+            </b-col>
+          </b-row>
+        </b-container>
 
-        <b-row>
-          <b-col class="mt-4" offset-xl="1" xl="10">
-            <p dir="ltr" style="line-height:1.295;text-align: justify;margin-top:0pt;margin-bottom:8pt;"><span style="font-size:12pt;font-family:Calibri,sans-serif;color:#000000;background-color:transparent;font-weight:700;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre;white-space:pre-wrap;">SUPPORTO PEF</span><span style="font-size:12pt;font-family:Calibri,sans-serif;color:#000000;background-color:transparent;font-weight:400;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre;white-space:pre-wrap;">&nbsp;&egrave; un servizio a disposizione delle imprese che operano nel settore della gestione dei rifiuti urbani per la compilazione del&nbsp;</span><span style="font-size:12pt;font-family:Calibri,sans-serif;color:#000000;background-color:transparent;font-weight:700;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre;white-space:pre-wrap;">PEF (Piano Economico Finanziario)</span><span style="font-size:12pt;font-family:Calibri,sans-serif;color:#000000;background-color:transparent;font-weight:400;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre;white-space:pre-wrap;">&nbsp;secondo le disposizioni di ARERA (</span><span style="font-size:12pt;font-family:Calibri,sans-serif;color:#000000;background-color:transparent;font-weight:700;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre;white-space:pre-wrap;">MTR-2</span><span style="font-size:12pt;font-family:Calibri,sans-serif;color:#000000;background-color:transparent;font-weight:400;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre;white-space:pre-wrap;">). Il servizio si svolge nel rispetto della normativa sulla privacy e sulla gestione dei dati sensibili.</span></p>
-            <p dir="ltr" style="line-height:1.295;text-align: justify;margin-top:0pt;margin-bottom:8pt;"><span style="font-size:12pt;font-family:Calibri,sans-serif;color:#000000;background-color:transparent;font-weight:400;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre;white-space:pre-wrap;">L&rsquo;utente dopo essere accreditato compila la sezione&nbsp;</span><span style="font-size:12pt;font-family:Calibri,sans-serif;color:#000000;background-color:transparent;font-weight:700;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre;white-space:pre-wrap;">ANAGRAFICA</span><span style="font-size:12pt;font-family:Calibri,sans-serif;color:#000000;background-color:transparent;font-weight:400;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre;white-space:pre-wrap;">&nbsp;e dichiara i Comuni presso i quali opera con conseguente obbligo di presentazione del PEF.</span></p>
-            <p dir="ltr" style="line-height:1.295;text-align: justify;margin-top:0pt;margin-bottom:8pt;"><span style="font-size:12pt;font-family:Calibri,sans-serif;color:#000000;background-color:transparent;font-weight:400;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre;white-space:pre-wrap;">Terminata questa fase, l&rsquo;utente procede alla compilazione del PEF riferito al singolo Comune, scegliendolo fra quelli dichiarati, ed individuando una delle due possibili opzioni con cui intende procedere:&nbsp;</span><span style="font-size:12pt;font-family:Calibri,sans-serif;color:#000000;background-color:transparent;font-weight:700;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre;white-space:pre-wrap;">PEF CALCOLATO</span><span style="font-size:12pt;font-family:Calibri,sans-serif;color:#000000;background-color:transparent;font-weight:400;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre;white-space:pre-wrap;">&nbsp;ovvero&nbsp;</span><span style="font-size:12pt;font-family:Calibri,sans-serif;color:#000000;background-color:transparent;font-weight:700;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre;white-space:pre-wrap;">PEF MISURATO</span><span style="font-size:12pt;font-family:Calibri,sans-serif;color:#000000;background-color:transparent;font-weight:400;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre;white-space:pre-wrap;">. In entrambi i casi l&rsquo;elaborazione fa riferimento ai dati di bilancio, alla contabilit&agrave; di commessa e dati tecnici che dovranno essere caricati e imputati negli appositi campi dell&rsquo;applicazione.</span></p>
-            <p dir="ltr" style="line-height:1.295;text-align: justify;margin-top:0pt;margin-bottom:8pt;"><span style="font-size:12pt;font-family:Calibri,sans-serif;color:#000000;background-color:transparent;font-weight:400;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre;white-space:pre-wrap;">Nel caso del&nbsp;</span><span style="font-size:12pt;font-family:Calibri,sans-serif;color:#000000;background-color:transparent;font-weight:700;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre;white-space:pre-wrap;">PEF CALCOLATO</span><span style="font-size:12pt;font-family:Calibri,sans-serif;color:#000000;background-color:transparent;font-weight:400;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre;white-space:pre-wrap;">&nbsp;i driver attraverso cui ripartire i costi sono elaborati prendendo a riferimento valori il pi&ugrave; possibile oggettivi (ad es. numero di abitanti per Comune). Nel caso del&nbsp;</span><span style="font-size:12pt;font-family:Calibri,sans-serif;color:#000000;background-color:transparent;font-weight:700;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre;white-space:pre-wrap;">PEF MISURATO</span><span style="font-size:12pt;font-family:Calibri,sans-serif;color:#000000;background-color:transparent;font-weight:400;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre;white-space:pre-wrap;">, invece, i driver sono individuati dall&rsquo;utente sulla base di un set messo a disposizione dall&rsquo;applicazione che li elabora attingendo dall&rsquo;ERP aziendale (</span><span style="font-size:12pt;font-family:Calibri,sans-serif;color:#000000;background-color:transparent;font-weight:700;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre;white-space:pre-wrap;">WMS / INNOVAMBIENTE</span><span style="font-size:12pt;font-family:Calibri,sans-serif;color:#000000;background-color:transparent;font-weight:400;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre;white-space:pre-wrap;">): numero di ore lavorate per servizio, numero di chilometri percorsi, numero di contenitori distribuiti&hellip;</span></p>
-            <p dir="ltr" style="line-height:1.295;text-align: justify;margin-top:0pt;margin-bottom:8pt;"><span style="font-size:12pt;font-family:Calibri,sans-serif;color:#000000;background-color:transparent;font-weight:400;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre;white-space:pre-wrap;">In entrambi i casi l&rsquo;attivit&agrave; di elaborazione prevede l&rsquo;erogazione di un&nbsp;</span><span style="font-size:12pt;font-family:Calibri,sans-serif;color:#000000;background-color:transparent;font-weight:700;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre;white-space:pre-wrap;">SERVIZIO DI ASSISTENZA</span><span style="font-size:12pt;font-family:Calibri,sans-serif;color:#000000;background-color:transparent;font-weight:400;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre;white-space:pre-wrap;">&nbsp;nell&rsquo;utilizzo dell&rsquo;applicazione e &ndash; se richiesto &ndash; di un&nbsp;</span><span style="font-size:12pt;font-family:Calibri,sans-serif;color:#000000;background-color:transparent;font-weight:700;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre;white-space:pre-wrap;">SERVIZIO DI CONSULENZA</span><span style="font-size:12pt;font-family:Calibri,sans-serif;color:#000000;background-color:transparent;font-weight:400;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre;white-space:pre-wrap;">&nbsp;per la revisione dei dati e la stesura della relazione di accompagnamento.</span></p>
-          </b-col>
-        </b-row>
-
-        <b-row>
-          <b-col class="mb-5" bg-variant="info" offset-xl="8" xl="4">
-            <b-button @click=inviaReport() block>Invia dati</b-button>
-          </b-col>
-        </b-row>
-      </b-container>
+        <b-container  v-if="dati_comuni === 'Not Logged'" class="mb-3">
+          <b-row>
+            <b-col offset-xl="1" xl="10">
+              <b-container class="mb-3 mt-5">
+                <b-row>
+                  <b-col xl="12">
+                    <h1>Attenzione</h1>
+                    <p>
+                      <a href="./login">Accedi</a>
+                      per visualizzare il contenuto
+                    </p>
+                  </b-col>
+                </b-row>
+              </b-container>
+            </b-col>
+          </b-row>
+        </b-container>
 
       <table v-for="(dati_comune,index) in dati_comuni" :id="`tab${index}`" hidden>
         <tr>
@@ -202,10 +216,14 @@ import Field from '../components/Field'
       async asyncData({ $axios, params })
         {
           try {
-            let dati_comuni = await $axios.$get(`/dati_comuni/`);
+            $axios.defaults.withCredentials = true;
+            let dati_comuni = await $axios.$get(`/get_dati_comuni`);
+
             return { dati_comuni };
+
           } catch (e) {
-	      console.log(e)
+
+              console.log(e)
               return { dati_comuni: [] };
         }
       },
@@ -215,18 +233,20 @@ import Field from '../components/Field'
     data() {
       return {
 
-        fila:'ciao'
-
+        fila:'ciao',
+        is_ready:true
       }
     },
 
     methods:
     {
+
         async inviaReport()
         {
 
           if(this.dati_comuni.length >= 1)
           {
+
 
             var XLSX = require("xlsx");
             var workbook = XLSX.utils.book_new();
@@ -257,7 +277,6 @@ import Field from '../components/Field'
 
                       j++
                     }
-                    alert(contenuto)
 
                 }
               document.getElementById('tab'+i).insertAdjacentHTML("beforeend", contenuto)
@@ -269,32 +288,36 @@ import Field from '../components/Field'
               i++
             }
 
-            var file = XLSX.write(workbook,{booktype:"xlsx",type:"binary"});
+            var file = XLSX.write(workbook,{booktype:"xlsx",type:"array"});
+            //var file = XLSX.writeFile(workbook,nome_azienda + ".xlsx",{booktype:"xlsx",type:"binary"});
             file = new File([file], nome_azienda + ".xlsx")
 
             var formData = new FormData();
 
-            formData.append("export_daticomuni", file);
+            formData.append("export_daticomuni", file , nome_azienda + ".xlsx");
 
 
             this.$axios.put('aziende/1/', formData, {
                 headers: {
-                  'Content-Type': "multipart/form-data"
+                  'Content-Type': "multipart/form-data; charset='utf-8';",
+
                 }
             })
 
 
+
             .then((response) => {
-              if(response.status >= 200 && response.status < 300)
+              if(response.status >= 200 && response.status <= 208)
               {
 
-                  alert("tutto bene")
+                  alert("Report Inviato")
 
               }
             })
             .catch((error) => {
 
-             if (error.response) {
+             if (error.response)
+             {
                // The request was made and the server responded with a status code
                // that falls out of the range of 2xx
                alert(error.response.data)

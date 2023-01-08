@@ -1,7 +1,7 @@
 from django.urls import path, include
 
 from rest_framework.routers import DefaultRouter
-from .views import RegisterUserView, login, CurrentLoggedInUser, export_aziende
+from .views import RegisterUserView, login,logout,add_comune_azienda, CurrentLoggedInUser,get_dati_comuni,is_logged
 
 
 from .views import UserViewSet
@@ -22,7 +22,10 @@ urlpatterns = [
         path("", include(router.urls)),
         path('change-password', ChangePasswordView.as_view(), name='change-password'),
         path('login', login),
-        path('export_aziende', export_aziende),
+        path('logout', logout),
+        path('add_comune_azienda', add_comune_azienda),
+        path('is_logged', is_logged),
+        path('get_dati_comuni', get_dati_comuni),
         path('register', RegisterUserView.as_view(), name="register"),
         path('user', CurrentLoggedInUser.as_view({'get': 'retrieve'}), name="current_user")
     ]

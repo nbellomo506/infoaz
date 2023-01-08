@@ -4,11 +4,20 @@
   --white: #ffffff;
 }
 
+.dropdown-item:active {
+    background-color: var(--theme) ;
+    color: var(--white)
+}
 
+.dropdown-item:hover {
+    background-color: var(--theme) ;
+    color: var(--white)
+}
 .bg-infowaste
 {
   background-color:var(--theme);
 }
+
 
 .btn-infowaste
 {

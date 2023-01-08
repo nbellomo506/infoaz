@@ -11,7 +11,6 @@ import TownSelect from '../components/TownSelect'
       <b-container class="mt-5">
         <b-row>
           <b-col bg-variant="info" offset-xl="1" xl="10">
-
             <PageTitle name="Dati Azienda" description="I campi in rosso sono obbligatori"/>
 
                 <b-container class="bg-light rounded p-3">
@@ -37,7 +36,7 @@ import TownSelect from '../components/TownSelect'
                     </b-col>
                     <b-col xl="6">
                       <p>
-                        <b-form-file  placeholder="File Excel" drop-placeholder="Rilascia qui"></b-form-file>
+                        <b-form-file v-model="azienda.ammortamenti"  placeholder="File Excel" drop-placeholder="Rilascia qui"></b-form-file>
                       </p>
                     </b-col>
                   </b-row>
@@ -50,7 +49,8 @@ import TownSelect from '../components/TownSelect'
                     </b-col>
                     <b-col xl="6">
                       <p>
-                        <b-form-file  placeholder="File" drop-placeholder="Rilascia qui"></b-form-file>
+                        <b-form-file v-model="azienda.bilancio_depositato_anno1" placeholder="File" drop-placeholder="Rilascia qui"></b-form-file>
+                        {{azienda.bilancio_depositato_anno1.name}}
                       </p>
                     </b-col>
                   </b-row>
@@ -63,7 +63,7 @@ import TownSelect from '../components/TownSelect'
                     </b-col>
                     <b-col xl="6">
                       <p>
-                        <b-form-file  placeholder="File" drop-placeholder="Rilascia qui"></b-form-file>
+                        <b-form-file v-model="azienda.bilancio_depositato_anno2" placeholder="File" drop-placeholder="Rilascia qui"></b-form-file>
                       </p>
                     </b-col>
                   </b-row>
@@ -71,7 +71,7 @@ import TownSelect from '../components/TownSelect'
                   <b-row class="p-2">
                     <b-col offset-xl="9" xl="2">
                       <p>
-                        <b-button variant="info" block> Salva </b-button>
+                        <b-button @click="updateFiles(azienda)" variant="info" block> Salva </b-button>
                       </p>
                     </b-col>
                   </b-row>
@@ -156,14 +156,15 @@ import TownSelect from '../components/TownSelect'
         try
         {
           let regioni_req = await $axios.$get(`/comuni_italiani/elenco/regioni/`);
-          let comuni_azienda = await $axios.$get(`/dati_comuni/`);
+          let comuni_azienda = await $axios.$get(`/get_dati_comuni`);
+          let azienda = await $axios.$get(`/aziende/1/`);
 
-          return { regioni_req,comuni_azienda };
+          return { regioni_req,comuni_azienda,azienda };
         }
               catch (e)
               {
                 console.log(e);
-                return { regioni_req: [],comuni_azienda:[]};
+                return { regioni_req: [],comuni_azienda:[],azienda:[]};
 
 
               }
@@ -173,12 +174,32 @@ import TownSelect from '../components/TownSelect'
     methods:
     {
 
+        async updateFiles(azienda)
+        {
+            var formData = new FormData();
+            azienda.ammortamenti = new File([azienda.ammortamenti],azienda.ammortamenti.name)
+            azienda.bilancio_depositato_anno1 = new File([azienda.bilancio_depositato_anno1],azienda.bilancio_depositato_anno1.name)
+            azienda.bilancio_depositato_anno2 = new File([azienda.bilancio_depositato_anno2],azienda.bilancio_depositato_anno2.name)
+
+            formData.append("ammortamenti", azienda.ammortamenti,azienda.ammortamenti.name);
+            formData.append("bilancio_depositato_anno1", azienda.bilancio_depositato_anno1,azienda.bilancio_depositato_anno1.name);
+            formData.append("bilancio_depositato_anno2", azienda.bilancio_depositato_anno2,azienda.bilancio_depositato_anno2.name);
+
+            this.$axios.put('aziende/1/', formData, {
+                 headers: {
+                   'Content-Type': "multipart/form-data; charset='utf-8';",
+
+                 }
+            })
+
+        },
+
         async updateReg(reg)
         {
               let province_req = await this.$axios.$get(`/comuni_italiani/elenco/province/regione/`+reg);
               this.province_req = province_req
               this.comuni_req = 0
- 
+
         },
 
         async updateProv(prov)
@@ -192,8 +213,7 @@ import TownSelect from '../components/TownSelect'
             if(comune > 0)
             {
 
-                this.$axios.post('/dati_comuni/', {
-                  azienda: 1,
+                this.$axios.post('/add_comune_azienda', {
                   comune: comune,
                   /*pef_mis_o_ric: "",
                   ris_ula_o_ore: "",
@@ -258,6 +278,12 @@ import TownSelect from '../components/TownSelect'
     data() {
       return {
         regioni_req: [] ,province_req: [] , comuni_req: [] , comuni_azienda: [] ,
+        azienda:
+        {
+          ammortamenti:'',
+          bilancio_depositato_anno1:'',
+          bilancio_depositato_anno2:''
+        },
         az:
         {
           rag_soc:'',

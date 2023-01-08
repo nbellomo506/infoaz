@@ -40,10 +40,10 @@ class Azienda(models.Model):
 
     ragione_sociale = models.CharField(max_length = 255,default='')
     partita_iva = models.CharField(max_length = 11,default='')
-    bilancio_depositato_2020 = models.FileField(default='')
-    bilancio_depositato_2021 = models.FileField(default='')
-    ammortamenti = models.FileField(default='')
-    export_daticomuni = models.FileField(default='')
+    bilancio_depositato_anno1 = models.FileField(default='', blank=True)
+    bilancio_depositato_anno2 = models.FileField(default='', blank=True)
+    ammortamenti = models.FileField(default='',blank=True)
+    export_daticomuni = models.FileField(default='',blank=True)
 
     def __str__(self):
         return self.ragione_sociale

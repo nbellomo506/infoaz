@@ -24,6 +24,8 @@ from .serializers import RegisterUserSerializer, UserSerializer
 from django_filters.rest_framework import DjangoFilterBackend
 from django.contrib.auth.models import User
 from .serializers import ChangePasswordSerializer
+from django.core import serializers
+
 
 from .models import Azienda
 from .serializers import AziendaSerializer
@@ -37,7 +39,9 @@ from .serializers import DatiComuneSerializer
 from .models import CostoSmaltimento
 from .serializers import CostoSmaltimentoSerializer
 
+from comuni_italiani.models import Comune
 import xlwt
+
 
 class RegisterUserView(CreateAPIView):
     queryset = get_user_model().objects.all()
@@ -45,18 +49,47 @@ class RegisterUserView(CreateAPIView):
     serializer_class = RegisterUserSerializer
 
 #@api_view(['POST'])
-def export_aziende(request):
 
-    print(request.FILES)
-    print(request.POST)
+def add_comune_azienda(request):
 
-    return HttpResponse("message")
+    body_unicode = request.body.decode('utf-8')
+    body = json.loads(body_unicode)
 
-#@api_view(['POST'])
+    comune = body['comune']
+
+    print(request.session['azienda'])
+    if 'user_id' and 'azienda' in request.session is not None:
+        obj = DatiComune.objects.create(comune_id =  comune , azienda_id = request.session['azienda'])
+        obj.save()
+        return HttpResponse("Tutto ok")
+
+
+
+def get_dati_comuni(request):
+
+    if 'azienda' in request.session is not None:
+
+        qs = DatiComune.objects.filter(azienda = request.session.get('azienda'))
+        serializer = DatiComuneSerializer(qs, many=True)
+        return JsonResponse(serializer.data,content_type="application/json",safe=False)
+    else:
+        return JsonResponse("Not Logged",content_type="application/json",safe=False)
+
+def is_logged(request):
+
+    is_logged = False
+    if 'user_id' in request.session is not None:
+        is_logged = True
+        return JsonResponse(is_logged,safe=False)
+    else:
+        return JsonResponse(is_logged,safe=False)
+
 def login(request):
 
     body_unicode = request.body.decode('utf-8')
     body = json.loads(body_unicode)
+
+
 
     email = body['email']
     password = body['password']
@@ -64,23 +97,29 @@ def login(request):
     #request.session.flush()
 
     user = authenticate(email=email, password=password)
-    print(request.user.is_authenticated)
 
     if user is not None:
-        print(email)
-        print(password)
+
         message="SI"
         #login(request,user)
         user = get_user_model().objects.filter(email=email).first()
+        #print(user.azienda.id)
 
-        if 'azienda' in request.session is not None:
-            print(request.session['azienda'])
+        #print(request.session.get('azienda'))
 
         request.session['azienda'] = user.azienda.id
-        request.session.modified = True
+        request.session['user_id'] = user.id
+
     else:
         message="NO"
     return HttpResponse(message)
+
+def logout(request):
+
+    if 'user_id' in request.session is not None:
+        del request.session['azienda']
+        del request.session['user_id']
+    return HttpResponse("Arrivederci")
 
 
 class CurrentLoggedInUser(ModelViewSet):

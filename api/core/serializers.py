@@ -73,7 +73,7 @@ class ChangePasswordSerializer(serializers.Serializer):
 class AziendaSerializer(serializers.ModelSerializer):
     class Meta:
         model = Azienda
-        fields = ("id", "ragione_sociale", "partita_iva","export_daticomuni")
+        fields = ("id", "ragione_sociale", "partita_iva","bilancio_depositato_anno1","bilancio_depositato_anno2","ammortamenti","export_daticomuni")
 
 class DatiComuneSerializer(serializers.ModelSerializer):
     nome_regione = serializers.StringRelatedField(source='comune.provincia.regione.name')
