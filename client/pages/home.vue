@@ -234,7 +234,9 @@ import Field from '../components/Field'
       return {
 
         fila:'ciao',
-        is_ready:true
+        is_ready:true,
+        dati_comuni:false
+
       }
     },
 
