@@ -9,7 +9,7 @@ import Field from '../components/Field'
 <template>
   <main>
     <Header/>
-      <b-container v-if="dati_comuni !== 'Not Logged'"  class="mt-5 mb-5">
+      <b-container v-if="is_logged === true"  class="mt-5 mb-5">
         <b-row >
           <b-col offset-xl="1" xl="10">
             <b-container class="mb-3">
@@ -84,7 +84,7 @@ import Field from '../components/Field'
           </b-row>
         </b-container>
 
-        <b-container  v-if="dati_comuni === 'Not Logged'" class="mb-3">
+        <b-container  v-if="is_logged === false" class="mb-3">
           <b-row>
             <b-col offset-xl="1" xl="10">
               <b-container class="mb-3 mt-5">
@@ -218,13 +218,15 @@ import Field from '../components/Field'
           try {
             $axios.defaults.withCredentials = true;
             let dati_comuni = await $axios.$get(`/get_dati_comuni`);
+            let is_logged = await $axios.$get(`/is_logged`);
 
-            return { dati_comuni };
+
+            return { dati_comuni ,is_logged};
 
           } catch (e) {
 
               console.log(e)
-              return { dati_comuni: [] };
+              return { dati_comuni: [] ,is_logged:false};
         }
       },
 
@@ -233,9 +235,9 @@ import Field from '../components/Field'
     data() {
       return {
 
-        fila:'ciao',
+        is_logged:false,
         is_ready:true,
-        dati_comuni:'Not Logged'
+        dati_comuni:[]
 
       }
     },
