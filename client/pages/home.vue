@@ -20,14 +20,15 @@ import Field from '../components/Field'
                 </b-col>
                 <b-col xl="6" class="border rounded">
                   <h3>Legenda</h3>
-                  <hr>
                   <b-container class="p-2 pb-4">
                     <b-row>
                       <b-col xl="6">
+                        <hr>
                         <b-icon class="h4 p-0 b-0 m-0" variant="success" icon="check-circle-fill"></b-icon>
                         Completo
                       </b-col>
                       <b-col xl="6">
+                        <hr>
                         <b-icon class="h4 p-0 b-0 m-0" variant="danger" icon="x-circle-fill"></b-icon>
                         Incompleto
                       </b-col>
@@ -217,6 +218,7 @@ import Field from '../components/Field'
         {
           try {
             $axios.defaults.withCredentials = true;
+
             let dati_comuni = await $axios.$get(`/get_dati_comuni`);
             let is_logged = await $axios.$get(`/is_logged`);
 

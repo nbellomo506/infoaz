@@ -121,18 +121,18 @@ import TownSelect from '../components/TownSelect'
                     </b-col>
                   </b-row>
                   <b-row class="m-0 mt-2 mb-4" v-for="comune_azienda,index in comuni_azienda" :key="comune_azienda.id">
-                    <b-col xl="3" sm="12" class="mt-1 mb-1">
+                    <b-col xl="3" sm="12" class="pt-2 border- mt-1 mb-1">
                     {{comune_azienda.nome_regione}}
                     </b-col>
 
-                    <b-col xl="3" sm="12" class="mt-1 mb-1">
+                    <b-col xl="3" sm="12" class="pt-2 border mt-1 mb-1">
                      {{comune_azienda.nome_provincia}}
                     </b-col>
 
-                    <b-col xl="4" sm="12" class="mt-1 mb-1">
+                    <b-col xl="4" sm="12" class="pt-2 border mt-1 mb-1">
                     {{comune_azienda.nome_comune}}
                     </b-col>
-                    <b-col xl="2" sm="6">
+                    <b-col xl="2" sm="6" class="mt-1 mb-1 p-2">
                       <b-button block @click=delCom(comune_azienda.id) variant="danger">Elimina</b-button>
                     </b-col>
                   </b-row>
@@ -154,6 +154,9 @@ import TownSelect from '../components/TownSelect'
 
         try
         {
+          $axios.defaults.withCredentials = true;
+          $axios.defaults.headers.common['Access-Control-Allow-Origin'] = true;
+
           let regioni_req = await $axios.$get(`/comuni_italiani/elenco/regioni/`);
           let comuni_azienda = await $axios.$get(`/get_dati_comuni`);
           let azienda = await $axios.$get(`/aziende/1/`);

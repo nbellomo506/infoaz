@@ -51,13 +51,12 @@
               <b-col class="text-white" xl="2" offset-xl="10">
                 <b-dropdown size="lg" v-if="is_logged === true" variant="light" toggle-class="text-decoration-none" no-caret>
                     <template #button-content>
-                      <b-icon class="h4 p-0 b-0 m-0" variant="dark" icon="person-circle"></b-icon>
+                      <b-icon class="h4 p-0 b-0 m-0" variant="dark" icon="list"></b-icon>
                       <span class="sr-only">Search</span>
                     </template>
-                    <b-dropdown-item href="#">Action</b-dropdown-item>
-                    <b-dropdown-item href="#">Another action</b-dropdown-item>
-                    <b-dropdown-item href="#">Something else here</b-dropdown-item>
-                    <b-dropdown-item class="bg-danger" @click="logout()" href="#"><font class="text-white">Esci</font></b-dropdown-item>
+                    <b-dropdown-item @click="goHome" v-if="this.$route.name !== 'home'">Home</b-dropdown-item>
+                    <b-dropdown-item @click="goAnagrafica" v-if="this.$route.name !== 'anagrafica'">Anagrafica</b-dropdown-item>
+                    <b-dropdown-item class="bg-danger" @click="logout()"><font class="text-white">Esci</font></b-dropdown-item>
                   </b-dropdown>
               </b-col>
             </b-row>
@@ -105,13 +104,41 @@
 
     methods:
     {
+      async goHome()
+      {
+
+        if (this.$route.name == 'compila_dati_comune-id')
+        {
+          window.location.replace("../../home")
+        }else {
+          window.location.replace("./home")
+
+        }
+      },
+
+      async goAnagrafica()
+      {
+
+        if (this.$route.name == 'compila_dati_comune-id')
+        {
+          window.location.replace("../../anagrafica")
+        }else {
+          window.location.replace("./anagrafica")
+
+        }
+      },
 
       async logout()
       {
 
         this.$axios.post('/logout')
-        window.location.replace("./login")
+        if (this.$route.name == 'compila_dati_comune-id')
+        {
+          window.location.replace("../../login")
+        }else {
+          window.location.replace("./login")
 
+        }
       }
 
     }
