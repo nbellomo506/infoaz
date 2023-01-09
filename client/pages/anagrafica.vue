@@ -50,7 +50,6 @@ import TownSelect from '../components/TownSelect'
                     <b-col xl="6">
                       <p>
                         <b-form-file v-model="azienda.bilancio_depositato_anno1" placeholder="File" drop-placeholder="Rilascia qui"></b-form-file>
-                        {{azienda.bilancio_depositato_anno1.name}}
                       </p>
                     </b-col>
                   </b-row>
