@@ -235,7 +235,7 @@ import Field from '../components/Field'
 
         fila:'ciao',
         is_ready:true,
-        dati_comuni:false
+        dati_comuni:'Not Logged'
 
       }
     },
