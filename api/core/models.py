@@ -5,6 +5,7 @@ from django.dispatch import receiver
 from django.urls import reverse
 from django_rest_passwordreset.signals import reset_password_token_created
 from django.core.mail import send_mail
+import datetime
 
 # Create your models here.
 class CustomUserManager(BaseUserManager):
@@ -15,6 +16,13 @@ class CustomUserManager(BaseUserManager):
 
         user = self.model(
             email=self.normalize_email(email),
+            nome=nome,
+            cognome=cognome,
+            telefono=telefono,
+            email2=email2,
+            titolo=titolo,
+            ragione_sociale=ragione_sociale,
+            p_iva=p_iva
         )
 
         user.set_password(password)
@@ -69,7 +77,9 @@ class User(AbstractUser, PermissionsMixin):
     ragione_sociale = models.CharField(max_length = 255, default='')
     p_iva = models.CharField(max_length = 11, default='')
     telefono = models.CharField(max_length = 20, default='')
+    request_date = models.DateTimeField(default = datetime.datetime.now())
 
+    is_assigned = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
     is_admin = models.BooleanField(default=False)
     is_staff = models.BooleanField(default=False)

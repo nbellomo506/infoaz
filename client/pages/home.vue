@@ -9,7 +9,7 @@ import Field from '../components/Field'
 <template>
   <main>
     <Header/>
-      <b-container v-if="is_logged === true"  class="mt-5 mb-5">
+      <b-container v-if="is_logged === true && is_company_set === true"  class="mt-5 mb-5">
         <b-row >
           <b-col offset-xl="1" xl="10">
             <b-container class="mb-3">
@@ -46,7 +46,6 @@ import Field from '../components/Field'
                       Dati Azienda
                   </a>
                 </b-container>
-
                 <b-container class="p-4 pl-1 mt-2 rounded bg-light" v-for="(dati_comune,index) in dati_comuni" :key="dati_comune.id">
                   <b-row>
                     <b-col xl="11">
@@ -95,6 +94,23 @@ import Field from '../components/Field'
                     <p>
                       <a href="./login">Accedi</a>
                       per visualizzare il contenuto
+                    </p>
+                  </b-col>
+                </b-row>
+              </b-container>
+            </b-col>
+          </b-row>
+        </b-container>
+
+        <b-container  v-if="is_logged === true && is_company_set === false" class="mb-3">
+          <b-row>
+            <b-col offset-xl="1" xl="10">
+              <b-container class="mb-3 mt-5">
+                <b-row>
+                  <b-col xl="12">
+                    <h1>Attenzione</h1>
+                    <p>
+                      La tua richiesta di accesso è stata inviata ma i gestori non ti hanno ancora associato l'azienda
                     </p>
                   </b-col>
                 </b-row>
@@ -219,11 +235,17 @@ import Field from '../components/Field'
           try {
             $axios.defaults.withCredentials = true;
 
-            let dati_comuni = await $axios.$get(`/get_dati_comuni`);
             let is_logged = await $axios.$get(`/is_logged`);
+            let is_company_set = await $axios.$get(`/is_company_set`);
+            let role = await $axios.$get(`/role`);
 
+            if(is_logged)
+            {
+              var dati_comuni = await $axios.$get(`/get_dati_comuni`);
 
-            return { dati_comuni ,is_logged};
+            }
+
+            return { dati_comuni ,is_logged,is_company_set,role};
 
           } catch (e) {
 
@@ -238,6 +260,8 @@ import Field from '../components/Field'
       return {
 
         is_logged:false,
+        is_company_set:false,
+        role:'Normal',
         is_ready:true,
         dati_comuni:[]
 
@@ -247,7 +271,7 @@ import Field from '../components/Field'
     methods:
     {
 
-        async inviaReport()
+        /*async inviaReport()
         {
 
           if(this.dati_comuni.length >= 1)
@@ -332,7 +356,7 @@ import Field from '../components/Field'
 
            });
           }
-      }
+      }*/
 
     }
   }

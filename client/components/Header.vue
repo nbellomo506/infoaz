@@ -12,12 +12,6 @@
 
       <div>
 
-
-
-
-               <!--<<b-img fluid src="logo_innovambiente.png" width="308.95" height="66"> </b-img>
-              <b-img fluid src="logo_greenext.png" width="178" height="66"> </b-img>-->
-
           <b-container fluid class="grey p-3">
             <b-row class="ml-5">
               <b-col class="mt-2" xl="3">
@@ -34,16 +28,6 @@
             </b-row>
           </b-container>
 
-          <!--
-              <b-img fluid src="../static/img/logo_innovambiente.png" width="308.95" height="66"> </b-img>
-              <b-img class="ml-5" fluid src="../static/img/logo_greenext.png" width="178" height="66"> </b-img>
-
-
-
-            <b-navbar-nav class="ml-auto">
-                  <b-img src="../static/img/logo_infowaste.png" width="232" height="99"> </b-img>
-            </b-navbar-nav>
-            -->
 
 
           <b-container fluid class="bg-infowaste">
@@ -52,16 +36,19 @@
                 <b-dropdown size="lg" v-if="is_logged === true" variant="light" toggle-class="text-decoration-none" no-caret>
                     <template #button-content>
                       <b-icon class="h4 p-0 b-0 m-0" variant="dark" icon="list"></b-icon>
-                      <span class="sr-only">Search</span>
                     </template>
-                    <b-dropdown-item @click="goHome" v-if="this.$route.name !== 'home'">Home</b-dropdown-item>
-                    <b-dropdown-item @click="goAnagrafica" v-if="this.$route.name !== 'anagrafica'">Anagrafica</b-dropdown-item>
-                    <b-dropdown-item class="bg-danger" @click="logout()"><font class="text-white">Esci</font></b-dropdown-item>
+                    <b-dropdown-item-button @click="goHome()" v-if="this.$route.name !== 'home'">Home</b-dropdown-item-button>
+                      <b-dropdown-item-button  @click="goAnagrafica()" v-if="this.$route.name !== 'anagrafica' && (is_logged === true ) ">Anagrafica</b-dropdown-item-button>
+                      <b-dropdown-item-button  @click="goAdmin()" v-if="this.$route.name !== 'admin' && is_logged === true && role==='Admin'">Admin</b-dropdown-item-button>
+                    <b-dropdown-item-button @click="logout()" class="bg-danger" >
+                      <font class="text-white">
+                        Esci
+                      </font>
+                    </b-dropdown-item-button>
                   </b-dropdown>
               </b-col>
             </b-row>
           </b-container>
-
 
       </div>
     </main>
@@ -73,9 +60,21 @@
     mounted () {
       this.$axios.defaults.withCredentials = true;
 
-      this.$axios
-        .$get(`/is_logged`)
-        .then(response => (this.is_logged = response))
+      this.$axios.$get(`/is_logged`)
+        .then((response) => {
+          this.is_logged = response
+        })
+
+        this.$axios.$get(`/role`)
+          .then((response) => {
+            this.role = response
+          })
+
+          this.$axios.$get(`/is_company_set`)
+            .then((response) => {
+              this.is_company_set = response
+            })
+
     },
 
     /*async asyncData({ $axios, params })
@@ -98,6 +97,8 @@
       return {
 
         is_logged:false,
+        is_company_set:false,
+        role:'Normal'
 
       }
     },
@@ -128,10 +129,23 @@
         }
       },
 
+      async goAdmin()
+      {
+
+        if (this.$route.name == 'compila_dati_comune-id')
+        {
+          window.location.replace("../../admin")
+        }else {
+          window.location.replace("./admin")
+
+        }
+      },
+
       async logout()
       {
 
         this.$axios.post('/logout')
+
         if (this.$route.name == 'compila_dati_comune-id')
         {
           window.location.replace("../../login")

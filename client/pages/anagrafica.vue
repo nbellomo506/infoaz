@@ -8,7 +8,7 @@ import TownSelect from '../components/TownSelect'
 <template>
   <main>
     <Header/>
-      <b-container class="mt-5">
+      <b-container class="mt-5" v-if="is_logged === true && is_company_set === true" >
         <b-row>
           <b-col bg-variant="info" offset-xl="1" xl="10">
             <PageTitle name="Dati Azienda" description="I campi in rosso sono obbligatori"/>
@@ -136,7 +136,41 @@ import TownSelect from '../components/TownSelect'
                       <b-button block @click=delCom(comune_azienda.id) variant="danger">Elimina</b-button>
                     </b-col>
                   </b-row>
+                </b-container>
+              </b-col>
+            </b-row>
+          </b-container>
 
+          <b-container  v-if="is_logged === false" class="mb-3">
+            <b-row>
+              <b-col offset-xl="1" xl="10">
+                <b-container class="mb-3 mt-5">
+                  <b-row>
+                    <b-col xl="12">
+                      <h1>Attenzione</h1>
+                      <p>
+                        <a href="./login">Accedi</a>
+                        per visualizzare il contenuto
+                      </p>
+                    </b-col>
+                  </b-row>
+                </b-container>
+              </b-col>
+            </b-row>
+          </b-container>
+
+          <b-container  v-if="is_logged === true && is_company_set === false" class="mb-3">
+            <b-row>
+              <b-col offset-xl="1" xl="10">
+                <b-container class="mb-3 mt-5">
+                  <b-row>
+                    <b-col xl="12">
+                      <h1>Attenzione</h1>
+                      <p>
+                        La tua richiesta di accesso è stata inviata ma i gestori non ti hanno ancora associato l'azienda
+                      </p>
+                    </b-col>
+                  </b-row>
                 </b-container>
               </b-col>
             </b-row>
@@ -155,18 +189,20 @@ import TownSelect from '../components/TownSelect'
         try
         {
           $axios.defaults.withCredentials = true;
-          $axios.defaults.headers.common['Access-Control-Allow-Origin'] = true;
 
+          let is_logged = await $axios.$get(`/is_logged`);
+          let is_company_set = await $axios.$get(`/is_company_set`);
+          let role = await $axios.$get(`/role`);
           let regioni_req = await $axios.$get(`/comuni_italiani/elenco/regioni/`);
           let comuni_azienda = await $axios.$get(`/get_dati_comuni`);
           let azienda = await $axios.$get(`/aziende/1/`);
 
-          return { regioni_req,comuni_azienda,azienda };
+          return { is_logged,is_company_set,role,regioni_req,comuni_azienda,azienda};
         }
               catch (e)
               {
                 console.log(e);
-                return { regioni_req: [],comuni_azienda:[],azienda:[]};
+                return {is_logged:false, regioni_req: [],comuni_azienda:[],azienda:[]};
 
 
               }
@@ -279,7 +315,11 @@ import TownSelect from '../components/TownSelect'
 
     data() {
       return {
-        regioni_req: [] ,province_req: [] , comuni_req: [] , comuni_azienda: [] ,
+        regioni_req: [] ,province_req: [] , comuni_req: [] ,
+        comuni_azienda: [] ,
+        is_logged:false,
+        is_company_set:false,
+        role:'Normal',
         azienda:
         {
           ammortamenti:'',

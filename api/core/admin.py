@@ -16,9 +16,8 @@ class UserAdmin(BaseUserAdmin):
     #modifica dati utente
     fieldsets = (
         ("Azienda", {'fields': ('azienda',('ragione_sociale','p_iva'))}),
-        ("Dati Generali", {'fields': ('nome', 'cognome','email','email2','titolo','telefono')}),
-
-        ('Permissions', {'fields': ('is_admin', 'is_staff','is_active')}),
+        ("Dati Generali", {'fields': ('nome', 'cognome','email','email2','titolo','telefono','request_date')}),
+        ('Permissions', {'fields': ('is_assigned','is_admin', 'is_staff','is_active')}),
 
     )
 

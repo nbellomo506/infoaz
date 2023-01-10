@@ -134,6 +134,7 @@ export default {
               </b-col>
             </b-row>
           </b-container>
+          {{form}}
 
           <b-modal id="registrazione-ok" hide-footer>
             <div class="d-block text-center">
@@ -160,16 +161,16 @@ export default {
     data() {
       return {
         form: {
-          nome: 'Nicolas',
-          cognome: 'Bellomo',
-          titolo:'',
-          ragione_sociale: 'aaa',
-          p_iva: '12345678901',
-          telefono: '3456720022',
-          email: 'nbellomo506@gmail.com',
+          nome: 'Antonio',
+          cognome: 'Patruno',
+          titolo:'logistica',
+          ragione_sociale: 'infowaste',
+          p_iva: '00350350305',
+          telefono: '3806820012',
+          email: 'antonio.patruno@gmail.com',
           email2: '',
-          password: 'Patata2002.',
-          conferma_password:'Patata2002.',
+          password: 'Pippo23.',
+          conferma_password:'Pippo23.',
           load:true,
           check:{
             serv:{
@@ -228,6 +229,7 @@ export default {
                 ris=this.controlloAzienda()+ris
                 ris=this.controlloFlag(this.form.check.priv.value,2)+ris
                 ris=this.controlloFlag(this.form.check.serv.value,1)+ris
+
 
                 if( ris == 0)
                 {
@@ -358,6 +360,7 @@ export default {
             controlloPassword()
             {
               var flag=0
+              this.msg.password=""
 
               if(this.form.password.length === 0 || this.form.conferma_password.length === 0)
                 {
@@ -366,6 +369,7 @@ export default {
                   flag=1
 
                 }else {
+
 
                         //controllo numeri
                         if(!(/[0-9]/.test(this.form.password)))
@@ -401,7 +405,6 @@ export default {
                         {
                           this.msg.password="Le password deve contenere almeno 8 caratteri."
                           flag=1
-
                         }
 
                         if( !(this.form.password === this.form.conferma_password) )
@@ -409,11 +412,8 @@ export default {
                             this.msg.password="Le password non coincidono."
                             flag=1
 
-                        }else {
-
-                          this.msg.password=""
-
                         }
+
 
                 }
                 if(flag==1)

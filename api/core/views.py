@@ -48,7 +48,27 @@ class RegisterUserView(CreateAPIView):
     permission_classes = (AllowAny,)
     serializer_class = RegisterUserSerializer
 
-#@api_view(['POST'])
+
+def assign_azienda(request):
+
+    body_unicode = request.body.decode('utf-8')
+    body = json.loads(body_unicode)
+
+    user = body['user_id']
+    azienda = body['azienda_id']
+
+    if 'user_id' in request.session is not None:
+
+        if request.session['is_admin'] == True and request.session['is_staff'] == True and request.session['is_active'] == True:
+
+            obj = User.objects.get(pk = user)
+            obj.azienda_id = azienda
+            obj.is_assigned = True
+            print(obj.is_assigned)
+            obj.save()
+            return JsonResponse("OK",content_type="application/json",safe=False)
+    else:
+        return JsonResponse("Not Allowed",content_type="application/json",safe=False)
 
 def add_comune_azienda(request):
 
@@ -57,32 +77,79 @@ def add_comune_azienda(request):
 
     comune = body['comune']
 
-    print(request.session['azienda'])
     if 'user_id' and 'azienda' in request.session is not None:
         obj = DatiComune.objects.create(comune_id =  comune , azienda_id = request.session['azienda'])
         obj.save()
         return HttpResponse("Tutto ok")
 
 
-
 def get_dati_comuni(request):
 
-    if 'azienda' in request.session is not None:
+    if 'user_id' in request.session is not None:
 
-        qs = DatiComune.objects.filter(azienda = request.session.get('azienda'))
-        serializer = DatiComuneSerializer(qs, many=True)
-        return JsonResponse(serializer.data,content_type="application/json",safe=False)
+        if 'azienda' in request.session is not None:
+            qs = DatiComune.objects.filter(azienda = request.session.get('azienda'))
+            serializer = DatiComuneSerializer(qs, many=True)
+            return JsonResponse(serializer.data,content_type="application/json",safe=False)
+        else:
+            return JsonResponse("No Company",content_type="application/json",safe=False)
+
     else:
         return JsonResponse("Not Logged",content_type="application/json",safe=False)
 
-def is_logged(request):
+def get_aziende(request):
 
+    if 'user_id' in request.session is not None:
+
+        if request.session['is_admin'] == True and request.session['is_staff'] == True and request.session['is_active'] == True:
+
+            qs = Azienda.objects.all()
+            serializer = AziendaSerializer(qs, many=True)
+            return JsonResponse(serializer.data,content_type="application/json",safe=False)
+    else:
+        return JsonResponse("Not Allowed",content_type="application/json",safe=False)
+
+def get_utenti(request):
+
+    if 'user_id' in request.session is not None:
+
+        if request.session['is_admin'] == True and request.session['is_staff'] == True and request.session['is_active'] == True:
+
+            qs = User.objects.all()
+            serializer = UserSerializer(qs, many=True)
+            return JsonResponse(serializer.data,content_type="application/json",safe=False)
+    else:
+        return JsonResponse("Not Allowed",content_type="application/json",safe=False)
+
+def is_logged(request):
     is_logged = False
+
     if 'user_id' in request.session is not None:
         is_logged = True
-        return JsonResponse(is_logged,safe=False)
+
+    return JsonResponse(is_logged,safe=False)
+
+def role(request):
+    role = False
+
+    if request.session['is_staff'] == True and request.session['is_admin'] == True:
+        role='Admin'
     else:
-        return JsonResponse(is_logged,safe=False)
+        role='Normal'
+
+    return JsonResponse(role,safe=False)
+
+def is_company_set(request):
+    is_company_set = False
+
+    if 'azienda' in request.session is not None:
+        is_company_set = True
+    else:
+        is_company_set=False
+
+
+    return JsonResponse(is_company_set,safe=False)
+
 
 def login(request):
 
@@ -100,15 +167,20 @@ def login(request):
 
     if user is not None:
 
-        message="SI"
         #login(request,user)
         user = get_user_model().objects.filter(email=email).first()
-        #print(user.azienda.id)
 
-        #print(request.session.get('azienda'))
+        if user.azienda is not None:
+            request.session['azienda'] = user.azienda.id
 
-        request.session['azienda'] = user.azienda.id
+        request.session['nome'] = user.nome
+        request.session['cognome'] = user.cognome
         request.session['user_id'] = user.id
+        request.session['is_admin'] = user.is_admin
+        request.session['is_staff'] = user.is_staff
+        request.session['is_active'] = user.is_active
+
+        message="SI"
 
     else:
         message="NO"
@@ -117,8 +189,16 @@ def login(request):
 def logout(request):
 
     if 'user_id' in request.session is not None:
-        del request.session['azienda']
+        if 'azienda' in request.session is not None:
+            del request.session['azienda']
+
         del request.session['user_id']
+        del request.session['nome']
+        del request.session['cognome']
+        del request.session['is_admin']
+        del request.session['is_staff']
+        del request.session['is_active']
+
     return HttpResponse("Arrivederci")
 
 

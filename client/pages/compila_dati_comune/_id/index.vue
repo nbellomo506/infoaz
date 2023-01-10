@@ -424,9 +424,8 @@ import CostiSmaltimento from '../components/CostiSmaltimento'
                 Aggiungi
               </b-button>
             </b-col>
-
           </b-row>
-
+          {{costi_smaltimento.length}}
 
           <b-row class="border rounded p-3"  v-for="(extra,index) in costi_smaltimento" v-bind:class = "(index % 2==0)?'bg-white':'bg-light'" :key="extra.id">
             <b-col class="p-0 pl-1" xl="1">
@@ -468,7 +467,7 @@ import CostiSmaltimento from '../components/CostiSmaltimento'
                 <b-row>
                   <b-col xl="5 p-0">
                     <button type="button" @click=modificaExtra(extra) block class="btn btn-success" name="button">
-                      <b-icon icon="save"></b-icon>
+                      <b-icon icon="check-square-fill"></b-icon>
                     </button>
                   </b-col>
 
@@ -535,7 +534,6 @@ import CostiSmaltimento from '../components/CostiSmaltimento'
           </b-container>
         </b-modal>
 
-
       </main>
   </template>
 
@@ -568,7 +566,7 @@ import CostiSmaltimento from '../components/CostiSmaltimento'
     methods:
     {
 
-        aggiungiExtra()
+        aggiungiExtra(params)
         {
 
             if(this.add.imp_smalt == "")
@@ -601,7 +599,7 @@ import CostiSmaltimento from '../components/CostiSmaltimento'
                   importo: this.add.importo
 
                 })
-                location.reload();
+
 
             }
 
