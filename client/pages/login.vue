@@ -80,8 +80,8 @@ export default {
    data() {
       return {
          is_logged:false,
-         email: 'nbellomo506@gmail.com',
-         password: 'Gino2002.',
+         email: '',
+         password: '',
          msg:
          {
            email:'',

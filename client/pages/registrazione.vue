@@ -134,7 +134,7 @@ export default {
               </b-col>
             </b-row>
           </b-container>
-          {{form}}
+
 
           <b-modal id="registrazione-ok" hide-footer>
             <div class="d-block text-center">
@@ -161,26 +161,26 @@ export default {
     data() {
       return {
         form: {
-          nome: 'Antonio',
-          cognome: 'Patruno',
-          titolo:'logistica',
-          ragione_sociale: 'infowaste',
-          p_iva: '00350350305',
-          telefono: '3806820012',
-          email: 'antonio.patruno@gmail.com',
+          nome: '',
+          cognome: '',
+          titolo:'',
+          ragione_sociale: '',
+          p_iva: '',
+          telefono: '',
+          email: '',
           email2: '',
-          password: 'Pippo23.',
-          conferma_password:'Pippo23.',
+          password: '',
+          conferma_password:'',
           load:true,
           check:{
             serv:{
               attivo:false,
-              value:1,
+              value:0,
 
             },
             priv:{
               attivo:false,
-              value:1
+              value:0
             }
 
           }
