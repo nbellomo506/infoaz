@@ -15,7 +15,7 @@ import Field from '../components/Field'
             <b-container class="mb-3">
               <b-row>
                 <b-col xl="6">
-                  <h1>Benvenuto</h1>
+                  <h1>Benvenuto {{utente.nome}}</h1>
                   <h3>Compilazione in corso</h3>
                 </b-col>
                 <b-col xl="6" class="border rounded">
@@ -102,7 +102,7 @@ import Field from '../components/Field'
           </b-row>
         </b-container>
 
-        <b-container  v-if="is_logged === true && is_company_set === false" class="mb-3">
+        <b-container v-if="is_logged === true && is_company_set === false" class="mb-3">
           <b-row>
             <b-col offset-xl="1" xl="10">
               <b-container class="mb-3 mt-5">
@@ -110,7 +110,8 @@ import Field from '../components/Field'
                   <b-col xl="12">
                     <h1>Attenzione</h1>
                     <p>
-                      La tua richiesta di accesso è stata inviata ma i gestori non ti hanno ancora associato l'azienda
+                      Ciao {{utente.nome}} , la tua richiesta di accesso è stata inviata ma i gestori non ti hanno ancora associato l'azienda.<br>
+                      Pertanto non hai accesso ai dati inseriti dalla tua azienda
                     </p>
                   </b-col>
                 </b-row>
@@ -118,6 +119,8 @@ import Field from '../components/Field'
             </b-col>
           </b-row>
         </b-container>
+        {{is_company_set}}
+        {{is_logged}}
 
       <table v-for="(dati_comune,index) in dati_comuni" :id="`tab${index}`" hidden>
         <tr>
@@ -228,7 +231,24 @@ import Field from '../components/Field'
   import xls from 'xlsx'
 
   export default {
+    mounted () {
 
+      var i = 0
+      this.is_ready = true
+      if(this.is_logged && this.is_company_set)
+      {
+        while(i < this.dati_comuni.length)
+        {
+          if(this.dati_comuni[i].completed == false)
+          {
+            this.is_ready = false
+            i = this.dati_comuni.length
+          }
+          i++
+        }
+      }
+
+    },
 
       async asyncData({ $axios, params })
         {
@@ -241,16 +261,21 @@ import Field from '../components/Field'
 
             if(is_logged)
             {
-              var dati_comuni = await $axios.$get(`/get_dati_comuni`);
+              var utente = await $axios.$get(`/get_user_data`);
 
+                if(is_company_set)
+                {
+                  var dati_comuni = await $axios.$get(`/get_dati_comuni`);
+                  var azienda = await $axios.$get(`/get_company_data`);
+                }
             }
 
-            return { dati_comuni ,is_logged,is_company_set,role};
+            return { dati_comuni ,azienda,is_logged,utente,is_company_set,role};
 
           } catch (e) {
 
               console.log(e)
-              return { dati_comuni: [] ,is_logged:false};
+              return { dati_comuni: [] ,azienda:[],is_logged:false};
         }
       },
 
@@ -262,7 +287,7 @@ import Field from '../components/Field'
         is_logged:false,
         is_company_set:false,
         role:'Normal',
-        is_ready:true,
+        is_ready:false,
         dati_comuni:[]
 
       }
@@ -271,7 +296,7 @@ import Field from '../components/Field'
     methods:
     {
 
-        /*async inviaReport()
+        async inviaReport()
         {
 
           if(this.dati_comuni.length >= 1)
@@ -280,7 +305,7 @@ import Field from '../components/Field'
 
             var XLSX = require("xlsx");
             var workbook = XLSX.utils.book_new();
-            const nome_azienda = this.dati_comuni[1].nome_azienda
+            const nome_azienda = this.azienda.ragione_sociale
 
             workbook.Props =
             {
@@ -356,7 +381,7 @@ import Field from '../components/Field'
 
            });
           }
-      }*/
+      }
 
     }
   }

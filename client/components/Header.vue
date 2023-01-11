@@ -29,35 +29,41 @@
           </b-container>
 
 
-
           <b-container fluid class="bg-infowaste">
             <b-row class="pt-3 pb-3">
-              <b-col class="text-white" xl="2" offset-xl="10">
-                <b-dropdown size="lg" v-if="is_logged === true" variant="light" toggle-class="text-decoration-none" no-caret>
+              <b-col v-if="is_logged === true" class="text-white mt-2 pt-2" sm="6" xl="2" offset-xl="2">
+                <b-button onclick="history.back()" v-if="this.$route.name === 'anagrafica' || this.$route.name === 'admin'" type="button" block variant="light" name="button">
+                  <b-icon class="h4 p-0 b-0 m-0" variant="dark" icon="arrow-left">
+                  </b-icon>
+                  Indietro
+                </b-button>
+              </b-col>
+              <b-col v-if="is_logged === true" class="text-white pt-2" sm="6" xl="1" offset-xl="5">
+                <b-dropdown block size="lg"  variant="light" toggle-class="text-decoration-none" no-caret>
                     <template #button-content>
                       <b-icon class="h4 p-0 b-0 m-0" variant="dark" icon="list"></b-icon>
                     </template>
-                    <b-dropdown-item-button @click="goHome()" v-if="this.$route.name !== 'home'">Home</b-dropdown-item-button>
-                      <b-dropdown-item-button  @click="goAnagrafica()" v-if="this.$route.name !== 'anagrafica' && (is_logged === true ) ">Anagrafica</b-dropdown-item-button>
-                      <b-dropdown-item-button  @click="goAdmin()" v-if="this.$route.name !== 'admin' && is_logged === true && role==='Admin'">Admin</b-dropdown-item-button>
-                    <b-dropdown-item-button @click="logout()" class="bg-danger" >
+                    <b-dropdown-item :to="locations.home" v-if="this.$route.name !== 'home'">Home</b-dropdown-item>
+                      <b-dropdown-item :to="locations.anagrafica" v-if="this.$route.name !== 'anagrafica' && (is_logged === true ) ">Anagrafica</b-dropdown-item>
+                      <b-dropdown-item :to="locations.admin" v-if="this.$route.name !== 'admin' && is_logged === true && role==='Admin'">Admin</b-dropdown-item>
+                    <b-dropdown-item :to="locations.login" @click="findPath('login')" class="bg-danger" >
                       <font class="text-white">
                         Esci
                       </font>
-                    </b-dropdown-item-button>
+                    </b-dropdown-item>
                   </b-dropdown>
               </b-col>
             </b-row>
           </b-container>
-
-      </div>
-    </main>
-</template>
-<script>
+        </div>
+      </main>
+  </template>
+  <script>
   import axios from '@nuxtjs/axios'
 
   export default {
     mounted () {
+
       this.$axios.defaults.withCredentials = true;
 
       this.$axios.$get(`/is_logged`)
@@ -75,84 +81,64 @@
               this.is_company_set = response
             })
 
+      var pages = ["home","anagrafica","admin","login"]
+      var i = 0
+      var page = ""
+      do
+      {
+        if (this.$route.name == 'compila_dati_comune-id')
+        {
+          page = pages[i]
+          this.locations[page] = "../../"+page
+          //alert(this.locations.page)
+
+        }else {
+
+          page = pages[i]
+          this.locations[page] = "./"+page
+          //alert(this.locations.page)
+
+        }
+        i++
+
+      }while (i < pages.length)
+
     },
 
-    /*async asyncData({ $axios, params })
-      {
-        try {
-          $axios.defaults.withCredentials = true;
-          let is_logged = await $axios.$get(`/is_logged`);
-          console.log(is_logged)
-
-          return { is_logged };
-
-        } catch (e) {
-
-            console.log(e)
-            return { is_logged: false };
-      }
-    },*/
 
     data() {
       return {
 
         is_logged:false,
         is_company_set:false,
-        role:'Normal'
+        role:'Normal',
+        locations:
+        {
+          home:'home',
+          anagrafica:'anagrafica',
+          admin:'admin',
+          login:'login'
+        }
 
       }
     },
 
     methods:
     {
-      async goHome()
+
+      async findPath(page)
       {
 
-        if (this.$route.name == 'compila_dati_comune-id')
+        if(page == 'login')
         {
-          window.location.replace("../../home")
-        }else {
-          window.location.replace("./home")
+          this.$axios.post('/logout')
+          window.location.replace(this.locations.login)
+
 
         }
-      },
 
-      async goAnagrafica()
-      {
 
-        if (this.$route.name == 'compila_dati_comune-id')
-        {
-          window.location.replace("../../anagrafica")
-        }else {
-          window.location.replace("./anagrafica")
 
-        }
-      },
-
-      async goAdmin()
-      {
-
-        if (this.$route.name == 'compila_dati_comune-id')
-        {
-          window.location.replace("../../admin")
-        }else {
-          window.location.replace("./admin")
-
-        }
-      },
-
-      async logout()
-      {
-
-        this.$axios.post('/logout')
-
-        if (this.$route.name == 'compila_dati_comune-id')
-        {
-          window.location.replace("../../login")
-        }else {
-          window.location.replace("./login")
-
-        }
       }
 
     }

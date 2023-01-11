@@ -73,7 +73,7 @@ class ChangePasswordSerializer(serializers.Serializer):
 class AziendaSerializer(serializers.ModelSerializer):
     class Meta:
         model = Azienda
-        fields = ("id", "ragione_sociale", "partita_iva","bilancio_depositato_anno1","bilancio_depositato_anno2","ammortamenti","export_daticomuni")
+        fields = ("id", "ragione_sociale", "partita_iva","bilancio_depositato_anno1","bilancio_depositato_anno2","ammortamenti","export_daticomuni","pef_mis_o_ric")
 
 class DatiComuneSerializer(serializers.ModelSerializer):
     nome_regione = serializers.StringRelatedField(source='comune.provincia.regione.name')
@@ -84,14 +84,14 @@ class DatiComuneSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = DatiComune
-        fields = ("id","azienda","nome_azienda","comune","nome_regione","nome_provincia","nome_comune","pef_mis_o_ric","ris_ula_o_ore","tot_app","app_servizi","app_rifiuti_diff","app_rifiuti_indiff","app_igiene",
+        fields = ("id","azienda","nome_azienda","comune","nome_regione","nome_provincia","nome_comune","ris_ula_o_ore","tot_app","app_servizi","app_rifiuti_diff","app_rifiuti_indiff","app_igiene",
                     "altri_gestori_flag",
                     "altri_gestori",
                     "appalto_attuale_data",
                     "impresa_op_com_data",
                     "valore_can",
                     "adeg_contr_flag",
-                    "ricavi_conai_flag",
+                    "ricavi_conai",
                     "impresa_cts_flag",
                     "impresa_ctr_flag",
                     "spazz_e_ig_flag",

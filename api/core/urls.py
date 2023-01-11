@@ -1,11 +1,11 @@
 from django.urls import path, include
 
 from rest_framework.routers import DefaultRouter
-from .views import RegisterUserView, login,logout,add_comune_azienda,role,is_company_set,assign_azienda,get_aziende,get_utenti, CurrentLoggedInUser,get_dati_comuni,is_logged
+from .views import RegisterUserView, login,logout,add_comune_azienda,role,is_company_set,get_company_data,assign_azienda,get_aziende,get_utenti, CurrentLoggedInUser,get_dati_comuni,is_logged
 
 
-from .views import UserViewSet
-from .views import AziendaViewSet
+from .views import UserViewSet,get_user_data
+from .views import AziendaViewSet,savePEF
 from .views import DatiComuneViewSet
 from .views import CostoSmaltimentoViewSet
 from .views import ChangePasswordView
@@ -27,6 +27,9 @@ urlpatterns = [
         path('get_utenti', get_utenti),
         path('add_comune_azienda', add_comune_azienda),
         path('assign_azienda', assign_azienda),
+        path('get_company_data', get_company_data),
+        path('savePEF', savePEF),
+        path('get_user_data', get_user_data),
         path('is_logged', is_logged),
         path('role', role),
         path('is_company_set', is_company_set),

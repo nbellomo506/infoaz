@@ -92,7 +92,9 @@ export default {
    },
    mounted () {
 
-      if(this.is_logged)
+      this.$axios.defaults.withCredentials = true;
+
+      if(this.is_logged == true)
       {
         this.goTo("./home")
       }

@@ -19,41 +19,45 @@ import CostiSmaltimento from '../components/CostiSmaltimento'
               <PageTitle :name="`Comune di ${dati_comune.nome_comune}`" description="I campi in rosso sono obbligatori"/>
                 <b-row>
                   <b-col :class="container_specs">
-                     <FieldTitle name="pef_mis_o_ric" description="PEF" req="yes"/>
-                      <b-form-radio-group v-model="dati_comune.pef_mis_o_ric" :options="opts.tipo2"></b-form-radio-group>
+                    <div class="text-secondary pr-4">
+                        <div>
+                          PEF
+                        </div>
+                    </div>
+                    <b-form-radio-group disabled v-model="azienda.pef_mis_o_ric" :options="opts.tipo2"></b-form-radio-group>
                   </b-col>
                 </b-row>
-                  <b-container class="p-0 m-0 b-0" name="calc_o_mis" v-show="dati_comune.pef_mis_o_ric === 'MISURATO'">
+                  <b-container class="p-0 m-0 b-0" name="calc_o_mis" v-show="azienda.pef_mis_o_ric === 'CALCOLATO'">
                     <hr>
                       <b-row>
                         <b-col :class="container_specs">
-                        <FieldTitle name="ris_ula_o_ore" req="yes" description="Per ciascuno dei servizi elencati, le risorse umane impiegate sono indicate in:" />
+                        <FieldTitle letter="a" name="ris_ula_o_ore" req="yes" description="Per ciascuno dei servizi elencati, le risorse umane impiegate sono indicate in:" />
                             <b-form-radio-group v-model="dati_comune.ris_ula_o_ore" :options="opts.tipo3"></b-form-radio-group>
                         </b-col>
                       </b-row>
                       <b-row>
                         <b-col :class="container_specs">
-                          <FieldTitle letter="a" req="yes" name="tot_app" description="Totale per la conduzione dell'appalto" />
+                          <FieldTitle letter="b" req="yes" name="tot_app" description="Totale per la conduzione dell'appalto" />
                           <input class="form-control" v-model="dati_comune.tot_app" type="number" >
                         </b-col>
                         <b-col :class="container_specs">
-                          <FieldTitle letter="b" req="yes" name="app_servizi" description="Di cui per impiegati e addetti ai servizi generali" />
+                          <FieldTitle letter="c" req="yes" name="app_servizi" description="Di cui per impiegati e addetti ai servizi generali" />
                           <input class="form-control" v-model="dati_comune.app_servizi" type="number">
                         </b-col>
                       </b-row>
                       <b-row>
                         <b-col :class="container_specs">
-                          <FieldTitle letter="c" req="yes" name="app_rifiuti_diff" description="Di cui per addetti alla raccolta e trasporto dei rifiuti differenziati" />
+                          <FieldTitle letter="d" req="yes" name="app_rifiuti_diff" description="Di cui per addetti alla raccolta e trasporto dei rifiuti differenziati" />
                           <input class="form-control" v-model="dati_comune.app_rifiuti_diff" type="number">
                         </b-col>
                         <b-col :class="container_specs">
-                          <FieldTitle letter="d" req="yes" name="app_rifiuti_indiff" description="Di cui per addetti alla raccolta e trasporto dei rifiuti indifferenziati" />
+                          <FieldTitle letter="e" req="yes" name="app_rifiuti_indiff" description="Di cui per addetti alla raccolta e trasporto dei rifiuti indifferenziati" />
                           <input class="form-control" v-model="dati_comune.app_rifiuti_indiff" type="number">
                         </b-col>
                       </b-row>
                       <b-row>
                         <b-col :class="container_specs" xl="12">
-                          <FieldTitle letter="e" req="yes" name="app_igiene" description="Di cui per addetti ai servizi di spazzamento e igiene urbana" />
+                          <FieldTitle letter="f" req="yes" name="app_igiene" description="Di cui per addetti ai servizi di spazzamento e igiene urbana" />
                           <input class="form-control" v-model="dati_comune.app_igiene" type="number">
                         </b-col>
                       </b-row>
@@ -73,46 +77,46 @@ import CostiSmaltimento from '../components/CostiSmaltimento'
 
                     <b-row>
                       <b-col :class="container_specs">
-                        <FieldTitle    name="appalto_attuale_data" description="L'appalto con la configurazione attuale è stato avviato il" />
+                        <FieldTitle name="appalto_attuale_data" description="L'appalto con la configurazione attuale è stato avviato il" />
                         <input class="form-control" v-model="dati_comune.appalto_attuale_data" type="date">
                       </b-col>
 
                       <b-col :class="container_specs">
-                        <FieldTitle    name="impresa_op_com_data" description="L'impresa opera nel Comune / Ambito Tariffario da" />
+                        <FieldTitle name="impresa_op_com_data" description="L'impresa opera nel Comune / Ambito Tariffario da" />
                         <input class="form-control" v-model="dati_comune.impresa_op_com_data" type="date">
                       </b-col>
                     </b-row>
 
                     <b-row>
                       <b-col :class="container_specs">
-                        <FieldTitle    name="valore_can" description="Valore del canone contrattuale IVA ESCLUSA nell'anno corrente" />
+                        <FieldTitle name="valore_can" description="Valore del canone contrattuale IVA ESCLUSA nell'anno corrente" />
                         <input class="form-control" v-model="dati_comune.valore_can" type="number">
 
                       </b-col>
 
                       <b-col :class="container_specs">
-                        <FieldTitle    name="adeg_contr_flag" description="E' previsto l'adeguamento contrattuale del canone su base annua?" />
+                        <FieldTitle name="adeg_contr_flag" description="E' previsto l'adeguamento contrattuale del canone su base annua?" />
                         <b-form-radio-group v-model="dati_comune.adeg_contr_flag" :options="opts.tipo1"></b-form-radio-group>
                       </b-col>
                     </b-row>
 
                     <b-row>
                       <b-col :class="container_specs" xl="12">
-                        <FieldTitle    name="ricavi_conai_flag" description="I ricavi dai sistemi di compliance (ricavi CONAI e altri) competono all'impresa o al Comune?" />
-                        <b-form-radio-group v-model="dati_comune.ricavi_conai_flag" :options="opts.tipo1"></b-form-radio-group>
+                        <FieldTitle name="ricavi_conai" description="I ricavi dai sistemi di compliance (ricavi CONAI e altri) competono all'impresa o al Comune?" />
+                        <b-form-radio-group v-model="dati_comune.ricavi_conai" :options="opts.tipo4"></b-form-radio-group>
                       </b-col>
                     </b-row>
 
                     <b-row>
                       <b-col :class="container_specs" xl="12">
-                        <FieldTitle   name="impresa_cts_flag" description="L'impresa sostiene costi CTS relativi al Trattamento e Smaltimento Rifiuti?" />
+                        <FieldTitle name="impresa_cts_flag" description="L'impresa sostiene costi CTS relativi al Trattamento e Smaltimento Rifiuti?" />
                         <b-form-radio-group v-model="dati_comune.impresa_cts_flag" :options="opts.tipo1"></b-form-radio-group>
                       </b-col>
                     </b-row>
 
                     <b-row>
                       <b-col :class="container_specs" xl="12">
-                        <FieldTitle   name="impresa_ctr_flag" description="L'impresa sostiene costi CTR relativi al Trattamento e Riciclo  Rifiuti?" />
+                        <FieldTitle name="impresa_ctr_flag" description="L'impresa sostiene costi CTR relativi al Trattamento e Riciclo  Rifiuti?" />
                         <b-form-radio-group v-model="dati_comune.impresa_ctr_flag" :options="opts.tipo1"></b-form-radio-group>
                       </b-col>
                     </b-row>
@@ -348,6 +352,7 @@ import CostiSmaltimento from '../components/CostiSmaltimento'
           </ol>
         </b-container>
 
+
         <b-container fluid style="width:1400px" class="border-rounded mb-5 pb-5">
           <h3>Costi Smaltimento / Trattamento</h3>
           <b-row>
@@ -425,7 +430,6 @@ import CostiSmaltimento from '../components/CostiSmaltimento'
               </b-button>
             </b-col>
           </b-row>
-          {{costi_smaltimento.length}}
 
           <b-row class="border rounded p-3"  v-for="(extra,index) in costi_smaltimento" v-bind:class = "(index % 2==0)?'bg-white':'bg-light'" :key="extra.id">
             <b-col class="p-0 pl-1" xl="1">
@@ -551,8 +555,10 @@ import CostiSmaltimento from '../components/CostiSmaltimento'
         try {
           let dati_comune = await $axios.$get(`/dati_comuni/` + params.id);
           let costi_smaltimento = await $axios.$get(`/costi_smaltimento/?daticomune=` + params.id);
+          let page_id = params.id
+          let azienda = await $axios.$get(`/get_company_data`);
 
-          return { dati_comune , costi_smaltimento};
+          return {page_id, dati_comune ,azienda, costi_smaltimento};
         } catch (e) {
 
           return {
@@ -566,7 +572,7 @@ import CostiSmaltimento from '../components/CostiSmaltimento'
     methods:
     {
 
-        aggiungiExtra(params)
+        aggiungiExtra()
         {
 
             if(this.add.imp_smalt == "")
@@ -600,7 +606,8 @@ import CostiSmaltimento from '../components/CostiSmaltimento'
 
                 })
 
-
+                this.saveDatiComune(this.dati_comune)
+                location.reload()
             }
 
 
@@ -621,14 +628,16 @@ import CostiSmaltimento from '../components/CostiSmaltimento'
             importo: extra.importo,
 
           })
-          //location.reload();
+          this.saveDatiComune(this.dati_comune)
+          location.reload()
 
         },
 
         eliminaExtra(id)
         {
           this.$axios.delete('/costi_smaltimento/'+id, {})
-          location.reload();
+          this.saveDatiComune(this.dati_comune)
+          location.reload()
 
         },
 
@@ -641,7 +650,7 @@ import CostiSmaltimento from '../components/CostiSmaltimento'
         {
           var is_completed = 1
 
-          if(dati_comune.pef_mis_o_ric === "MISURATO")
+          if(this.azienda.pef_mis_o_ric === "CALCOLATO")
           {
             if(dati_comune.tot_app <= 0 ||
               dati_comune.app_servizi <= 0 ||
@@ -654,7 +663,7 @@ import CostiSmaltimento from '../components/CostiSmaltimento'
           }
 
 
-          else if(dati_comune.pef_mis_o_ric === "CALCOLATO")
+          else if(this.azienda.pef_mis_o_ric === "MISURATO")
           {
             dati_comune.tot_app = 0
             dati_comune.app_servizi = 0
@@ -759,7 +768,6 @@ import CostiSmaltimento from '../components/CostiSmaltimento'
 
           this.$axios.put('/dati_comuni/'+this.dati_comune.id+'/', {
 
-            pef_mis_o_ric: dati_comune.pef_mis_o_ric,
             ris_ula_o_ore: dati_comune.ris_ula_o_ore,
             tot_app: dati_comune.tot_app,
             app_servizi: dati_comune.app_servizi,
@@ -772,7 +780,7 @@ import CostiSmaltimento from '../components/CostiSmaltimento'
             impresa_op_com_data: dati_comune.impresa_op_com_data,
             valore_can: dati_comune.valore_can,
             adeg_contr_flag: dati_comune.adeg_contr_flag,
-            ricavi_conai_flag: dati_comune.ricavi_conai_flag,
+            ricavi_conai: dati_comune.ricavi_conai,
             impresa_cts_flag: dati_comune.impresa_cts_flag,
             impresa_ctr_flag: dati_comune.impresa_ctr_flag,
             spazz_e_ig_flag: dati_comune.spazz_e_ig_flag,
@@ -833,7 +841,7 @@ import CostiSmaltimento from '../components/CostiSmaltimento'
     data() {
 
         return {
-
+                  page_id:0,
                   save:
                   {
                     msg:'',
@@ -879,6 +887,11 @@ import CostiSmaltimento from '../components/CostiSmaltimento'
                     tipo3:[
                       { text: 'ULA', value: 'ULA' },
                       { text: 'ORE LAVORATE', value: 'ORE LAVORATE' }
+                    ],
+
+                    tipo4:[
+                      { text: 'IMPRESA', value: 'IMPRESA' },
+                      { text: 'COMUNE', value: 'COMUNE' }
                     ],
 
                   },

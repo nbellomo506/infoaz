@@ -14,7 +14,7 @@ import CostiSmaltimento from '../components/CostiSmaltimento'
       <div class="p-0 m-0 b-0">
         <b-container class="pb-5" v-if="is_logged === true && role === 'Admin'">
           <b-row>
-            <b-col class="border rounded mt-5 pt-5" xl="11">
+            <b-col class="border rounded mt-5 pt-3 pb-3" xl="11">
               <PageTitle name="Pannello Admin"/>
                 <b-container>
                   <b-row>
@@ -39,7 +39,7 @@ import CostiSmaltimento from '../components/CostiSmaltimento'
                       <b>Azienda</b>
                     </b-col>
                   </b-row>
-                  <b-row v-for="utente in utenti" :key="utente.id" v-if="utente.is_assigned === false">
+                  <b-row class="border pt-3 pb-2" v-for="utente in utenti" :key="utente.id" v-if="utente.is_assigned === false">
                     <b-col xl="2">
                       {{utente.nome}} {{utente.cognome}}
                     </b-col>
@@ -53,12 +53,20 @@ import CostiSmaltimento from '../components/CostiSmaltimento'
                       {{utente.request_date}}
                     </b-col>
                     <b-col xl="3">
-                        <select class="w-50 custom-select" v-model="utente.azienda" :key="utente.email" >
-                          <option :selected="utente.azienda === azienda.id" v-for="azienda in aziende" :key="azienda.id" :value="azienda.id">
-                              {{ azienda.ragione_sociale }}
-                          </option>
-                        </select>
-                        <b-button @click="assignAzienda(utente.id,utente.azienda)" variant="success" name="button">Salva</b-button>
+                      <b-container class="b-0 m-0 p-0">
+                        <b-row>
+                          <b-col xl="6">
+                            <select class="w-100 custom-select" v-model="utente.azienda" :key="utente.email" >
+                              <option :selected="utente.azienda === azienda.id" v-for="azienda in aziende" :key="azienda.id" :value="azienda.id">
+                                  {{ azienda.ragione_sociale }}
+                              </option>
+                            </select>
+                          </b-col>
+                          <b-col xl="6">
+                            <b-button block @click="assignAzienda(utente.id,utente.azienda)" variant="success" name="button">Salva</b-button>
+                          </b-col>
+                        </b-row>
+                      </b-container>
                     </b-col>
                   </b-row>
                   <b-row class="mt-5">
@@ -83,7 +91,7 @@ import CostiSmaltimento from '../components/CostiSmaltimento'
                       <b>Azienda</b>
                     </b-col>
                   </b-row>
-                  <b-row class="pt-2 pb-2 border" :key="utente.id" v-for="utente in utenti" v-if="utente.is_assigned === true ">
+                  <b-row class="pt-3 pb-2 border" :key="utente.id" v-for="utente in utenti" v-if="utente.is_assigned === true ">
                     <b-col xl="2">
                       {{utente.nome}} {{utente.cognome}}
                     </b-col>
@@ -97,12 +105,44 @@ import CostiSmaltimento from '../components/CostiSmaltimento'
                       {{utente.request_date}}
                     </b-col>
                     <b-col xl="3">
-                        <select class="w-50 custom-select" v-model="utente.azienda" :key="utente.email" >
-                          <option :selected="utente.azienda === azienda.id" v-for="azienda in aziende" :key="azienda.id" :value="azienda.id">
-                              {{ azienda.ragione_sociale }}
-                          </option>
-                        </select>
-                        <b-button @click="assignAzienda(utente.id,utente.azienda)" variant="success" name="button">Salva</b-button>
+                      <b-container class="b-0 m-0 p-0">
+                        <b-row>
+                          <b-col xl="6">
+                            <select class="w-100 custom-select" v-model="utente.azienda" :key="utente.email" >
+                              <option :selected="utente.azienda === azienda.id" v-for="azienda in aziende" :key="azienda.id" :value="azienda.id">
+                                  {{ azienda.ragione_sociale }}
+                              </option>
+                            </select>
+                          </b-col>
+                          <b-col xl="6">
+                            <b-button block @click="assignAzienda(utente.id,utente.azienda)" variant="success" name="button">Salva</b-button>
+                          </b-col>
+                        </b-row>
+                      </b-container>
+                    </b-col>
+                  </b-row>
+                  <b-row class="mt-5">
+                    <b-col xl="12">
+                      <h3>Aziende</h3>
+                    </b-col>
+                  </b-row>
+                  <b-row class="border bg-light">
+                    <b-col xl="3">
+                      <b>Azienda</b>
+                    </b-col>
+                    <b-col xl="3">
+                      <b>PEF</b>
+                    </b-col>
+                  </b-row>
+                  <b-row class="pt-3 pb-2 border" :key="azienda.id" v-for="azienda in aziende">
+                    <b-col xl="3">
+                      {{azienda.ragione_sociale}}
+                    </b-col>
+                    <b-col xl="5">
+                      <b-form-radio-group v-model="azienda.pef_mis_o_ric" :options="pef_opts"></b-form-radio-group>
+                    </b-col>
+                    <b-col offset-xl="2" xl="2">
+                      <b-button block @click="savePEF(azienda)" variant="success" name="button">Salva</b-button>
                     </b-col>
                   </b-row>
                 </b-container>
@@ -110,7 +150,7 @@ import CostiSmaltimento from '../components/CostiSmaltimento'
             </b-row>
           </b-container>
 
-          <b-container  v-if="is_logged === false" class="mb-3">
+          <b-container v-if="is_logged === false || role==='Normal'" class="mb-3">
             <b-row>
               <b-col offset-xl="1" xl="10">
                 <b-container class="mb-3 mt-5">
@@ -118,7 +158,9 @@ import CostiSmaltimento from '../components/CostiSmaltimento'
                     <b-col xl="12">
                       <h1>Attenzione</h1>
                       <p>
-                        <a href="./login">Accedi </a>
+                        <a v-if="is_logged === false" href="./login">Accedi</a>
+                        <a v-else="role==='Normal'" >Accedi</a>
+
                         come Admin per visualizzare il contenuto
                       </p>
                     </b-col>
@@ -173,6 +215,16 @@ import CostiSmaltimento from '../components/CostiSmaltimento'
             user_id:user_id,
             azienda_id:azienda_id
           })
+          window.location.reload()
+        },
+
+        savePEF(azienda)
+        {
+          this.$axios.put('/savePEF', {
+            azienda:azienda.id,
+            pef:azienda.pef_mis_o_ric
+          })
+          window.location.reload()
         }
 
     },
@@ -182,14 +234,10 @@ import CostiSmaltimento from '../components/CostiSmaltimento'
 
         return {
 
-                    aziende: [
-
+                    pef_opts:[
+                      { text: 'CALCOLATO', value: 'CALCOLATO' },
+                      { text: 'MISURATO', value: 'MISURATO' }
                     ],
-
-                    utenti: [
-
-                    ],
-
                     is_logged:false,
                     role:false
                 }

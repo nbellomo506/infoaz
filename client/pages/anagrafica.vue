@@ -11,16 +11,23 @@ import TownSelect from '../components/TownSelect'
       <b-container class="mt-5" v-if="is_logged === true && is_company_set === true" >
         <b-row>
           <b-col bg-variant="info" offset-xl="1" xl="10">
-            <PageTitle name="Dati Azienda" description="I campi in rosso sono obbligatori"/>
+            <PageTitle name="Dati Azienda:"/>
+            <b-container class="bg-light rounded p-3 mb-5">
+              <b-row>
+                <b-col class="border-top" xl="12">
+                  <h6>PEF:</h6>{{azienda.pef_mis_o_ric}}
+                </b-col>
+                <b-col class="border-top" xl="12">
+                  <h6>Ragione Sociale:</h6>{{azienda.ragione_sociale}}
+                </b-col>
+                <b-col class="border-top border-bottom" xl="12">
+                  <h6>Partita IVA: </h6>{{azienda.partita_iva}}
+                </b-col>
+              </b-row>
+            </b-container>
 
-                <b-container class="bg-light rounded p-3">
-
-                  <b-row>
-                    <b-col>
-                      <h2>File Azienda:</h2>
-                    </b-col>
-                  </b-row>
-
+            <PageTitle name="File Azienda:"/>
+                <b-container class="bg-light rounded p-3 mb-5">
                   <b-row class="pb-4">
                     <b-col>
                       <p>
@@ -74,74 +81,76 @@ import TownSelect from '../components/TownSelect'
                       </p>
                     </b-col>
                   </b-row>
-
-                  <b-row>
-                    <b-col>
-                      <h2>Comuni su cui opera l'azienda:</h2>
-                    </b-col>
-                  </b-row>
-                  <b-row class="mt-2 mb-4">
-                    <b-col xl="3" sm="12" class="mt-1 mb-1">
-                      <b-select block v-model="luogo.reg" @change=updateReg(luogo.reg)>
-                        <option v-for="regione in regioni_req.regioni" :key="regione.codice_regione" :value="regione.codice_regione" >
-                           {{ regione.name }}
-                        </option>
-                      </b-select>
-                    </b-col>
-                    <b-col xl="3" sm="12" class="mt-1 mb-1">
-                      <b-select block v-model="luogo.prov" @change=updateProv(luogo.prov)>
-                        <option  v-for="provincia in province_req.province" :key="provincia.id" :value="provincia.codice_provincia">
-                            {{ provincia.name }}
-                        </option>
-                      </b-select>
-                    </b-col>
-                    <b-col xl="4" sm="12" class="mt-1 mb-1">
-                      <b-select block v-model="luogo.com" >
-                        <option v-for="comune in comuni_req.comuni" :key="comune.id" :value="comune.id">
-                            {{ comune.name }}
-                        </option>
-                      </b-select>
-                    </b-col>
-                    <b-col xl="2" sm="6" class="mt-1 mb-1">
-                      <b-button block variant="success" @click=addCom(luogo.com)>Aggiungi</b-button>
-                    </b-col>
-                  </b-row>
-
-                  <b-row class="m-0 mt-2 mb-4">
-                    <b-col xl="3" sm="12" class="mt-1 mb-1">
-                      <h6>Regione</h6>
-                    </b-col>
-
-                    <b-col xl="3" sm="12" class="mt-1 mb-1">
-                      <h6>Provincia</h6>
-                    </b-col>
-
-                    <b-col xl="4" sm="12" class="mt-1 mb-1">
-                      <h6>Comune</h6>
-                    </b-col>
-                  </b-row>
-                  <b-row class="m-0 mt-2 mb-4" v-for="comune_azienda,index in comuni_azienda" :key="comune_azienda.id">
-                    <b-col xl="3" sm="12" class="pt-2 border- mt-1 mb-1">
-                    {{comune_azienda.nome_regione}}
-                    </b-col>
-
-                    <b-col xl="3" sm="12" class="pt-2 border mt-1 mb-1">
-                     {{comune_azienda.nome_provincia}}
-                    </b-col>
-
-                    <b-col xl="4" sm="12" class="pt-2 border mt-1 mb-1">
-                    {{comune_azienda.nome_comune}}
-                    </b-col>
-                    <b-col xl="2" sm="6" class="mt-1 mb-1 p-2">
-                      <b-button block @click=delCom(comune_azienda.id) variant="danger">Elimina</b-button>
-                    </b-col>
-                  </b-row>
                 </b-container>
+
+                <PageTitle name="Comuni su cui opera l'azienda:"/>
+                  <b-container class="bg-light rounded p-3 mb-5">
+                    <b-row class="mt-2 mb-4">
+                      <b-col xl="3" sm="12" class="mt-1 mb-1">
+                        <b-select block v-model="luogo.reg" @change=updateReg(luogo.reg)>
+                          <option v-for="regione in regioni_req.regioni" :key="regione.codice_regione" :value="regione.codice_regione" >
+                             {{ regione.name }}
+                          </option>
+                        </b-select>
+                      </b-col>
+                      <b-col xl="3" sm="12" class="mt-1 mb-1">
+                        <b-select block v-model="luogo.prov" @change=updateProv(luogo.prov)>
+                          <option  v-for="provincia in province_req.province" :key="provincia.id" :value="provincia.codice_provincia">
+                              {{ provincia.name }}
+                          </option>
+                        </b-select>
+                      </b-col>
+                      <b-col xl="4" sm="12" class="mt-1 mb-1">
+                        <b-select block v-model="luogo.com" >
+                          <option v-for="comune in comuni_req.comuni" :key="comune.id" :value="comune.id">
+                              {{ comune.name }}
+                          </option>
+                        </b-select>
+                      </b-col>
+                      <b-col xl="2" sm="6" class="mt-1 mb-1">
+                        <b-button block variant="success" @click=addCom(luogo.com)>Aggiungi</b-button>
+                      </b-col>
+                    </b-row>
+
+                    <b-row class="m-0 mt-5 mb-4 ">
+                      <b-col xl="3" sm="12" class="mt-1 mb-1 bg-white rounded">
+                        <h6>Regione</h6>
+                      </b-col>
+
+                      <b-col xl="3" sm="12" class="mt-1 mb-1 bg-white rounded">
+                        <h6>Provincia</h6>
+                      </b-col>
+
+                      <b-col xl="4" sm="12" class="mt-1 mb-1 bg-white rounded">
+                        <h6>Comune</h6>
+                      </b-col>
+                    </b-row>
+                    <b-row class="m-0 border rounded mt-2 mb-4" v-for="comune_azienda,index in comuni_azienda" :key="comune_azienda.id">
+                      <b-col xl="3" sm="12" class="pt-2 border-right mt-1 mb-1">
+                      {{comune_azienda.nome_regione}}
+                      </b-col>
+
+                      <b-col xl="3" sm="12" class="pt-2 border-right mt-1 mb-1">
+                       {{comune_azienda.nome_provincia}}
+                      </b-col>
+
+                      <b-col xl="4" sm="12" class="pt-2 mt-1 mb-1">
+                      {{comune_azienda.nome_comune}}
+                      </b-col>
+                      <b-col xl="2" sm="6" class="mt-1 mb-1 p-2">
+                        <b-button block @click=delCom(comune_azienda.id) variant="danger">Elimina</b-button>
+                      </b-col>
+                    </b-row>
+                  </b-container>
+
+
+
+
               </b-col>
             </b-row>
           </b-container>
 
-          <b-container  v-if="is_logged === false" class="mb-3">
+          <b-container v-if="is_logged === false && is_company_set === false" class="mb-3">
             <b-row>
               <b-col offset-xl="1" xl="10">
                 <b-container class="mb-3 mt-5">
@@ -159,7 +168,7 @@ import TownSelect from '../components/TownSelect'
             </b-row>
           </b-container>
 
-          <b-container  v-if="is_logged === true && is_company_set === false" class="mb-3">
+          <b-container v-if="is_logged === true && is_company_set === false" class="mb-3">
             <b-row>
               <b-col offset-xl="1" xl="10">
                 <b-container class="mb-3 mt-5">
@@ -167,7 +176,9 @@ import TownSelect from '../components/TownSelect'
                     <b-col xl="12">
                       <h1>Attenzione</h1>
                       <p>
-                        La tua richiesta di accesso è stata inviata ma i gestori non ti hanno ancora associato l'azienda
+                        Ciao {{utente.nome}} , la tua richiesta di accesso è stata inviata ma i gestori non ti hanno ancora associato l'azienda.<br>
+                        Pertanto non hai accesso ai dati inseriti dalla tua azienda
+
                       </p>
                     </b-col>
                   </b-row>
@@ -194,15 +205,22 @@ import TownSelect from '../components/TownSelect'
           let is_company_set = await $axios.$get(`/is_company_set`);
           let role = await $axios.$get(`/role`);
           let regioni_req = await $axios.$get(`/comuni_italiani/elenco/regioni/`);
+          let province_req = await $axios.$get(`/comuni_italiani/elenco/province/regione/`+16);
           let comuni_azienda = await $axios.$get(`/get_dati_comuni`);
-          let azienda = await $axios.$get(`/aziende/1/`);
+          let azienda = await $axios.$get(`/get_company_data`);
 
-          return { is_logged,is_company_set,role,regioni_req,comuni_azienda,azienda};
+            if(is_logged)
+            {
+              var utente = await $axios.$get(`/get_user_data`);
+
+            }
+
+          return { is_logged,utente,is_company_set,role,regioni_req,province_req,comuni_azienda,azienda};
         }
               catch (e)
               {
                 console.log(e);
-                return {is_logged:false, regioni_req: [],comuni_azienda:[],azienda:[]};
+                return {is_logged:false, regioni_req: [],province_req: [],comuni_req: [],comuni_azienda:[],azienda:[]};
 
 
               }
@@ -320,21 +338,12 @@ import TownSelect from '../components/TownSelect'
         is_logged:false,
         is_company_set:false,
         role:'Normal',
-        azienda:
-        {
-          ammortamenti:'',
-          bilancio_depositato_anno1:'',
-          bilancio_depositato_anno2:''
-        },
-        az:
-        {
-          rag_soc:'',
-          partita_iva:''
-        },
+
+
         luogo: {
-                 reg: '1',
-                 prov: '1',
-                 com: '1',
+                 reg: '16',
+                 prov: '0',
+                 com: '0',
                },
       }
     }

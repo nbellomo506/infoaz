@@ -24,9 +24,9 @@
           </li>
         </div>
 
-        <div v-else>
+        <div v-if="letter !== undefined">
           <p :name="name"> </p>
-          <b>{{letter}}  </b>{{description}}
+          <b>{{letter}}.  </b>{{description}}
         </div>
 
       </div>

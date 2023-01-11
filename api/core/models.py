@@ -52,7 +52,11 @@ class Azienda(models.Model):
     bilancio_depositato_anno2 = models.FileField(default='', blank=True)
     ammortamenti = models.FileField(default='',blank=True)
     export_daticomuni = models.FileField(default='',blank=True)
-
+    scelte_pef = (
+        [('CALCOLATO', 'CALCOLATO'),
+        ('MISURATO', 'MISURATO')]
+    )
+    pef_mis_o_ric = models.CharField(default='', max_length=16, choices=scelte_pef)
     def __str__(self):
         return self.ragione_sociale
 
@@ -153,7 +157,13 @@ class DatiComune(models.Model):
 
     valore_can = models.FloatField(default = 0)
     adeg_contr_flag = models.BooleanField(default = False)
-    ricavi_conai_flag = models.BooleanField(default = False)
+
+    scelte_conai = (
+        [('IMPRESA', 'IMPRESA'),
+        ('COMUNE', 'COMUNE')]
+    )
+    ricavi_conai = models.CharField(default = '',max_length = 16,choices=scelte_conai)
+
     impresa_cts_flag = models.BooleanField(default = False)
     impresa_ctr_flag = models.BooleanField(default = False)
 
