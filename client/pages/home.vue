@@ -119,8 +119,6 @@ import Field from '../components/Field'
             </b-col>
           </b-row>
         </b-container>
-        {{is_company_set}}
-        {{is_logged}}
 
       <table v-for="(dati_comune,index) in dati_comuni" :id="`tab${index}`" hidden>
         <tr>
