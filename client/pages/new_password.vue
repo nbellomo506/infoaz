@@ -29,8 +29,6 @@ import Header from '../components/Header'
                   </b-col>
                 </b-row>
               </b-container>
-              {{password}}
-
             </b-form>
           </b-col>
         </b-row>
