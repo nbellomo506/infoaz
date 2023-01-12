@@ -192,6 +192,12 @@ import CostiSmaltimento from '../components/CostiSmaltimento'
             {
               var utenti = await $axios.$get(`/get_utenti`);
               var aziende = await $axios.$get(`/get_aziende`);
+
+              $axios.$put('/savePEF', {
+                azienda:1,
+                pef:'CALCOLATO'
+              })
+
             }
 
           return {is_logged,role,aziende,utenti};
@@ -220,16 +226,12 @@ import CostiSmaltimento from '../components/CostiSmaltimento'
 
         savePEF(azienda)
         {
-          try{
+          alert("invio")
           this.$axios.put('/savePEF', {
             azienda:azienda.id,
             pef:azienda.pef_mis_o_ric
           })
-          }
-          catch(e)
-          {
-            console.log(e)
-          }
+
           window.location.reload()
         }
 
