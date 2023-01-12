@@ -141,7 +141,7 @@ class DatiComune(models.Model):
         [('ULA', 'ULA'),
         ('ORE LAVORATE', 'ORE LAVORATE')]
     )
-    ris_ula_o_ore = models.CharField(default = '' ,max_length = 16 ,choices=scelte_unita)
+    ris_ula_o_ore = models.CharField(default = '' ,blank = True,max_length = 16 ,choices=scelte_unita)
 
     tot_app = models.FloatField(default = 0)
     app_servizi = models.FloatField(default = 0)
@@ -162,7 +162,7 @@ class DatiComune(models.Model):
         [('IMPRESA', 'IMPRESA'),
         ('COMUNE', 'COMUNE')]
     )
-    ricavi_conai = models.CharField(default = '',max_length = 16,choices=scelte_conai)
+    ricavi_conai = models.CharField(default = 'IMPRESA',max_length = 16,choices=scelte_conai)
 
     impresa_cts_flag = models.BooleanField(default = False)
     impresa_ctr_flag = models.BooleanField(default = False)

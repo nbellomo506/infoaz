@@ -132,6 +132,7 @@
         if(page == 'login')
         {
           this.$axios.post('/logout')
+          await new Promise(r => setTimeout(r, 20000));
           window.location.replace(this.locations.login)
 
 

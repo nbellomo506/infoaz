@@ -43,7 +43,7 @@ import Field from '../components/Field'
               <b-list-group vertical>
                 <b-container class="p-4 pl-1 rounded bg-light" >
                   <a href="anagrafica">
-                      Dati Azienda
+                      Dati {{azienda.ragione_sociale}}
                   </a>
                 </b-container>
                 <b-container class="p-4 pl-1 mt-2 rounded bg-light" v-for="(dati_comune,index) in dati_comuni" :key="dati_comune.id">

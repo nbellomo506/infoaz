@@ -10,8 +10,7 @@ import CostiSmaltimento from '../components/CostiSmaltimento'
   <main>
     <Header/>
 
-
-      <div class="p-0 m-0 b-0">
+      <div class="p-0 m-0 b-0" v-if="dati_comune !== false && is_company_set === true && is_logged === true">
         <b-container class="pb-5">
           <ol>
           <b-row>
@@ -486,12 +485,60 @@ import CostiSmaltimento from '../components/CostiSmaltimento'
           </b-row>
         </b-container>
       </div>
+      <b-container v-if="is_logged === false" class="mb-3">
+        <b-row>
+          <b-col offset-xl="1" xl="10">
+            <b-container class="mb-3 mt-5">
+              <b-row>
+                <b-col xl="12">
+                  <h1>Attenzione</h1>
+                  <p>
+                    <a href="../../login">Accedi</a>
+                    per visualizzare il contenuto
+                  </p>
+                </b-col>
+              </b-row>
+            </b-container>
+          </b-col>
+        </b-row>
+      </b-container>
+
+      <b-container v-if="is_logged === true && is_company_set === false" class="mb-3">
+        <b-row>
+          <b-col offset-xl="1" xl="10">
+            <b-container class="mb-3 mt-5">
+              <b-row>
+                <b-col xl="12">
+                  <h1>Attenzione</h1>
+                  <p>
+                    Ciao {{utente.nome}} , la tua richiesta di accesso è stata inviata ma i gestori non ti hanno ancora associato l'azienda.<br>
+                    Pertanto non hai accesso ai dati inseriti dalla tua azienda
+                  </p>
+                </b-col>
+              </b-row>
+            </b-container>
+          </b-col>
+        </b-row>
+      </b-container>
+      <b-container v-if="dati_comune === false && is_logged === true && is_company_set === true" class="mb-3">
+        <b-row>
+          <b-col offset-xl="1" xl="10">
+            <b-container class="mb-3 mt-5">
+              <b-row>
+                <b-col xl="12">
+                  <h1>Attenzione</h1>
+                  <p>
+                    Pagina non trovata
+                  </p>
+                </b-col>
+              </b-row>
+            </b-container>
+          </b-col>
+        </b-row>
+      </b-container>
 
 
-
-
-
-        <div class="bg-light fixed-bottom p-2">
+        <div v-if="dati_comune.lengt > 0 && is_logged === true && is_company_set === true" class="bg-light fixed-bottom p-2">
           <b-container class="container">
             <b-row class="row">
               <b-col class="xl-2">
@@ -548,22 +595,26 @@ import CostiSmaltimento from '../components/CostiSmaltimento'
 
   export default {
 
-
     async asyncData({ $axios, params })
     {
 
         try {
-          let dati_comune = await $axios.$get(`/dati_comuni/` + params.id);
-          let costi_smaltimento = await $axios.$get(`/costi_smaltimento/?daticomune=` + params.id);
-          let page_id = params.id
-          let azienda = await $axios.$get(`/get_company_data`);
+          $axios.defaults.withCredentials = true;
 
-          return {page_id, dati_comune ,azienda, costi_smaltimento};
+          let is_logged = await $axios.$get(`/is_logged`);
+          let is_company_set = await $axios.$get(`/is_company_set`);
+
+          if(is_logged == true && is_company_set == true)
+          {
+              var dati_comune = await $axios.$post(`/get_dati_comune`,{id: params.id});
+              var azienda = await $axios.$get(`/get_company_data`);
+              var costi_smaltimento = await $axios.$post(`/get_costi_smaltimento` ,{id: params.id});
+          }
+
+          return {azienda,is_logged,is_company_set,dati_comune,costi_smaltimento};
         } catch (e) {
 
-          return {
-            dati_comune: [],costi_smaltimento:[]
-            };
+          return {dati_comune: [],azienda:[],costi_smaltimento:[]};
           }
 
     },
@@ -749,11 +800,6 @@ import CostiSmaltimento from '../components/CostiSmaltimento'
               is_completed = 0
           }
 
-          if (dati_comune.xcent_raccolta_anno_1 == 0 || dati_comune.xcent_raccolta_anno_2 == 0 || dati_comune.xcent_raccolta_anno_3 == 0)
-          {
-              is_completed = 0
-          }
-
 
           if(dati_comune.xcent_media_imp == 0 ||
           dati_comune.xcent_media_imp_org == 0 ||
@@ -841,7 +887,10 @@ import CostiSmaltimento from '../components/CostiSmaltimento'
     data() {
 
         return {
+
                   page_id:0,
+                  is_logged:false,
+                  is_company_set:false,
                   save:
                   {
                     msg:'',

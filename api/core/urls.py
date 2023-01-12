@@ -6,8 +6,8 @@ from .views import RegisterUserView, login,logout,add_comune_azienda,role,is_com
 
 from .views import UserViewSet,get_user_data
 from .views import AziendaViewSet,savePEF
-from .views import DatiComuneViewSet
-from .views import CostoSmaltimentoViewSet
+from .views import DatiComuneViewSet,get_dati_comune
+from .views import CostoSmaltimentoViewSet,get_costi_smaltimento
 from .views import ChangePasswordView
 
 
@@ -28,6 +28,8 @@ urlpatterns = [
         path('add_comune_azienda', add_comune_azienda),
         path('assign_azienda', assign_azienda),
         path('get_company_data', get_company_data),
+        path('get_dati_comune', get_dati_comune),
+        path('get_costi_smaltimento', get_costi_smaltimento),
         path('savePEF', savePEF),
         path('get_user_data', get_user_data),
         path('is_logged', is_logged),

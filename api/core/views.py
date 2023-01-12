@@ -119,6 +119,53 @@ def get_dati_comuni(request):
         else:
             return JsonResponse("Not Logged",content_type="application/json",safe=False)
 
+def get_dati_comune(request):
+
+    body_unicode = request.body.decode('utf-8')
+    body = json.loads(body_unicode)
+
+    id = body['id']
+
+    if 'logged' in request.session is not None:
+        if request.session['logged'] == True:
+            if request.session['azienda'] > 0 and request.session['is_assigned'] == True:
+                try:
+                 qs = DatiComune.objects.get(pk = id ,azienda = request.session['azienda'])
+                 serializer = DatiComuneSerializer(qs)
+                 return JsonResponse(serializer.data,content_type="application/json",safe=False)
+                except DatiComune.DoesNotExist:
+                 return JsonResponse(False,content_type="application/json",safe=False)
+
+            else:
+                return JsonResponse("No Company",content_type="application/json",safe=False)
+
+        else:
+            return JsonResponse("Not Logged",content_type="application/json",safe=False)
+
+def get_costi_smaltimento(request):
+
+    body_unicode = request.body.decode('utf-8')
+    body = json.loads(body_unicode)
+    id = body['id']
+
+    if 'logged' in request.session is not None:
+        if request.session['logged'] == True:
+            if request.session['azienda'] > 0 and request.session['is_assigned'] == True:
+                try:
+                 qs = DatiComune.objects.get(pk = id ,azienda = request.session['azienda'])
+                 serializer = DatiComuneSerializer(qs)
+                 qs = CostoSmaltimento.objects.filter(daticomune = id)
+                 serializer = CostoSmaltimentoSerializer(qs,many=True)
+                 return JsonResponse(serializer.data,content_type="application/json",safe=False)
+                except DatiComune.DoesNotExist:
+                 return JsonResponse(False,content_type="application/json",safe=False)
+
+            else:
+                return JsonResponse("No Company",content_type="application/json",safe=False)
+
+        else:
+            return JsonResponse("Not Logged",content_type="application/json",safe=False)
+
 def get_aziende(request):
 
     if 'logged' in request.session is not None:
@@ -166,12 +213,13 @@ def is_company_set(request):
 
     if 'logged' in request.session is not None:
         if request.session['logged'] == True:
-            if 'azienda' in request.session is not None and 'is_assigned' in request.session is True:
+            qs = User.objects.get(pk = request.session['user_id'])
+            serializer = UserSerializer(qs)
+            request.session['azienda'] = serializer.data['azienda']
+            request.session['is_assigned'] = serializer.data['is_assigned']
+
+            if request.session['azienda'] > 0 and request.session['is_assigned'] == True:
                 is_company_set = True
-            else:
-                qs = User.objects.get(pk = request.session['user_id'])
-                serializer = UserSerializer(qs)
-                is_company_set = serializer.data['is_assigned']
 
 
     return JsonResponse(is_company_set,safe=False)
