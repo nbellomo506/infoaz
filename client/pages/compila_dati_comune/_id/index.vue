@@ -538,7 +538,7 @@ import CostiSmaltimento from '../components/CostiSmaltimento'
       </b-container>
 
 
-        <div v-if="dati_comune.lengt > 0 && is_logged === true && is_company_set === true" class="bg-light fixed-bottom p-2">
+        <div v-if="dati_comune !== [] && is_logged === true && is_company_set === true" class="bg-light fixed-bottom p-2">
           <b-container class="container">
             <b-row class="row">
               <b-col class="xl-2">
