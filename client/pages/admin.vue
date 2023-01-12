@@ -220,10 +220,16 @@ import CostiSmaltimento from '../components/CostiSmaltimento'
 
         savePEF(azienda)
         {
+          try{
           this.$axios.put('/savePEF', {
             azienda:azienda.id,
             pef:azienda.pef_mis_o_ric
           })
+          }
+          catch(e)
+          {
+            console.log(e)
+          }
           window.location.reload()
         }
 
