@@ -193,11 +193,6 @@ import CostiSmaltimento from '../components/CostiSmaltimento'
               var utenti = await $axios.$get(`/get_utenti`);
               var aziende = await $axios.$get(`/get_aziende`);
 
-              $axios.$put('/savePEF', {
-                azienda:1,
-                pef:'CALCOLATO'
-              })
-
             }
 
           return {is_logged,role,aziende,utenti};
@@ -217,7 +212,7 @@ import CostiSmaltimento from '../components/CostiSmaltimento'
 
         assignAzienda(user_id,azienda_id)
         {
-          this.$axios.put('/assign_azienda', {
+          this.$axios.$put('/assign_azienda', {
             user_id:user_id,
             azienda_id:azienda_id
           })
@@ -226,8 +221,7 @@ import CostiSmaltimento from '../components/CostiSmaltimento'
 
         savePEF(azienda)
         {
-          alert("invio")
-          this.$axios.put('/savePEF', {
+          this.$axios.$put('/savePEF', {
             azienda:azienda.id,
             pef:azienda.pef_mis_o_ric
           })
