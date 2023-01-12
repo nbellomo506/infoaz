@@ -538,7 +538,7 @@ import CostiSmaltimento from '../components/CostiSmaltimento'
       </b-container>
 
 
-        <div v-if="dati_comune !== [] && is_logged === true && is_company_set === true" class="bg-light fixed-bottom p-2">
+        <div v-if="dati_comune !== false && is_logged === true && is_company_set === true" class="bg-light fixed-bottom p-2">
           <b-container class="container">
             <b-row class="row">
               <b-col class="xl-2">
@@ -614,7 +614,7 @@ import CostiSmaltimento from '../components/CostiSmaltimento'
           return {azienda,is_logged,is_company_set,dati_comune,costi_smaltimento};
         } catch (e) {
 
-          return {dati_comune: [],azienda:[],costi_smaltimento:[]};
+          return {dati_comune: false,azienda:[],costi_smaltimento:[]};
           }
 
     },
