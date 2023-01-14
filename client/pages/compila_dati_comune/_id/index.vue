@@ -10,8 +10,8 @@ import CostiSmaltimento from '../components/CostiSmaltimento'
   <main>
     <Header/>
 
-      <div class="p-0 m-0 b-0" v-if="dati_comune !== false && is_company_set === true && is_logged === true">
-        <b-container class="pb-5">
+        <div class="p-0 m-0 b-0" v-if="dati_comune !== false && is_company_set === true && is_logged === true">
+          <b-container class="pb-5">
           <ol>
           <b-row>
             <b-col class="border-left border-bottom border-right rounded pt-5" offset-xl="1" xl="10">
@@ -349,7 +349,7 @@ import CostiSmaltimento from '../components/CostiSmaltimento'
             </b-col>
           </b-row>
           </ol>
-        </b-container>
+          </b-container>
 
 
         <b-container fluid style="width:1400px" class="border-rounded mb-5 pb-5">

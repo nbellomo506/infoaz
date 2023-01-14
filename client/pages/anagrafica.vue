@@ -25,7 +25,6 @@ import TownSelect from '../components/TownSelect'
                 </b-col>
               </b-row>
             </b-container>
-
             <PageTitle name="File Azienda:"/>
                 <b-container class="bg-light rounded p-3 mb-5">
                   <b-row class="pb-4">
@@ -44,9 +43,13 @@ import TownSelect from '../components/TownSelect'
                     <b-col xl="6">
                       <p>
                         <b-form-file v-model="azienda.ammortamenti"  placeholder="File Excel" drop-placeholder="Rilascia qui"></b-form-file>
+                        <font v-if="azienda.ammortamenti != '[object File]' ">
+                          {{azienda.ammortamenti}}
+                        </font>
                       </p>
                     </b-col>
                   </b-row>
+
 
                   <b-row class="p-2">
                     <b-col offset-xl="1" xl="4">
@@ -54,11 +57,19 @@ import TownSelect from '../components/TownSelect'
                         Bilancio Depositato 2020
                       </p>
                     </b-col>
-                    <b-col xl="6">
+                    <b-col xl="5">
                       <p>
                         <b-form-file v-model="azienda.bilancio_depositato_anno1" placeholder="File" drop-placeholder="Rilascia qui"></b-form-file>
+                        <font v-if="azienda.bilancio_depositato_anno1 != '[object File]' ">
+                          {{azienda.bilancio_depositato_anno1}}
+                        </font>
                       </p>
                     </b-col>
+                    <b-col xl="1" class="pt-2 p-0">
+                      <b-icon v-if="azienda.bilancio_depositato_anno1 !== null " class="h4 p-0 b-0 m-0" variant="success" icon="check-circle-fill"></b-icon>
+                      <b-icon v-if="azienda.bilancio_depositato_anno1 === null" class="h4 p-0 b-0 m-0" variant="danger" icon="x-circle-fill"></b-icon>
+                    </b-col>
+
                   </b-row>
 
                   <b-row class="p-2">
@@ -70,6 +81,9 @@ import TownSelect from '../components/TownSelect'
                     <b-col xl="6">
                       <p>
                         <b-form-file v-model="azienda.bilancio_depositato_anno2" placeholder="File" drop-placeholder="Rilascia qui"></b-form-file>
+                        <font v-if="azienda.bilancio_depositato_anno2 != '[object File]' ">
+                          {{azienda.bilancio_depositato_anno2}}
+                        </font>
                       </p>
                     </b-col>
                   </b-row>
@@ -190,6 +204,7 @@ import TownSelect from '../components/TownSelect'
       </template>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 
+
   <script>
   import axios from 'axios'
 
@@ -200,6 +215,8 @@ import TownSelect from '../components/TownSelect'
         try
         {
           $axios.defaults.withCredentials = true;
+
+
 
           let is_logged = await $axios.$get(`/is_logged`);
           let is_company_set = await $axios.$get(`/is_company_set`);
@@ -213,6 +230,47 @@ import TownSelect from '../components/TownSelect'
             {
               var utente = await $axios.$get(`/get_user_data`);
 
+            }
+
+            const filenames = ["ammortamenti","bilancio_depositato_anno1","bilancio_depositato_anno2"]
+
+
+            for (var count = 0; count < filenames.length; count++)
+            {
+              var filename = azienda[filenames[count]]
+
+              if(filename)
+              {
+                var i = filename.length
+                var j = 0
+                do {
+
+                  if(filename[i] == '/')
+                  {
+                    j = i
+                    i = 0
+                    var str = []
+                    var cont = 0
+
+                    for (var k = j + 1; k < filename.length; k++)
+                    {
+                      str[cont] = filename[k]
+                      cont++
+                    }
+
+                  }
+
+
+                  i--
+
+                } while (i > 0);
+
+
+                str = str.join('')
+                str = str.toString()
+                azienda[filenames[count]] = str
+
+              }
             }
 
           return { is_logged,utente,is_company_set,role,regioni_req,province_req,comuni_azienda,azienda};
@@ -230,23 +288,40 @@ import TownSelect from '../components/TownSelect'
     methods:
     {
 
+
         async updateFiles(azienda)
         {
             var formData = new FormData();
-            azienda.ammortamenti = new File([azienda.ammortamenti],azienda.ammortamenti.name)
-            azienda.bilancio_depositato_anno1 = new File([azienda.bilancio_depositato_anno1],azienda.bilancio_depositato_anno1.name)
-            azienda.bilancio_depositato_anno2 = new File([azienda.bilancio_depositato_anno2],azienda.bilancio_depositato_anno2.name)
+            var upload = false
 
-            formData.append("ammortamenti", azienda.ammortamenti,azienda.ammortamenti.name);
-            formData.append("bilancio_depositato_anno1", azienda.bilancio_depositato_anno1,azienda.bilancio_depositato_anno1.name);
-            formData.append("bilancio_depositato_anno2", azienda.bilancio_depositato_anno2,azienda.bilancio_depositato_anno2.name);
+            if(azienda.ammortamenti == '[object File]')
+            {
+              upload = true
+              azienda.ammortamenti = new File([azienda.ammortamenti],azienda.ammortamenti.name)
+              formData.append("ammortamenti", azienda.ammortamenti,azienda.ammortamenti.name);
+            }
+            if(azienda.bilancio_depositato_anno1 == '[object File]')
+            {
+              upload = true
 
-            this.$axios.put('aziende/1/', formData, {
-                 headers: {
-                   'Content-Type': "multipart/form-data; charset='utf-8';",
+              azienda.bilancio_depositato_anno1 = new File([azienda.bilancio_depositato_anno1],azienda.bilancio_depositato_anno1.name)
+              formData.append("bilancio_depositato_anno1", azienda.bilancio_depositato_anno1,azienda.bilancio_depositato_anno1.name);
+            }
+            if(azienda.bilancio_depositato_anno2 == '[object File]')
+            {
+              upload = true
+              azienda.bilancio_depositato_anno2 = new File([azienda.bilancio_depositato_anno2],azienda.bilancio_depositato_anno2.name)
+              formData.append("bilancio_depositato_anno2", azienda.bilancio_depositato_anno2,azienda.bilancio_depositato_anno2.name);
+            }
+            if (upload)
+            {
+              this.$axios.post('/upload_company_files', formData, {
+                   headers: {
+                     'Content-Type': "multipart/form-data; charset='utf-8';",
 
-                 }
-            })
+                   },
+              })
+            }
 
         },
 
@@ -255,7 +330,6 @@ import TownSelect from '../components/TownSelect'
               let province_req = await this.$axios.$get(`/comuni_italiani/elenco/province/regione/`+reg);
               this.province_req = province_req
               this.comuni_req = 0
-
         },
 
         async updateProv(prov)
@@ -302,13 +376,19 @@ import TownSelect from '../components/TownSelect'
 
                 .then(function (response) {
                     console.log(response);
+                    if(response.data == "OK")
+                    {
+                      window.location.reload()
+                    }else {
+
+                      alert(response.data)
+                    }
+
                 })
                 .catch(function (error) {
                     console.log(error);
                 });
 
-                window.location.reload()
-                console.log("updated")
               }
             },
 

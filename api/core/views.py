@@ -1,7 +1,7 @@
 # Create your views here.
 import requests
 import json
-
+import os
 
 from rest_framework import status
 from rest_framework import generics
@@ -25,7 +25,7 @@ from django_filters.rest_framework import DjangoFilterBackend
 from django.contrib.auth.models import User
 from .serializers import ChangePasswordSerializer
 from django.core import serializers
-
+from django.conf import settings
 
 from .models import Azienda
 from .serializers import AziendaSerializer
@@ -41,6 +41,7 @@ from .serializers import CostoSmaltimentoSerializer
 
 from comuni_italiani.models import Comune
 import xlwt
+basedir = "C:/Users/Nicolas/OneDrive/infowaste-aziende/"
 
 
 class RegisterUserView(CreateAPIView):
@@ -60,7 +61,6 @@ def assign_azienda(request):
     if 'logged' in request.session is not None:
         if request.session['logged'] == True:
             if request.session['is_admin'] == True and request.session['is_staff'] == True and request.session['is_active'] == True:
-
                 obj = User.objects.get(pk = user)
                 obj.azienda_id = azienda
                 obj.is_assigned = True
@@ -90,6 +90,29 @@ def savePEF(request):
     else:
         return JsonResponse(False,content_type="application/json",safe=False)
 
+def add_azienda(request):
+
+    body_unicode = request.body.decode('utf-8')
+    body = json.loads(body_unicode)
+
+    ragione_sociale = body['ragione_sociale']
+    partita_iva = body['partita_iva']
+    pef_mis_o_ric = body['pef_mis_o_ric']
+
+    if 'logged' in request.session is not None:
+        if request.session['logged'] == True:
+            if request.session['is_admin'] == True and request.session['is_staff'] == True and request.session['is_active'] == True:
+
+                os.mkdir(os.path.join(basedir, ragione_sociale))
+                obj = Azienda.objects.create(ragione_sociale=ragione_sociale,partita_iva=partita_iva,pef_mis_o_ric=pef_mis_o_ric)
+                obj.save()
+
+                return JsonResponse("OK",content_type="application/json",safe=False)
+        else:
+            return JsonResponse(False,content_type="application/json",safe=False)
+    else:
+        return JsonResponse(False,content_type="application/json",safe=False)
+
 def add_comune_azienda(request):
 
     body_unicode = request.body.decode('utf-8')
@@ -100,9 +123,21 @@ def add_comune_azienda(request):
     if 'logged' in request.session is not None:
         if request.session['logged'] == True:
             if 'user_id' and 'azienda' in request.session is not None:
-                obj = DatiComune.objects.create(comune_id =  comune , azienda_id = request.session['azienda'])
-                obj.save()
-                return HttpResponse("Tutto ok")
+                try:
+                    obj = DatiComune.objects.get(comune_id =  comune , azienda_id = request.session['azienda'])
+                    error = "Il comune inserito è già presente"
+                    return HttpResponse(error)
+
+                except DatiComune.DoesNotExist:
+
+                    obj = DatiComune.objects.create(comune_id =  comune , azienda_id = request.session['azienda'])
+                    obj.save()
+                    comune = str(obj.azienda)
+                    azienda = str(obj.comune)
+                    os.mkdir(os.path.join(basedir, comune+'/'+azienda))
+
+
+                    return HttpResponse("OK")
 
 
 def get_dati_comuni(request):
@@ -137,10 +172,47 @@ def get_dati_comune(request):
                  return JsonResponse(False,content_type="application/json",safe=False)
 
             else:
-                return JsonResponse("No Company",content_type="application/json",safe=False)
+                return JsonResponse(False,content_type="application/json",safe=False)
 
         else:
-            return JsonResponse("Not Logged",content_type="application/json",safe=False)
+            return JsonResponse(False,content_type="application/json",safe=False)
+
+def upload_company_files(request):
+
+    if 'logged' in request.session is not None:
+        if request.session['logged'] == True:
+            if request.session['azienda'] > 0 and request.session['is_assigned'] == True:
+
+                 obj = Azienda.objects.get(pk = request.session['azienda'])
+                 settings.MEDIA_ROOT = settings.MEDIA_ROOT + '/' + obj.ragione_sociale
+
+                 if 'ammortamenti' in request.FILES is not None:
+                     file = request.FILES['ammortamenti']
+                     name = str(file.name).replace("\\", "/")
+
+                     if os.path.exists(name):
+                        os.remove(name)
+                     obj.ammortamenti = request.FILES['ammortamenti']
+                     obj.save()
+
+                 if 'bilancio_depositato_anno1' in request.FILES is not None:
+
+                     obj.bilancio_depositato_anno1 = request.FILES['bilancio_depositato_anno1']
+                     obj.save()
+
+                 if 'bilancio_depositato_anno2' in request.FILES is not None:
+
+                     obj.bilancio_depositato_anno2 = request.FILES['bilancio_depositato_anno2']
+                     obj.save()
+
+
+            else:
+                return JsonResponse("False",content_type="application/json",safe=False)
+
+        else:
+            return JsonResponse("False",content_type="application/json",safe=False)
+
+    return JsonResponse("False",content_type="application/json",safe=False)
 
 def get_costi_smaltimento(request):
 
