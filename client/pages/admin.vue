@@ -138,11 +138,16 @@ import CostiSmaltimento from '../components/CostiSmaltimento'
                     <b-col xl="3">
                       {{azienda.ragione_sociale}}
                     </b-col>
-                    <b-col xl="5">
+                    <b-col xl="4">
                       <b-form-radio-group v-model="azienda.pef_mis_o_ric" :options="pef_opts"></b-form-radio-group>
                     </b-col>
-                    <b-col offset-xl="2" xl="2">
+                    <b-col offset-xl="1" xl="2">
                       <b-button block @click="savePEF(azienda)" variant="success" name="button">Salva</b-button>
+                    </b-col>
+                    <b-col xl="2">
+                      <b-button block @click="del_azienda(azienda)" variant="danger" name="button">
+                        <b-icon class="h4 p-0 b-0 m-0" variant="white" icon="trash"></b-icon>
+                      </b-button>
                     </b-col>
                   </b-row>
                   <b-row class="mt-5">
@@ -258,37 +263,6 @@ import CostiSmaltimento from '../components/CostiSmaltimento'
         {
           if (azienda.ragione_sociale && azienda.partita_iva && azienda.pef_mis_o_ric)
           {
-            /*
-            this.$axios.defaults.baseURL = "https://graph.microsoft.com/beta";
-            this.$axios.defaults.Authorization = "EwCIA8l6BAAUkj1NuJYtTVha+Mogk+HEiPbQo04AARDrO9kFUC9jhcZ//8amrgiUW48oS3XR8X2D2+v2dvI0GFKV/ue4VtXGSVobMtMpDaPzirGm5cZCuWXy9aJuTGZTlXvV86d9Ec4uywz3TqGn+pvOpnfZREUIZjx7Yz82DCw1Kc89CaFWOiTl7LEqnJOZA4h8XrLHDAjAJhb5BFlfiGztTw3QwZZ72BNrg6Uwhx/M/x0lQKzG0T3lVX5vLbrsHKsT3wScTi3AU0UEbfQeEaZX8FQ0i+GKCQLi/ZIsyp2JSPXc3N0HKyq9/F8lRCmBa5Eac8qyeDCg0cHdFJGzb1LkcAEVHSDu04wmCfQgTU84xh3LXa0pIplRCWw3GkEDZgAACMpBitlfwN1AWAKz8QFooVSyeSPhBjvWiL1xuNhkIoXOZSu8eTCh1jbZBa0yH3XWmOFMLLL0Lp/Tdya9y087Ex5e3fn1BOyQlSkkLn7YB/uEoP9ZGTesK8ePJimvZv5mmrvJdtRQ8eYDhrc0j4N3BGMV0fF951/ogrbaQtHF3Jx/QTWsqKQmPmuKiG0qqsTTOaZiM+Gh74s+gTrsBRbeauDj7q3vs7KkB8wttqbTk7Yp+cd28Oi4fxGdoF7gVe18EtxVm5Gm7abrzSIy6V7CXn3YusjmmeyTDiUva2tmTvXJ6HsPYXHu9E5oUX7rAhtfoUiFSCPjJpGDsrnq31gzzDOvErdHeg6c3qirloqc+T+EgRqjrlWuOWoXWDpsmmuIn+NLOG0FEEDZKXyCqE5ZXz3tcTIEcf+x47mT+6TLzHXrK4XJuqaUM6f9F3IMgGeEp6nepCLIPYJEdSKTP2PnjRRG51ZEk1yzvMznvZus/DVtZD96GFwIvx2etUjVvkzDKEK4puFVBLt0I0ODwIt0Ip8bxOrxjEKwucqfMzi7eIdVUQtvDWNvJPpUC612jYXk9ohCj9BK7JesKLwrYbgb8OmunjRxJef+sAfYyul07hTC/dpyqSq7YU3mIs6RRg8g0qhiVgYLoDHG47yuWmojaCAH6+x+bCgX9jc1VgD1lVIYQRLl0unKN+q5gerl0m5hyrChytiL/UMSTd7p82L1qPYKBiG3zPdYOCHb6qZudWgp4MAivlpoemncIvdu1wxWQ3pXTTjseEFH5zmC/5gq/Lw1kBFlArgO92zEP0aN2AejRjWUAg=="
-            const options = {
-                headers: {
-                    Authorization: `Bearer ${this.$axios.defaults.Authorization}`
-                },
-
-                  name: azienda.ragione_sociale,
-                  folder: {}
-
-            };
-
-            var we = this.$axios.$get('/me/',options)
-            .then(response => {
-
-                console.log(response);
-                if(response.status >= 200 && response.status <= 208)
-                {
-                    alert("ottimo")
-                }
-            })
-
-            .catch(error => {
-
-                console.log(error);
-                alert(error)
-
-            });
-            */
-            this.$axios.defaults.baseURL = "http://localhost:8000/api";
 
             this.$axios.$post('/add_azienda', {
 
@@ -298,10 +272,19 @@ import CostiSmaltimento from '../components/CostiSmaltimento'
 
             })
 
-
-
-              //window.location.reload()
+              window.location.reload()
           }
+        },
+
+        del_azienda(azienda)
+        {
+          this.$axios.$post('/del_azienda', {
+
+            id:azienda.id
+
+          })
+          window.location.reload()
+
         },
 
         savePEF(azienda)

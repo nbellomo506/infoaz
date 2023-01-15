@@ -9,7 +9,6 @@ import CostiSmaltimento from '../components/CostiSmaltimento'
 <template>
   <main>
     <Header/>
-
         <div class="p-0 m-0 b-0" v-if="dati_comune !== false && is_company_set === true && is_logged === true">
           <b-container class="pb-5">
           <ol>
@@ -284,28 +283,52 @@ import CostiSmaltimento from '../components/CostiSmaltimento'
 
                     </b-row>
                     <hr>
-
                   <b-container class="m-0 mt-4 p-0 b-0">
                     <h3>Documenti riferiti all'appalto</h3>
                     <b-row>
                       <b-col :class="container_specs">
                         <FieldTitle   req="yes"  name="" description="Contabilità di commessa anno 2020 (in excel)" />
-                        <b-form-file
-                          v-model="file1"
-                          :state="Boolean(file1)"
-                          placeholder="File Excel"
-                          drop-placeholder="Rilascia qui..."
-                        ></b-form-file>
+                        <b-container>
+                          <b-row>
+                            <b-col xl="10">
+                              <b-form-file
+                                v-model="dati_comune.cont_commessa_anno1"
+                                placeholder="File Excel"
+                                drop-placeholder="Rilascia qui..."
+                              ></b-form-file>
+                              <font v-if="dati_comune.cont_commessa_anno1 != '[object File]' ">
+                                {{dati_comune.cont_commessa_anno1}}
+                              </font>
+                            </b-col>
+                            <b-col xl="2">
+                              <b-icon v-if="dati_comune.cont_commessa_anno1 !== null " class="h4 p-0 b-0 m-0 mt-1" variant="success" icon="check-circle-fill"></b-icon>
+                              <b-icon v-if="dati_comune.cont_commessa_anno1  === null"  class="h4 p-0 b-0 m-0 mt-1" variant="danger" icon="x-circle-fill"></b-icon>
+                            </b-col>
+                          </b-row>
+                        </b-container>
                       </b-col>
 
                       <b-col :class="container_specs">
                         <FieldTitle   req="yes" name="" description="Contabilità di commessa anno 2021 (in excel)" />
-                        <b-form-file
-                          v-model="file2"
-                          :state="Boolean(file2)"
-                          placeholder="File Excel"
-                          drop-placeholder="Rilascia qui..."
-                        ></b-form-file>
+
+                        <b-container>
+                          <b-row>
+                            <b-col xl="10">
+                              <b-form-file
+                                v-model="dati_comune.cont_commessa_anno2"
+                                placeholder="File Excel"
+                                drop-placeholder="Rilascia qui..."
+                              ></b-form-file>
+                              <font v-if="dati_comune.cont_commessa_anno2 != '[object File]' ">
+                                {{dati_comune.cont_commessa_anno2}}
+                              </font>
+                            </b-col>
+                            <b-col xl="2">
+                              <b-icon v-if="dati_comune.cont_commessa_anno2 !== null " class="h4 p-0 b-0 m-0 mt-1" variant="success" icon="check-circle-fill"></b-icon>
+                              <b-icon v-if="dati_comune.cont_commessa_anno2  === null"  class="h4 p-0 b-0 m-0 mt-1" variant="danger" icon="x-circle-fill"></b-icon>
+                            </b-col>
+                          </b-row>
+                        </b-container>
 
                       </b-col>
                     </b-row>
@@ -313,22 +336,47 @@ import CostiSmaltimento from '../components/CostiSmaltimento'
                     <b-row>
                       <b-col :class="container_specs">
                         <FieldTitle   req="yes" name="" description="Contratto d'appalto vigente" />
-                        <b-form-file
-                          v-model="file3"
-                          :state="Boolean(file3)"
-                          placeholder="File PDF"
-                          drop-placeholder="Rilascia qui..."
-                        ></b-form-file>
+                        <b-container>
+                          <b-row>
+                            <b-col xl="10">
+                              <b-form-file
+                                v-model="dati_comune.contratto_appalto"
+                                placeholder="File PDF"
+                                drop-placeholder="Rilascia qui..."
+                              ></b-form-file>
+                              <font v-if="dati_comune.contratto_appalto != '[object File]' ">
+                                {{dati_comune.contratto_appalto}}
+                              </font>
+                            </b-col>
+                            <b-col xl="2">
+                              <b-icon v-if="dati_comune.contratto_appalto !== null " class="h4 p-0 b-0 m-0 mt-1" variant="success" icon="check-circle-fill"></b-icon>
+                              <b-icon v-if="dati_comune.contratto_appalto  === null"  class="h4 p-0 b-0 m-0 mt-1" variant="danger" icon="x-circle-fill"></b-icon>
+                            </b-col>
+                          </b-row>
+                        </b-container>
                       </b-col>
                       <b-col :class="container_specs">
-                        <FieldTitle   req="yes" name="" description="Ultimo PEF validato dall'ETC (Delibera + Relazione con allegati in file .zip)" />
-                        <b-form-file
-                          v-model="file4"
-                          :state="Boolean(file4)"
-                          placeholder="File .zip"
-                          drop-placeholder="Rilascia qui..."
-                        ></b-form-file>
+                        <FieldTitle req="yes" description="Ultimo PEF validato dall'ETC (Delibera + Relazione con allegati in file .zip)" />
+                        <b-container>
+                          <b-row>
+                            <b-col xl="10">
+                              <b-form-file
+                                v-model="dati_comune.ultimo_pef"
+                                placeholder="File Zip"
+                                drop-placeholder="Rilascia qui..."
+                              ></b-form-file>
+                              <font v-if="dati_comune.ultimo_pef != '[object File]' ">
+                                {{dati_comune.ultimo_pef}}
+                              </font>
+                            </b-col>
+                            <b-col xl="2">
+                              <b-icon v-if="dati_comune.ultimo_pef !== null " class="h4 p-0 b-0 m-0 mt-1" variant="success" icon="check-circle-fill"></b-icon>
+                              <b-icon v-if="dati_comune.ultimo_pef  === null"  class="h4 p-0 b-0 m-0 mt-1" variant="danger" icon="x-circle-fill"></b-icon>
+                            </b-col>
+                          </b-row>
+                        </b-container>
                       </b-col>
+
                     </b-row>
                   </b-container>
 
@@ -609,6 +657,47 @@ import CostiSmaltimento from '../components/CostiSmaltimento'
               var dati_comune = await $axios.$post(`/get_dati_comune`,{id: params.id});
               var azienda = await $axios.$get(`/get_company_data`);
               var costi_smaltimento = await $axios.$post(`/get_costi_smaltimento` ,{id: params.id});
+
+              const filenames =["cont_commessa_anno1","cont_commessa_anno2","contratto_appalto","ultimo_pef",]
+
+
+              for (var count = 0; count < filenames.length; count++)
+              {
+                var filename = dati_comune[filenames[count]]
+
+                if(filename)
+                {
+                  var i = filename.length
+                  var j = 0
+                  do {
+
+                    if(filename[i] == '/')
+                    {
+                      j = i
+                      i = 0
+                      var str = []
+                      var cont = 0
+
+                      for (var k = j + 1; k < filename.length; k++)
+                      {
+                        str[cont] = filename[k]
+                        cont++
+                      }
+
+                    }
+
+
+                    i--
+
+                  } while (i > 0);
+
+
+                  str = str.join('')
+                  str = str.toString()
+                  dati_comune[filenames[count]] = str
+
+                }
+              }
           }
 
           return {azienda,is_logged,is_company_set,dati_comune,costi_smaltimento};
@@ -622,7 +711,61 @@ import CostiSmaltimento from '../components/CostiSmaltimento'
 
     methods:
     {
+        uploadFiles(dati_comune)
+        {
 
+            var formData = new FormData();
+            var upload = false
+
+            if(dati_comune.cont_commessa_anno1 == '[object File]')
+            {
+              upload = true
+              dati_comune.cont_commessa_anno1 = new File([dati_comune.cont_commessa_anno1],dati_comune.cont_commessa_anno1.name)
+              formData.append("cont_commessa_anno1", dati_comune.cont_commessa_anno1,dati_comune.cont_commessa_anno1.name);
+            }
+
+            if(dati_comune.cont_commessa_anno2 == '[object File]')
+            {
+              upload = true
+              dati_comune.cont_commessa_anno2 = new File([dati_comune.cont_commessa_anno2],dati_comune.cont_commessa_anno2.name)
+              formData.append("cont_commessa_anno2", dati_comune.cont_commessa_anno2,dati_comune.cont_commessa_anno2.name);
+            }
+
+            if(dati_comune.contratto_appalto == '[object File]')
+            {
+              upload = true
+              dati_comune.contratto_appalto = new File([dati_comune.contratto_appalto],dati_comune.contratto_appalto.name)
+              formData.append("contratto_appalto", dati_comune.contratto_appalto,dati_comune.contratto_appalto.name);
+            }
+
+            if(dati_comune.ultimo_pef == '[object File]')
+            {
+              upload = true
+              dati_comune.ultimo_pef = new File([dati_comune.ultimo_pef],dati_comune.ultimo_pef.name)
+              formData.append("ultimo_pef", dati_comune.ultimo_pef,dati_comune.ultimo_pef.name);
+            }
+
+
+            if (upload)
+            {
+              var id = dati_comune.id
+              id = new File([id],id)
+              formData.append("id", id ,dati_comune.id);
+
+              var azienda = dati_comune.azienda
+              azienda = new File([azienda],azienda)
+              formData.append("azienda", azienda ,dati_comune.azienda);
+
+              this.$axios.post('/upload_comune_files',formData,{
+
+                   headers: {
+                     'Content-Type': "multipart/form-data; charset='utf-8';",
+
+                   },
+              })
+            }
+
+        },
         aggiungiExtra()
         {
 
@@ -699,6 +842,8 @@ import CostiSmaltimento from '../components/CostiSmaltimento'
 
         saveDatiComune(dati_comune)
         {
+          this.uploadFiles(dati_comune)
+
           var is_completed = 1
 
           if(this.azienda.pef_mis_o_ric === "CALCOLATO")
@@ -812,8 +957,11 @@ import CostiSmaltimento from '../components/CostiSmaltimento'
           }
 
 
-          this.$axios.put('/dati_comuni/'+this.dati_comune.id+'/', {
 
+          this.$axios.post('/save_dati_comune', {
+
+            id: dati_comune.id,
+            azienda: dati_comune.azienda,
             ris_ula_o_ore: dati_comune.ris_ula_o_ore,
             tot_app: dati_comune.tot_app,
             app_servizi: dati_comune.app_servizi,
@@ -916,7 +1064,7 @@ import CostiSmaltimento from '../components/CostiSmaltimento'
 
                   },
 
-                  container_specs:'col-xl-6 col-sm-12 p-2 pl-3 pr-3 mt-4 mb-4',
+                  container_specs:'col-xl-6 col-md-12 col-sm-12 p-2 pl-3 pr-3 mt-4 mb-4',
                   file1: null,
                   file2: null,
                   file3: null,

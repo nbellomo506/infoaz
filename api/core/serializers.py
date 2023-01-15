@@ -119,6 +119,10 @@ class DatiComuneSerializer(serializers.ModelSerializer):
                     "xcent_media_imp_plastica",
                     "xcent_media_imp_metallo",
                     "xcent_media_imp_vetro",
+                    "cont_commessa_anno1",
+                    "cont_commessa_anno2",
+                    "contratto_appalto",
+                    "ultimo_pef",
                     "completed"
                     )
 

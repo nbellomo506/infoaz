@@ -128,7 +128,7 @@ def password_reset_token_created(sender, instance, reset_password_token, *args, 
 class DatiComune(models.Model):
 
     comune = models.ForeignKey(comuni_italiani.Comune, default='', on_delete = models.SET_DEFAULT)
-    azienda =  models.ForeignKey(Azienda, default='', on_delete = models.SET_DEFAULT)
+    azienda =  models.ForeignKey(Azienda, default='', on_delete = models.CASCADE)
 
 
     scelte_pef = (
@@ -202,6 +202,12 @@ class DatiComune(models.Model):
     xcent_media_imp_plastica = models.FloatField(default = 0)
     xcent_media_imp_metallo = models.FloatField(default = 0)
     xcent_media_imp_vetro = models.FloatField(default = 0)
+
+    cont_commessa_anno1 = models.FileField(default='', blank=True)
+    cont_commessa_anno2 = models.FileField(default='', blank=True)
+    contratto_appalto = models.FileField(default='', blank=True)
+    ultimo_pef = models.FileField(default='', blank=True)
+
 
 
     completed = models.BooleanField(default = 0)

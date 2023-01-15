@@ -40,13 +40,17 @@ import TownSelect from '../components/TownSelect'
                       <p>Ammortamenti (<b-link href="/files/Ammortamenti.xlsx">Scarica Modello</b-link>)
                       </p>
                     </b-col>
-                    <b-col xl="6">
+                    <b-col xl="5">
                       <p>
                         <b-form-file v-model="azienda.ammortamenti"  placeholder="File Excel" drop-placeholder="Rilascia qui"></b-form-file>
                         <font v-if="azienda.ammortamenti != '[object File]' ">
                           {{azienda.ammortamenti}}
                         </font>
                       </p>
+                    </b-col>
+                    <b-col xl="1" class="pt-2 p-0">
+                      <b-icon v-if="azienda.ammortamenti !== null " class="h4 p-0 b-0 m-0" variant="success" icon="check-circle-fill"></b-icon>
+                      <b-icon v-if="azienda.ammortamenti === null" class="h4 p-0 b-0 m-0" variant="danger" icon="x-circle-fill"></b-icon>
                     </b-col>
                   </b-row>
 
@@ -78,13 +82,17 @@ import TownSelect from '../components/TownSelect'
                         Bilancio Depositato 2021
                       </p>
                     </b-col>
-                    <b-col xl="6">
+                    <b-col xl="5">
                       <p>
                         <b-form-file v-model="azienda.bilancio_depositato_anno2" placeholder="File" drop-placeholder="Rilascia qui"></b-form-file>
                         <font v-if="azienda.bilancio_depositato_anno2 != '[object File]' ">
                           {{azienda.bilancio_depositato_anno2}}
                         </font>
                       </p>
+                    </b-col>
+                    <b-col xl="1" class="pt-2 p-0">
+                      <b-icon v-if="azienda.bilancio_depositato_anno2 !== null " class="h4 p-0 b-0 m-0" variant="success" icon="check-circle-fill"></b-icon>
+                      <b-icon v-if="azienda.bilancio_depositato_anno2 === null" class="h4 p-0 b-0 m-0" variant="danger" icon="x-circle-fill"></b-icon>
                     </b-col>
                   </b-row>
 
@@ -392,10 +400,12 @@ import TownSelect from '../components/TownSelect'
               }
             },
 
-            async delCom(com) {
+            async delCom(comune_azienda) {
                   try {
-                    await this.$axios.$delete(`/dati_comuni/${com}/`); // delete recipe
-                    let newDatiComuni = await this.$axios.$get("/dati_comuni/"); // get new list of recipes
+                    this.$axios.post('/del_comune_azienda', {
+                      comune_azienda: comune_azienda,
+
+                    })
                     window.location.reload()
 
                   } catch (e) {

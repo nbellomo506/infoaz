@@ -41,7 +41,9 @@ from .serializers import CostoSmaltimentoSerializer
 
 from comuni_italiani.models import Comune
 import xlwt
-basedir = "C:/Users/Nicolas/OneDrive/infowaste-aziende/"
+
+basedir = "C:/Users/Nicolas/OneDrive/infowaste-aziende-test/"
+#basedir = "C:/Users/Administrator/OneDrive/infowaste-aziende/"
 
 
 class RegisterUserView(CreateAPIView):
@@ -113,6 +115,24 @@ def add_azienda(request):
     else:
         return JsonResponse(False,content_type="application/json",safe=False)
 
+def del_azienda(request):
+
+    body_unicode = request.body.decode('utf-8')
+    body = json.loads(body_unicode)
+
+    azienda = body['id']
+
+    if 'logged' in request.session is not None:
+        if request.session['logged'] == True:
+            if request.session['is_admin'] == True and request.session['is_staff'] == True and request.session['is_active'] == True:
+
+                obj = Azienda.objects.get(pk = azienda).delete()
+                return JsonResponse("Azienda eliminata",content_type="application/json",safe=False)
+        else:
+            return JsonResponse(False,content_type="application/json",safe=False)
+    else:
+        return JsonResponse(False,content_type="application/json",safe=False)
+
 def add_comune_azienda(request):
 
     body_unicode = request.body.decode('utf-8')
@@ -136,8 +156,94 @@ def add_comune_azienda(request):
                     azienda = str(obj.comune)
                     os.mkdir(os.path.join(basedir, comune+'/'+azienda))
 
-
                     return HttpResponse("OK")
+
+def save_dati_comune(request):
+
+    body_unicode = request.body.decode('utf-8')
+    body = json.loads(body_unicode)
+
+    id = body['id']
+    azienda = body['azienda']
+
+    if 'logged' in request.session is not None:
+        if request.session['logged'] == True:
+            if 'user_id' and 'azienda' in request.session is not None:
+                if azienda == request.session['azienda']:
+                    try:
+                        obj = DatiComune.objects.get(pk =  id , azienda_id = azienda)
+                        obj.ris_ula_o_ore = body['ris_ula_o_ore']
+                        obj.tot_app = body['tot_app']
+                        obj.app_servizi = body['app_servizi']
+                        obj.app_rifiuti_diff = body['app_rifiuti_diff']
+                        obj.app_rifiuti_indiff = body['app_rifiuti_indiff']
+                        obj.app_igiene = body['app_igiene']
+                        obj.altri_gestori_flag = body['altri_gestori_flag']
+                        obj.altri_gestori = body['altri_gestori']
+                        obj.appalto_attuale_data = body['appalto_attuale_data']
+                        obj.impresa_op_com_data = body['impresa_op_com_data']
+                        obj.valore_can = body['valore_can']
+                        obj.adeg_contr_flag = body['adeg_contr_flag']
+                        obj.ricavi_conai = body['ricavi_conai']
+                        obj.impresa_cts_flag = body['impresa_cts_flag']
+                        obj.impresa_ctr_flag = body['impresa_ctr_flag']
+                        obj.spazz_e_ig_flag = body['spazz_e_ig_flag']
+                        obj.serv_exra_arera_flag = body['serv_exra_arera_flag']
+                        obj.serv_exra_arera = body['serv_exra_arera']
+                        obj.lav_in_corso_flag = body['lav_in_corso_flag']
+                        obj.lav_in_corso = body['lav_in_corso']
+                        obj.var_gest_flag = body['var_gest_flag']
+                        obj.var_gest = body['var_gest']
+                        obj.miglior_qual_flag = body['miglior_qual_flag']
+                        obj.miglior_qual = body['miglior_qual']
+                        obj.costi_tqrif_flag = body['costi_tqrif_flag']
+                        obj.costi_tqrif = body['costi_tqrif']
+                        obj.ton_totali = body['ton_totali']
+                        obj.ton_anno_1 = body['ton_anno_1']
+                        obj.ton_anno_2 = body['ton_anno_2']
+                        obj.ton_anno_3 = body['ton_anno_3']
+                        obj.xcent_raccolta_diff = body['xcent_raccolta_diff']
+                        obj.xcent_raccolta_anno_1 = body['xcent_raccolta_anno_1']
+                        obj.xcent_raccolta_anno_2 = body['xcent_raccolta_anno_2']
+                        obj.xcent_raccolta_anno_3 = body['xcent_raccolta_anno_3']
+                        obj.xcent_media_imp = body['xcent_media_imp']
+                        obj.xcent_media_imp_org = body['xcent_media_imp_org']
+                        obj.xcent_media_imp_cart = body['xcent_media_imp_cart']
+                        obj.xcent_media_imp_plastica = body['xcent_media_imp_plastica']
+                        obj.xcent_media_imp_metallo = body['xcent_media_imp_metallo']
+                        obj.xcent_media_imp_vetro = body['xcent_media_imp_vetro']
+                        obj.completed = body['completed']
+
+                        obj.save()
+                        error = "OK"
+                        return HttpResponse(error)
+
+                    except DatiComune.DoesNotExist:
+
+                        error = "Qualcosa è andato storto"
+
+                        return HttpResponse("OK")
+
+def del_comune_azienda(request):
+
+    body_unicode = request.body.decode('utf-8')
+    body = json.loads(body_unicode)
+
+    comune_azienda = body['comune_azienda']
+
+    if 'logged' in request.session is not None:
+        if request.session['logged'] == True:
+            if 'user_id' and 'azienda' in request.session is not None:
+                try:
+                    obj = DatiComune.objects.get(pk =  comune_azienda , azienda_id = request.session['azienda'])
+                    obj.delete()
+                    msg = "Il comune è stato eliminato"
+                    return HttpResponse(msg)
+
+                except DatiComune.DoesNotExist:
+
+                    error = "Coune non trovato"
+                    return HttpResponse(error)
 
 
 def get_dati_comuni(request):
@@ -177,6 +283,61 @@ def get_dati_comune(request):
         else:
             return JsonResponse(False,content_type="application/json",safe=False)
 
+def upload_comune_files(request):
+
+    azienda = str(request.FILES['azienda'])
+    id = str(request.FILES['id'])
+
+    id = int(id)
+    azienda = int(azienda)
+
+    if request.session['logged'] == True:
+        if 'user_id' and 'azienda' in request.session is not None:
+            if azienda == request.session['azienda']:
+
+                print("vada")
+                try:
+                    obj = DatiComune.objects.get(pk = id , azienda_id = azienda)
+                    az = Azienda.objects.get(pk = azienda)
+
+                    settings.MEDIA_ROOT = settings.MEDIA_ROOT + '/' + az.ragione_sociale + '/' + str(obj.comune)
+
+                    if 'cont_commessa_anno1' in request.FILES is not None:
+                         obj.cont_commessa_anno1 = request.FILES['cont_commessa_anno1']
+                         obj.save()
+
+                    if 'cont_commessa_anno2' in request.FILES is not None:
+
+                         obj.cont_commessa_anno2 = request.FILES['cont_commessa_anno2']
+                         obj.save()
+
+                    if 'contratto_appalto' in request.FILES is not None:
+
+                         obj.contratto_appalto = request.FILES['contratto_appalto']
+                         obj.save()
+
+                    if 'ultimo_pef' in request.FILES is not None:
+
+                         obj.ultimo_pef = request.FILES['ultimo_pef']
+                         obj.save()
+
+                    error= "OK"
+                    return HttpResponse(error)
+
+                except DatiComune.DoesNotExist:
+
+                    error = "Qualcosa è andato storto"
+                    return HttpResponse(error)
+
+
+            else:
+                return HttpResponse("company not match")
+        else:
+            return HttpResponse("user and company not defined")
+    else:
+        return HttpResponse("not logged")
+
+
 def upload_company_files(request):
 
     if 'logged' in request.session is not None:
@@ -187,11 +348,6 @@ def upload_company_files(request):
                  settings.MEDIA_ROOT = settings.MEDIA_ROOT + '/' + obj.ragione_sociale
 
                  if 'ammortamenti' in request.FILES is not None:
-                     file = request.FILES['ammortamenti']
-                     name = str(file.name).replace("\\", "/")
-
-                     if os.path.exists(name):
-                        os.remove(name)
                      obj.ammortamenti = request.FILES['ammortamenti']
                      obj.save()
 
@@ -213,6 +369,8 @@ def upload_company_files(request):
             return JsonResponse("False",content_type="application/json",safe=False)
 
     return JsonResponse("False",content_type="application/json",safe=False)
+
+
 
 def get_costi_smaltimento(request):
 
