@@ -112,8 +112,8 @@ class User(AbstractUser, PermissionsMixin):
 @receiver(reset_password_token_created)
 def password_reset_token_created(sender, instance, reset_password_token, *args, **kwargs):
 
-    #email_plaintext_message = "{}?token={}".format(reverse('password_reset:reset-password-request'), reset_password_token.key)
     email_plaintext_message = "{}?token={}".format('http://localhost:3000/new_password' , reset_password_token.key)
+    #email_plaintext_message = "{}?token={}".format('http://217.61.57.221/new_password' , reset_password_token.key)
     send_mail(
         # title:
         "Richiesta recupero password {title}".format(title="Infowaste Modulo Aziende"),
