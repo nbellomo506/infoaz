@@ -300,6 +300,7 @@ def upload_comune_files(request):
                     obj = DatiComune.objects.get(pk = id , azienda_id = azienda)
                     az = Azienda.objects.get(pk = azienda)
 
+                    print(settings.MEDIA_ROOT)
                     settings.MEDIA_ROOT = basedir + az.ragione_sociale + '/' + str(obj.comune)
                     print(settings.MEDIA_ROOT)
 
@@ -346,6 +347,7 @@ def upload_company_files(request):
             if request.session['azienda'] > 0 and request.session['is_assigned'] == True:
 
                  obj = Azienda.objects.get(pk = request.session['azienda'])
+                 print(settings.MEDIA_ROOT)
                  settings.MEDIA_ROOT = basedir + obj.ragione_sociale
                  print(settings.MEDIA_ROOT)
 
