@@ -300,7 +300,8 @@ def upload_comune_files(request):
                     obj = DatiComune.objects.get(pk = id , azienda_id = azienda)
                     az = Azienda.objects.get(pk = azienda)
 
-                    settings.MEDIA_ROOT = settings.MEDIA_ROOT + '/' + az.ragione_sociale + '/' + str(obj.comune)
+                    settings.MEDIA_ROOT = basedir + az.ragione_sociale + '/' + str(obj.comune)
+                    print(settings.MEDIA_ROOT)
 
                     if 'cont_commessa_anno1' in request.FILES is not None:
                          obj.cont_commessa_anno1 = request.FILES['cont_commessa_anno1']
@@ -345,7 +346,8 @@ def upload_company_files(request):
             if request.session['azienda'] > 0 and request.session['is_assigned'] == True:
 
                  obj = Azienda.objects.get(pk = request.session['azienda'])
-                 settings.MEDIA_ROOT = settings.MEDIA_ROOT + '/' + obj.ragione_sociale
+                 settings.MEDIA_ROOT = basedir + obj.ragione_sociale
+                 print(settings.MEDIA_ROOT)
 
                  if 'ammortamenti' in request.FILES is not None:
                      obj.ammortamenti = request.FILES['ammortamenti']
