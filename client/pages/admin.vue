@@ -144,7 +144,7 @@ import CostiSmaltimento from '../components/CostiSmaltimento'
                     <b-col offset-xl="1" xl="2">
                       <b-button block @click="savePEF(azienda)" variant="success" name="button">Salva</b-button>
                     </b-col>
-                    <b-col xl="2">
+                    <b-col v-if="azienda.id != 1" xl="2">
                       <b-button block @click="del_azienda(azienda)" variant="danger" name="button">
                         <b-icon class="h4 p-0 b-0 m-0" variant="white" icon="trash"></b-icon>
                       </b-button>
