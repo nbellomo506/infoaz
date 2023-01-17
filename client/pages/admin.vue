@@ -252,7 +252,7 @@ import CostiSmaltimento from '../components/CostiSmaltimento'
 
         assignAzienda(user_id,azienda_id)
         {
-          this.$axios.$put('/assign_azienda', {
+          this.$axios.post('/assign_azienda', {
             user_id:user_id,
             azienda_id:azienda_id
           })
@@ -264,7 +264,7 @@ import CostiSmaltimento from '../components/CostiSmaltimento'
           if (azienda.ragione_sociale && azienda.partita_iva && azienda.pef_mis_o_ric)
           {
 
-            this.$axios.$post('/add_azienda', {
+            this.$axios.post('/add_azienda', {
 
               ragione_sociale:azienda.ragione_sociale,
               partita_iva:azienda.partita_iva,
@@ -278,7 +278,7 @@ import CostiSmaltimento from '../components/CostiSmaltimento'
 
         del_azienda(azienda)
         {
-          this.$axios.$post('/del_azienda', {
+          this.$axios.post('/del_azienda', {
 
             id:azienda.id
 
@@ -289,7 +289,7 @@ import CostiSmaltimento from '../components/CostiSmaltimento'
 
         savePEF(azienda)
         {
-          this.$axios.$put('/savePEF', {
+          this.$axios.post('/savePEF', {
             azienda:azienda.id,
             pef:azienda.pef_mis_o_ric
           })

@@ -10,7 +10,7 @@ import Field from '../components/Field'
   <main>
     <Header/>
       <b-container v-if="is_logged === true && is_company_set === true"  class="mt-5 mb-5">
-        <b-row >
+        <b-row>
           <b-col offset-xl="1" xl="10">
             <b-container class="mb-3">
               <b-row>
@@ -84,7 +84,7 @@ import Field from '../components/Field'
           </b-row>
         </b-container>
 
-        <b-container  v-if="is_logged === false" class="mb-3">
+        <b-container v-if="is_logged === false" class="mb-3">
           <b-row>
             <b-col offset-xl="1" xl="10">
               <b-container class="mb-3 mt-5">
@@ -231,8 +231,14 @@ import Field from '../components/Field'
   export default {
     mounted () {
 
+      if(!this.is_logged)
+      {
+        window.location.replace('./login')
+      }
+
       var i = 0
       this.is_ready = true
+
       if(this.is_logged && this.is_company_set)
       {
         while(i < this.dati_comuni.length)
@@ -245,6 +251,7 @@ import Field from '../components/Field'
           i++
         }
       }
+
 
     },
 

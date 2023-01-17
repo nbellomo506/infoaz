@@ -9,11 +9,11 @@ import CostiSmaltimento from '../components/CostiSmaltimento'
 <template>
   <main>
     <Header/>
-        <div class="p-0 m-0 b-0" v-if="dati_comune !== false && is_company_set === true && is_logged === true">
+        <div class="container-fluid p-0 mb-5 m-0 b-0" v-if="dati_comune !== false && is_company_set === true && is_logged === true">
           <b-container class="pb-5">
-          <ol>
           <b-row>
             <b-col class="border-left border-bottom border-right rounded pt-5" offset-xl="1" xl="10">
+              <ol class="p-0 m-0 b-0">
               <PageTitle :name="`Comune di ${dati_comune.nome_comune}`" description="I campi in rosso sono obbligatori"/>
                 <b-row>
                   <b-col :class="container_specs">
@@ -247,47 +247,46 @@ import CostiSmaltimento from '../components/CostiSmaltimento'
                     </b-row>
 
                     <b-row>
-                      <b-col xl="3" class="mt-4 pl-3 pr-3">
-                        <FieldTitle   letter="a" req="yes" name="" description="Rifiuti organici" />
-                        <input class="form-control" v-model="dati_comune.xcent_media_imp_org" type="number">
-                      </b-col>
-                      <b-col xl="3" class="mt-4 pl-3 pr-3">
-                        <FieldTitle   letter="b" req="yes" name="" description="Carta e cartone" />
-                        <input class="form-control" v-model="dati_comune.xcent_media_imp_cart" type="number">
-                      </b-col>
+                    <b-col xl="3" class="mt-5 pl-3 pr-3">
+                      <FieldTitle   letter="a" req="yes" name="" description="Rifiuti organici" />
+                      <input class="form-control" v-model="dati_comune.xcent_media_imp_org" type="number">
+                    </b-col>
+                    <b-col xl="3" class="mt-5 pl-3 pr-3">
+                      <FieldTitle   letter="b" req="yes" name="" description="Carta e cartone" />
+                      <input class="form-control" v-model="dati_comune.xcent_media_imp_cart" type="number">
+                    </b-col>
 
-                    <b-col xl="6">
+                    <b-col class="borders bg-light mt-3" xl="6">
                       <b-container class="m-0 p-0 b-0">
-                        <b-row class="m-0 p-0 b-0">
+                        <b-row class=" border-bottom m-0 p-0 b-0">
                           <b-col offset-xl="4" xl="4">
                             <b>Imballaggi</b>
                           </b-col>
                         </b-row>
 
-                        <b-row class="m-0 p-0 b-0">
+                        <b-row class="m-0 p-0 pb-3 b-0">
                           <b-col xl="4" class="p-0 pr-2">
-                            <FieldTitle   letter="c" req="yes" name="" description="Plastica" />
+                            <FieldTitle letter="c" req="yes" name="" description="Plastica" />
                             <input class="form-control" v-model="dati_comune.xcent_media_imp_plastica" type="number">
                           </b-col>
                           <b-col xl="4" class="p-0 pr-2">
-                            <FieldTitle   letter="d" req="yes" name="" description="Metallo" />
+                            <FieldTitle letter="d" req="yes" name="" description="Metallo" />
                             <input class="form-control" v-model="dati_comune.xcent_media_imp_metallo" type="percent">
                           </b-col>
                           <b-col xl="4" class="p-0 pr-2">
-                            <FieldTitle   letter="e" req="yes" name="" description="Vetro" />
+                            <FieldTitle letter="e" req="yes" name="" description="Vetro" />
                             <input class="form-control" v-model="dati_comune.xcent_media_imp_vetro" type="number">
                           </b-col>
                         </b-row>
                       </b-container>
                     </b-col>
-
                     </b-row>
                     <hr>
                   <b-container class="m-0 mt-4 p-0 b-0">
                     <h3>Documenti riferiti all'appalto</h3>
                     <b-row>
                       <b-col :class="container_specs">
-                        <FieldTitle   req="yes"  name="" description="Contabilità di commessa anno 2020 (in excel)" />
+                        <FieldTitle   req="yes" description="Contabilità di commessa anno 2020 (in excel)" />
                         <b-container>
                           <b-row>
                             <b-col xl="10">
@@ -309,8 +308,7 @@ import CostiSmaltimento from '../components/CostiSmaltimento'
                       </b-col>
 
                       <b-col :class="container_specs">
-                        <FieldTitle   req="yes" name="" description="Contabilità di commessa anno 2021 (in excel)" />
-
+                        <FieldTitle req="yes" description="Contabilità di commessa anno 2021 (in excel)" />
                         <b-container>
                           <b-row>
                             <b-col xl="10">
@@ -324,18 +322,17 @@ import CostiSmaltimento from '../components/CostiSmaltimento'
                               </font>
                             </b-col>
                             <b-col xl="2">
-                              <b-icon v-if="dati_comune.cont_commessa_anno2 !== null " class="h4 p-0 b-0 m-0 mt-1" variant="success" icon="check-circle-fill"></b-icon>
+                              <b-icon v-if="dati_comune.cont_commessa_anno2  !== null" class="h4 p-0 b-0 m-0 mt-1" variant="success" icon="check-circle-fill"></b-icon>
                               <b-icon v-if="dati_comune.cont_commessa_anno2  === null"  class="h4 p-0 b-0 m-0 mt-1" variant="danger" icon="x-circle-fill"></b-icon>
                             </b-col>
                           </b-row>
                         </b-container>
-
                       </b-col>
                     </b-row>
 
                     <b-row>
                       <b-col :class="container_specs">
-                        <FieldTitle   req="yes" name="" description="Contratto d'appalto vigente" />
+                        <FieldTitle  req="yes" description="Contratto d'appalto vigente" />
                         <b-container>
                           <b-row>
                             <b-col xl="10">
@@ -376,9 +373,9 @@ import CostiSmaltimento from '../components/CostiSmaltimento'
                           </b-row>
                         </b-container>
                       </b-col>
-
                     </b-row>
                   </b-container>
+                </ol>
 
                     <!--
                     <b-row>
@@ -396,143 +393,145 @@ import CostiSmaltimento from '../components/CostiSmaltimento'
 
             </b-col>
           </b-row>
-          </ol>
-          </b-container>
-
-
-        <b-container fluid style="width:1400px" class="border-rounded mb-5 pb-5">
-          <h3>Costi Smaltimento / Trattamento</h3>
-          <b-row>
-            <b-col xl="1">
-              Anno
-            </b-col>
-
-            <b-col xl="2">
-              Impianto di smaltimento
-            </b-col>
-
-            <b-col xl="2">
-              Codice CER/Tipo di rifiuto
-            </b-col>
-
-            <b-col xl="1">
-              Tipologia costo
-            </b-col>
-
-            <b-col xl="1">
-              Quantitativi conferiti [ton]
-            </b-col>
-
-            <b-col xl="2">
-            Prezzo unitario con IVA
-            </b-col>
-
-            <b-col xl="2">
-            Importo IVA Inclusa
-            </b-col>
-          </b-row>
-
-          <b-row class="bg-light p-3">
-            <b-col class="p-0 pl-1" xl="1">
-              <select class="form-control" v-model="add.anno">
-                <option value="2020">2020</option>
-                <option value="2021">2021</option>
-              </select>
-            </b-col>
-
-            <b-col xl="2">
-              <textarea class="form-control" v-model="add.imp_smalt" ></textarea>
-              <b-alert class="mt-2" v-if="add.msg.imp_smalt.length > 0" variant="danger" dismissible show> {{add.msg.imp_smalt}} </b-alert>
-
-            </b-col>
-
-            <b-col xl="2">
-              <textarea class="form-control" v-model="add.tipo_rifiuto" ></textarea>
-              <b-alert class="mt-2" v-if="add.msg.tipo_rifiuto.length > 0" variant="danger" dismissible show> {{add.msg.tipo_rifiuto}} </b-alert>
-
-            </b-col>
-
-            <b-col class="p-0 pl-1" xl="1">
-              <select class="form-control" v-model="add.tipo_costo" >
-                <option value="CTS">CTS</option>
-                <option value="CTR">CTR</option>
-              </select>
-            </b-col>
-
-            <b-col xl="1">
-              <input class="form-control" min="0" @change=calcoloImporto() v-model="add.tons" type="number">
-            </b-col>
-
-            <b-col xl="2">
-              <input class="form-control" min="0" @change=calcoloImporto() v-model="add.prezzo_unitario" type="number">
-            </b-col>
-
-            <b-col xl="2">
-              <input class="form-control" min="0" v-model="add.importo" type="number">
-            </b-col>
-
-            <b-col xl="1">
-              <b-button @click="aggiungiExtra()" variant="infowaste-2" name="button">
-                Aggiungi
-              </b-button>
-            </b-col>
-          </b-row>
-
-          <b-row class="border rounded p-3"  v-for="(extra,index) in costi_smaltimento" v-bind:class = "(index % 2==0)?'bg-white':'bg-light'" :key="extra.id">
-            <b-col class="p-0 pl-1" xl="1">
-              <select class="form-control" v-model="extra.anno">
-                <option value="2020">2020</option>
-                <option value="2021">2021</option>
-              </select>
-            </b-col>
-
-            <b-col xl="2">
-              <textarea class="form-control" v-model="extra.imp_smalt">{{extra.imp_smalt}}</textarea>
-            </b-col>
-
-            <b-col xl="2">
-              <textarea class="form-control" v-model="extra.tipo_rifiuto">{{extra.tipo_rifiuto}}</textarea>
-            </b-col>
-
-            <b-col class="p-0 pr-1" xl="1">
-              <select class="form-control" v-model="extra.tipo_costo" >
-                <option value="CTS">CTS</option>
-                <option value="CTR">CTR</option>
-              </select>
-            </b-col>
-
-            <b-col xl="1">
-              <input class="form-control" min="0" type="number" @change="extra.importo = extra.tons * extra.prezzo_unitario" v-model="extra.tons">
-            </b-col>
-
-            <b-col xl="2">
-              <b-input class="form-control" min="0" type="number" @change="extra.importo = extra.tons * extra.prezzo_unitario" v-model="extra.prezzo_unitario"></b-input>
-            </b-col>
-
-            <b-col xl="2">
-              <input class="form-control" min="0" type="number" v-model="extra.importo">
-            </b-col>
-
-            <b-col xl="1">
-              <b-container class="pr-2 mb-5">
-                <b-row>
-                  <b-col xl="5 p-0">
-                    <button type="button" @click=modificaExtra(extra) block class="btn btn-success" name="button">
-                      <b-icon icon="check-square-fill"></b-icon>
-                    </button>
-                  </b-col>
-
-                  <b-col class="offset-xl-2 p-0" xl="5">
-                    <button type="button" @click=eliminaExtra(extra.id) block class="btn btn-danger" name="button">
-                      <b-icon icon="trash"></b-icon>
-                    </button>
-                  </b-col>
-                </b-row>
-              </b-container>
-            </b-col>
-          </b-row>
         </b-container>
+
+        <b-row class="ml-3 mr-3 mb-5 pb-5">
+          <b-col xl="12">
+            <h3>Costi Smaltimento / Trattamento</h3>
+            <b-row>
+              <b-col xl="1">
+                Anno
+              </b-col>
+
+              <b-col xl="2">
+                Impianto di smaltimento
+              </b-col>
+
+              <b-col xl="2">
+                Codice CER/Tipo di rifiuto
+              </b-col>
+
+              <b-col xl="1">
+                Tipologia costo
+              </b-col>
+
+              <b-col xl="1">
+                Quantitativi conferiti [ton]
+              </b-col>
+
+              <b-col xl="2">
+              Prezzo unitario con IVA
+              </b-col>
+
+              <b-col xl="2">
+              Importo IVA Inclusa
+              </b-col>
+            </b-row>
+
+            <b-row class="bg-light rounded p-3">
+              <b-col class="p-0 pl-1" xl="1">
+                <select class="form-control" v-model="add.anno">
+                  <option value="2020">2020</option>
+                  <option value="2021">2021</option>
+                </select>
+              </b-col>
+
+              <b-col xl="2">
+                <textarea class="form-control" v-model="add.imp_smalt" ></textarea>
+                <b-alert class="mt-2" v-if="add.msg.imp_smalt.length > 0" variant="danger" dismissible show> {{add.msg.imp_smalt}} </b-alert>
+
+              </b-col>
+
+              <b-col xl="2">
+                <textarea class="form-control" v-model="add.tipo_rifiuto" ></textarea>
+                <b-alert class="mt-2" v-if="add.msg.tipo_rifiuto.length > 0" variant="danger" dismissible show>
+                  {{add.msg.tipo_rifiuto}}
+                </b-alert>
+              </b-col>
+
+              <b-col class="p-0" xl="1">
+                <select class="form-control" v-model="add.tipo_costo" >
+                  <option value="CTS">CTS</option>
+                  <option value="CTR">CTR</option>
+                </select>
+              </b-col>
+
+              <b-col xl="1">
+                <input class="form-control pl-1" min="0" @change=calcoloImporto() v-model="add.tons" type="number">
+              </b-col>
+
+              <b-col xl="2">
+                <input class="form-control pl-1" min="0" @change=calcoloImporto() v-model="add.prezzo_unitario" type="number">
+              </b-col>
+
+              <b-col xl="2">
+                <input class="form-control pl-1" min="0" v-model="add.importo" type="number">
+              </b-col>
+
+              <b-col xl="1">
+                <b-button @click="aggiungiExtra()" variant="infowaste-2" name="button">
+                  Aggiungi
+                </b-button>
+              </b-col>
+            </b-row>
+
+            <b-row class="border rounded p-3"  v-for="(extra,index) in costi_smaltimento" v-bind:class = "(index % 2==0)?'bg-white':'bg-light'" :key="extra.id">
+              <b-col class="p-0 pl-1" xl="1">
+                <select class="form-control" v-model="extra.anno">
+                  <option value="2020">2020</option>
+                  <option value="2021">2021</option>
+                </select>
+              </b-col>
+
+              <b-col xl="2">
+                <textarea class="form-control" v-model="extra.imp_smalt">{{extra.imp_smalt}}</textarea>
+              </b-col>
+
+              <b-col xl="2">
+                <textarea class="form-control" v-model="extra.tipo_rifiuto">{{extra.tipo_rifiuto}}</textarea>
+              </b-col>
+
+              <b-col class="p-0 pr-1" xl="1">
+                <select class="form-control" v-model="extra.tipo_costo" >
+                  <option value="CTS">CTS</option>
+                  <option value="CTR">CTR</option>
+                </select>
+              </b-col>
+
+              <b-col xl="1">
+                <input class="form-control" min="0" type="number" @change="extra.importo = extra.tons * extra.prezzo_unitario" v-model="extra.tons">
+              </b-col>
+
+              <b-col xl="2">
+                <b-input class="form-control" min="0" type="number" @change="extra.importo = extra.tons * extra.prezzo_unitario" v-model="extra.prezzo_unitario"></b-input>
+              </b-col>
+
+              <b-col xl="2">
+                <input class="form-control" min="0" type="number" v-model="extra.importo">
+              </b-col>
+
+              <b-col xl="1">
+                <b-container class="pr-2 mb-5">
+                  <b-row>
+                    <b-col xl="5 p-0">
+                      <button type="button" @click=modificaExtra(extra) block class="btn btn-success" name="button">
+                        <b-icon icon="check-square-fill"></b-icon>
+                      </button>
+                    </b-col>
+
+                    <b-col class="offset-xl-2 p-0" xl="5">
+                      <button type="button" @click=eliminaExtra(extra.id) block class="btn btn-danger" name="button">
+                        <b-icon icon="trash"></b-icon>
+                      </button>
+                    </b-col>
+                  </b-row>
+                </b-container>
+              </b-col>
+            </b-row>
+          </b-col>
+        </b-row>
       </div>
+
       <b-container v-if="is_logged === false" class="mb-3">
         <b-row>
           <b-col offset-xl="1" xl="10">
@@ -568,6 +567,7 @@ import CostiSmaltimento from '../components/CostiSmaltimento'
           </b-col>
         </b-row>
       </b-container>
+
       <b-container v-if="dati_comune === false && is_logged === true && is_company_set === true" class="mb-3">
         <b-row>
           <b-col offset-xl="1" xl="10">
@@ -842,8 +842,6 @@ import CostiSmaltimento from '../components/CostiSmaltimento'
 
         saveDatiComune(dati_comune)
         {
-          this.uploadFiles(dati_comune)
-
           var is_completed = 1
 
           if(this.azienda.pef_mis_o_ric === "CALCOLATO")
@@ -1026,7 +1024,8 @@ import CostiSmaltimento from '../components/CostiSmaltimento'
 
           });
 
-
+          this.uploadFiles(dati_comune)
+          location.reload()
 
         }
     },
@@ -1064,7 +1063,7 @@ import CostiSmaltimento from '../components/CostiSmaltimento'
 
                   },
 
-                  container_specs:'col-xl-6 col-md-12 col-sm-12 p-2 pl-3 pr-3 mt-4 mb-4',
+                  container_specs:'col-xl-6 col-md-12 col-lg-12 col-sm-12 p-2 pl-3 pr-3 mt-4 mb-4',
                   file1: null,
                   file2: null,
                   file3: null,
