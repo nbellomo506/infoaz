@@ -1,4 +1,4 @@
-
+h
 import Header from '../components/Header'
 import PageTitle from '../components/PageTitle'
 import FieldTitle from '../components/FieldTitle'
@@ -27,7 +27,7 @@ import CostiSmaltimento from '../components/CostiSmaltimento'
                       Nome Completo
                     </b-col>
                     <b-col xl="3">
-                      Email
+                      Contatti
                     </b-col>
                     <b-col xl="2">
                       Partita IVA - Ragione Sociale
@@ -44,7 +44,7 @@ import CostiSmaltimento from '../components/CostiSmaltimento'
                       {{utente.nome}} {{utente.cognome}}
                     </b-col>
                     <b-col xl="3">
-                      {{utente.email}}
+                      {{utente.email}} - {{utente.telefono}}
                     </b-col>
                     <b-col xl="2">
                       {{utente.p_iva}} - <br> {{utente.ragione_sociale}}
@@ -79,7 +79,7 @@ import CostiSmaltimento from '../components/CostiSmaltimento'
                       Nome Completo
                     </b-col>
                     <b-col xl="3">
-                      Email
+                      Contatti
                     </b-col>
                     <b-col xl="2">
                       Partita IVA - Ragione Sociale
@@ -96,7 +96,7 @@ import CostiSmaltimento from '../components/CostiSmaltimento'
                       {{utente.nome}} {{utente.cognome}}
                     </b-col>
                     <b-col xl="3">
-                      {{utente.email}}
+                      {{utente.email}} - {{utente.telefono}}
                     </b-col>
                     <b-col xl="2">
                       {{utente.p_iva}} - <br> {{utente.ragione_sociale}}

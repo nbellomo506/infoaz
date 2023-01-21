@@ -73,7 +73,7 @@ class ChangePasswordSerializer(serializers.Serializer):
 class AziendaSerializer(serializers.ModelSerializer):
     class Meta:
         model = Azienda
-        fields = ("id", "ragione_sociale", "partita_iva","bilancio_depositato_anno1","bilancio_depositato_anno2","ammortamenti","export_daticomuni","pef_mis_o_ric")
+        fields = ("id","report_is_sent","report_attempts","ragione_sociale", "partita_iva","bilancio_depositato_anno1","bilancio_depositato_anno2","ammortamenti","export_daticomuni","pef_mis_o_ric")
 
 class DatiComuneSerializer(serializers.ModelSerializer):
     nome_regione = serializers.StringRelatedField(source='comune.provincia.regione.name')
@@ -84,7 +84,7 @@ class DatiComuneSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = DatiComune
-        fields = ("id","azienda","nome_azienda","comune","nome_regione","nome_provincia","nome_comune","ris_ula_o_ore","tot_app","app_servizi","app_rifiuti_diff","app_rifiuti_indiff","app_igiene",
+        fields = ("id","current_section","azienda","nome_azienda","comune","nome_regione","nome_provincia","nome_comune","ris_ula_o_ore","tot_app","app_servizi","app_rifiuti_diff","app_rifiuti_indiff","app_igiene",
                     "altri_gestori_flag",
                     "altri_gestori",
                     "appalto_attuale_data",

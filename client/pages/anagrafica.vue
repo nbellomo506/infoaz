@@ -10,23 +10,36 @@ import TownSelect from '../components/TownSelect'
     <Header/>
       <b-container class="mt-5" v-if="is_logged === true && is_company_set === true" >
         <b-row>
-          <b-col bg-variant="info" offset-xl="1" xl="10">
+          <b-col v-bind:class="{'disabled-container' : azienda.report_is_sent || azienda.report_attempts <= 0 }" bg-variant="info" offset-xl="1" xl="10">
             <PageTitle name="Dati Azienda:"/>
             <b-container class="bg-light rounded p-3 mb-5">
-              <b-row>
-                <b-col class="border-top" xl="12">
-                  <h6>PEF:</h6>{{azienda.pef_mis_o_ric}}
+              <b-row class="p-2">
+                <b-col xl="3">
+                  <b>Ragione Sociale:  </b>
                 </b-col>
-                <b-col class="border-top" xl="12">
-                  <h6>Ragione Sociale:</h6>{{azienda.ragione_sociale}}
+                <b-col xl="6">
+                  {{azienda.ragione_sociale}}
                 </b-col>
-                <b-col class="border-top border-bottom" xl="12">
-                  <h6>Partita IVA: </h6>{{azienda.partita_iva}}
+              </b-row>
+              <b-row class="p-2">
+                <b-col xl="3">
+                  <b>Partita IVA: </b>
+                </b-col>
+                <b-col xl="6">
+                  {{azienda.partita_iva}}
+                </b-col>
+              </b-row>
+              <b-row class="p-2">
+                <b-col xl="3">
+                  <b>PEF:  </b>
+                </b-col>
+                <b-col xl="6">
+                  {{azienda.pef_mis_o_ric}}
                 </b-col>
               </b-row>
             </b-container>
             <PageTitle name="File Azienda:"/>
-                <b-container class="bg-light rounded p-3 mb-5">
+                <b-container disabled="true" class="bg-light rounded p-3 mb-5">
                   <b-row class="pb-4">
                     <b-col>
                       <p>
@@ -42,15 +55,15 @@ import TownSelect from '../components/TownSelect'
                     </b-col>
                     <b-col xl="5">
                       <p>
-                        <b-form-file v-model="azienda.ammortamenti"  placeholder="File Excel" drop-placeholder="Rilascia qui"></b-form-file>
-                        <font v-if="azienda.ammortamenti != '[object File]' ">
+                        <b-form-file v-model="upload.ammortamenti"  placeholder="File Excel" drop-placeholder="Rilascia qui"></b-form-file>
+                        <font v-if="azienda.ammortamenti != ''">
                           {{azienda.ammortamenti}}
                         </font>
                       </p>
                     </b-col>
                     <b-col xl="1" class="pt-2 p-0">
-                      <b-icon v-if="azienda.ammortamenti !== null " class="h4 p-0 b-0 m-0" variant="success" icon="check-circle-fill"></b-icon>
-                      <b-icon v-if="azienda.ammortamenti === null" class="h4 p-0 b-0 m-0" variant="danger" icon="x-circle-fill"></b-icon>
+                      <b-icon v-if="azienda.ammortamenti !== '' || upload.ammortamenti != 0 " class="h4 p-0 b-0 m-0" variant="success" icon="check-circle-fill"></b-icon>
+                      <b-icon v-if="azienda.ammortamenti === '' && upload.ammortamenti === 0" class="h4 p-0 b-0 m-0" variant="danger" icon="x-circle-fill"></b-icon>
                     </b-col>
                   </b-row>
 
@@ -63,19 +76,17 @@ import TownSelect from '../components/TownSelect'
                     </b-col>
                     <b-col xl="5">
                       <p>
-                        <b-form-file v-model="azienda.bilancio_depositato_anno1" placeholder="File" drop-placeholder="Rilascia qui"></b-form-file>
-                        <font v-if="azienda.bilancio_depositato_anno1 != '[object File]' ">
+                        <b-form-file v-model="upload.bilancio_depositato_anno1" placeholder="File" drop-placeholder="Rilascia qui"></b-form-file>
+                        <font v-if="azienda.bilancio_depositato_anno1 != '' ">
                           {{azienda.bilancio_depositato_anno1}}
                         </font>
                       </p>
                     </b-col>
                     <b-col xl="1" class="pt-2 p-0">
-                      <b-icon v-if="azienda.bilancio_depositato_anno1 !== null " class="h4 p-0 b-0 m-0" variant="success" icon="check-circle-fill"></b-icon>
-                      <b-icon v-if="azienda.bilancio_depositato_anno1 === null" class="h4 p-0 b-0 m-0" variant="danger" icon="x-circle-fill"></b-icon>
+                      <b-icon v-if="azienda.bilancio_depositato_anno1 !== '' || upload.bilancio_depositato_anno1 != 0" class="h4 p-0 b-0 m-0" variant="success" icon="check-circle-fill"></b-icon>
+                      <b-icon v-if="azienda.bilancio_depositato_anno1 === '' && upload.bilancio_depositato_anno1 === 0" class="h4 p-0 b-0 m-0" variant="danger" icon="x-circle-fill"></b-icon>
                     </b-col>
-
                   </b-row>
-
                   <b-row class="p-2">
                     <b-col offset-xl="1" xl="4">
                       <p>
@@ -84,22 +95,22 @@ import TownSelect from '../components/TownSelect'
                     </b-col>
                     <b-col xl="5">
                       <p>
-                        <b-form-file v-model="azienda.bilancio_depositato_anno2" placeholder="File" drop-placeholder="Rilascia qui"></b-form-file>
-                        <font v-if="azienda.bilancio_depositato_anno2 != '[object File]' ">
+                        <b-form-file v-model="upload.bilancio_depositato_anno2" placeholder="File" drop-placeholder="Rilascia qui"></b-form-file>
+                        <font v-if="azienda.bilancio_depositato_anno2 === '' ">
                           {{azienda.bilancio_depositato_anno2}}
                         </font>
                       </p>
                     </b-col>
                     <b-col xl="1" class="pt-2 p-0">
-                      <b-icon v-if="azienda.bilancio_depositato_anno2 !== null " class="h4 p-0 b-0 m-0" variant="success" icon="check-circle-fill"></b-icon>
-                      <b-icon v-if="azienda.bilancio_depositato_anno2 === null" class="h4 p-0 b-0 m-0" variant="danger" icon="x-circle-fill"></b-icon>
+                      <b-icon v-if="azienda.bilancio_depositato_anno2 !== '' || upload.bilancio_depositato_anno2 != 0" class="h4 p-0 b-0 m-0" variant="success" icon="check-circle-fill"></b-icon>
+                      <b-icon v-if="azienda.bilancio_depositato_anno2 === '' && upload.bilancio_depositato_anno2 === 0" class="h4 p-0 b-0 m-0" variant="danger" icon="x-circle-fill"></b-icon>
                     </b-col>
                   </b-row>
 
                   <b-row class="p-2">
                     <b-col offset-xl="9" xl="2">
                       <p>
-                        <b-button @click="updateFiles(azienda)" variant="info" block> Salva </b-button>
+                        <b-button @click="updateFiles(upload)" variant="info" block> Salva </b-button>
                       </p>
                     </b-col>
                   </b-row>
@@ -135,18 +146,19 @@ import TownSelect from '../components/TownSelect'
                     </b-row>
 
                     <b-row class="m-0 mt-5 mb-4 ">
-                      <b-col xl="3" sm="12" class="mt-1 mb-1 bg-white rounded">
+                      <b-col xl="3" sm="12" class="mt-1 mb-1 rounded">
                         <h6>Regione</h6>
                       </b-col>
 
-                      <b-col xl="3" sm="12" class="mt-1 mb-1 bg-white rounded">
+                      <b-col xl="3" sm="12" class="mt-1 mb-1 rounded">
                         <h6>Provincia</h6>
                       </b-col>
 
-                      <b-col xl="4" sm="12" class="mt-1 mb-1 bg-white rounded">
+                      <b-col xl="4" sm="12" class="mt-1 mb-1 rounded">
                         <h6>Comune</h6>
                       </b-col>
                     </b-row>
+
                     <b-row class="m-0 border rounded mt-2 mb-4" v-for="comune_azienda,index in comuni_azienda" :key="comune_azienda.id">
                       <b-col xl="3" sm="12" class="pt-2 border-right mt-1 mb-1">
                       {{comune_azienda.nome_regione}}
@@ -243,7 +255,7 @@ import TownSelect from '../components/TownSelect'
             const filenames = ["ammortamenti","bilancio_depositato_anno1","bilancio_depositato_anno2"]
 
 
-            for (var count = 0; count < filenames.length; count++)
+            /*for (var count = 0; count < filenames.length; count++)
             {
               var filename = azienda[filenames[count]]
 
@@ -280,7 +292,7 @@ import TownSelect from '../components/TownSelect'
 
               }
             }
-
+            */
           return { is_logged,utente,is_company_set,role,regioni_req,province_req,comuni_azienda,azienda};
         }
               catch (e)
@@ -330,6 +342,7 @@ import TownSelect from '../components/TownSelect'
                    },
               })
             }
+            location.reload()
 
         },
 
@@ -429,7 +442,12 @@ import TownSelect from '../components/TownSelect'
         is_company_set:false,
         role:'Normal',
 
-
+        upload:
+        {
+          ammortamenti:0,
+          bilancio_depositato_anno1:0,
+          bilancio_depositato_anno2:0,
+        },
         luogo: {
                  reg: '16',
                  prov: '0',

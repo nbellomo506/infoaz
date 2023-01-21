@@ -23,7 +23,7 @@ import Header from '../components/Header'
               <b-alert class="mt-2" v-if="msg.login.length > 0" show variant="danger">{{msg.login}}</b-alert>
 
               <b-container>
-                <b-row>
+                <b-row class="p-0">
                   <b-col xl="3" offset-xl="9" md="4" offset-md="8" >
                       <b-btn @click="login()" variant="infowaste" block>
                         Accedi

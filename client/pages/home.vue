@@ -48,12 +48,12 @@ import Field from '../components/Field'
                 </b-container>
                 <b-container class="p-4 pl-1 mt-2 rounded bg-light" v-for="(dati_comune,index) in dati_comuni" :key="dati_comune.id">
                   <b-row>
-                    <b-col xl="11">
+                    <b-col xl="11" cols="10">
                       <a :href="`/compila_dati_comune/${dati_comune.id}/`">
                           <b>{{index+1}}. </b>{{dati_comune.nome_comune}}
                       </a>
                     </b-col>
-                    <b-col xl="1">
+                    <b-col xl="1" cols="2">
                       <div v-if="dati_comune.completed == true">
                         <b-icon class="h4 p-0 b-0 m-0" variant="success" icon="check-circle-fill"></b-icon>
                       </div>
@@ -76,10 +76,14 @@ import Field from '../components/Field'
               <p dir="ltr" style="line-height:1.295;text-align: justify;margin-top:0pt;margin-bottom:8pt;"><span style="font-size:12pt;font-family:Calibri,sans-serif;color:#000000;background-color:transparent;font-weight:400;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre;white-space:pre-wrap;">In entrambi i casi l&rsquo;attivit&agrave; di elaborazione prevede l&rsquo;erogazione di un&nbsp;</span><span style="font-size:12pt;font-family:Calibri,sans-serif;color:#000000;background-color:transparent;font-weight:700;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre;white-space:pre-wrap;">SERVIZIO DI ASSISTENZA</span><span style="font-size:12pt;font-family:Calibri,sans-serif;color:#000000;background-color:transparent;font-weight:400;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre;white-space:pre-wrap;">&nbsp;nell&rsquo;utilizzo dell&rsquo;applicazione e &ndash; se richiesto &ndash; di un&nbsp;</span><span style="font-size:12pt;font-family:Calibri,sans-serif;color:#000000;background-color:transparent;font-weight:700;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre;white-space:pre-wrap;">SERVIZIO DI CONSULENZA</span><span style="font-size:12pt;font-family:Calibri,sans-serif;color:#000000;background-color:transparent;font-weight:400;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre;white-space:pre-wrap;">&nbsp;per la revisione dei dati e la stesura della relazione di accompagnamento.</span></p>
             </b-col>
           </b-row>
-
           <b-row>
             <b-col class="mb-5" bg-variant="info" offset-xl="7" xl="4">
-              <b-button :disabled="!is_ready" @click=inviaReport() block>Invia dati</b-button>
+              <b-button v-if="azienda.report_is_sent == false" :disabled="!is_ready || azienda.report_attempts === 0" @click=inviaReport() block>
+                Invia dati
+              </b-button>
+              <b-button v-if="azienda.report_is_sent == true && azienda.report_attempts > 0" @click="riprendiReport()" :disabled=" azienda.report_attempts === 0" block>
+                Riprendi Elaborazione
+              </b-button>
             </b-col>
           </b-row>
         </b-container>
@@ -300,6 +304,11 @@ import Field from '../components/Field'
 
     methods:
     {
+        async riprendiReport()
+        {
+          this.$axios.post('/update_report')
+          location.reload()
+        },
 
         async inviaReport()
         {
@@ -357,30 +366,30 @@ import Field from '../components/Field'
             formData.append("export_daticomuni", file , nome_azienda + ".xlsx");
 
 
-            this.$axios.put('aziende/1/', formData, {
-                headers: {
-                  'Content-Type': "multipart/form-data; charset='utf-8';",
+            this.$axios.post('/upload_company_files', formData, {
+                 headers: {
+                   'Content-Type': "multipart/form-data; charset='utf-8';",
 
-                }
+                 },
             })
-
-
 
             .then((response) => {
               if(response.status >= 200 && response.status <= 208)
               {
-
+                  this.$axios.post('/update_report')
                   alert("Report Inviato")
-
+                  location.reload()
               }
             })
             .catch((error) => {
 
              if (error.response)
              {
-               // The request was made and the server responded with a status code
-               // that falls out of the range of 2xx
-               alert(error.response.data)
+
+                 // The request was made and the server responded with a status code
+                 // that falls out of the range of 2xx
+                 alert(error.response.data)
+                 location.reload()
 
              }
 

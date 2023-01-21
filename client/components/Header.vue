@@ -31,14 +31,14 @@
 
           <b-container fluid class="bg-infowaste">
             <b-row class="pt-3 pb-3">
-              <b-col v-if="is_logged === true" class="text-white pt-1 mb-1" sm="6" xl="2" offset-xl="2">
+              <!--<b-col v-if="is_logged === true" class="text-white pt-1 mb-1" sm="6" xl="2">
                 <b-button class="p-2 h-100" onclick="history.back()" v-if="this.$route.name === 'anagrafica' || this.$route.name === 'admin'" type="button" block variant="light" name="button">
                   <b-icon class="h4 p-0 b-0 m-0" variant="dark" icon="arrow-left">
                   </b-icon>
                   Indietro
                 </b-button>
-              </b-col>
-              <b-col v-if="is_logged === true" class="text-white mt-1" sm="6" xl="1" offset-xl="5">
+              </b-col>-->
+              <b-col v-if="is_logged === true" class="text-white mt-1" sm="6" offset-xl="1" xl="2">
                 <b-dropdown block size="lg"  variant="light" toggle-class="text-decoration-none" no-caret>
                     <template #button-content>
                       <b-icon class="h4 p-0 b-0 m-0" variant="dark" icon="list"></b-icon>

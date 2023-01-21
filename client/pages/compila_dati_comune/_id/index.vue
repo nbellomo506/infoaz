@@ -9,12 +9,16 @@ import CostiSmaltimento from '../components/CostiSmaltimento'
 <template>
   <main>
     <Header/>
-        <div class="container-fluid p-0 mb-5 m-0 b-0" v-if="dati_comune !== false && is_company_set === true && is_logged === true">
-          <b-container class="pb-5">
-          <b-row>
-            <b-col class="border-left border-bottom border-right rounded pt-5" offset-xl="1" xl="10">
+        <div class="container-fluid p-0 pb-5 mb-5 m-0 b-0" v-if="dati_comune !== false && is_company_set === true && is_logged === true">
+          <b-container class="pb-5 mt-0 b-0">
+          <b-row class="pb-5 pt-5">
+
+            <b-col offset-xl="1" xl="10">
               <ol class="p-0 m-0 b-0">
               <PageTitle :name="`Comune di ${dati_comune.nome_comune}`" description="I campi in rosso sono obbligatori"/>
+              <div v-bind:class="{'disabled-container' : azienda.report_is_sent || azienda.report_attempts <= 0 }" class="p-0 b-0 m-0" v-if="current_section === 1">
+                <h3>{{sections[current_section-1].text}}</h3>
+
                 <b-row>
                   <b-col :class="container_specs">
                     <div class="text-secondary pr-4">
@@ -25,8 +29,7 @@ import CostiSmaltimento from '../components/CostiSmaltimento'
                     <b-form-radio-group disabled v-model="azienda.pef_mis_o_ric" :options="opts.tipo2"></b-form-radio-group>
                   </b-col>
                 </b-row>
-                  <b-container class="p-0 m-0 b-0" name="calc_o_mis" v-show="azienda.pef_mis_o_ric === 'CALCOLATO'">
-                    <hr>
+                  <b-container  class="p-0 m-0 b-0" name="calc_o_mis" v-show="azienda.pef_mis_o_ric === 'CALCOLATO'">
                       <b-row>
                         <b-col :class="container_specs">
                         <FieldTitle letter="a" name="ris_ula_o_ore" req="yes" description="Per ciascuno dei servizi elencati, le risorse umane impiegate sono indicate in:" />
@@ -192,9 +195,10 @@ import CostiSmaltimento from '../components/CostiSmaltimento'
 
                       </b-col>
                     </b-row>
+              </div>
 
+                <div v-bind:class="{'disabled-container' : azienda.report_is_sent || azienda.report_attempts <= 0 }" class="p-0 b-0 m-0" v-if="current_section === 2">
                   <b-container class="m-0 p-0 b-0">
-                    <hr>
                     <h3>Dati tecnici dell'appalto</h3>
                     <b-row>
                       <b-col :class="container_specs" xl="12">
@@ -216,7 +220,6 @@ import CostiSmaltimento from '../components/CostiSmaltimento'
                       </b-col>
                     </b-row>
                   </b-container>
-                  <hr>
                   <b-container class="m-0 mt-4 p-0 b-0">
                     <b-row>
                       <b-col :class="container_specs" xl="12">
@@ -238,7 +241,6 @@ import CostiSmaltimento from '../components/CostiSmaltimento'
                       </b-col>
                     </b-row>
                   </b-container>
-                  <hr>
                     <b-row>
                       <b-col :class="container_specs" xl="12">
                         <FieldTitle   name="tons" req="yes" description="Percentuali media delle impurità riscontrate nell'ultima annualità nelle frazioni differenziate" />
@@ -258,7 +260,7 @@ import CostiSmaltimento from '../components/CostiSmaltimento'
 
                     <b-col class="borders bg-light mt-3" xl="6">
                       <b-container class="m-0 p-0 b-0">
-                        <b-row class=" border-bottom m-0 p-0 b-0">
+                        <b-row class="m-0 p-0 b-0">
                           <b-col offset-xl="4" xl="4">
                             <b>Imballaggi</b>
                           </b-col>
@@ -281,15 +283,17 @@ import CostiSmaltimento from '../components/CostiSmaltimento'
                       </b-container>
                     </b-col>
                     </b-row>
-                    <hr>
-                  <b-container class="m-0 mt-4 p-0 b-0">
+                </div>
+
+                <div v-bind:class="{'disabled-container' : azienda.report_is_sent || azienda.report_attempts <= 0 }" class="p-0 b-0 m-0" v-if="current_section === 3">
+                  <b-container class="m-0 p-0 b-0">
                     <h3>Documenti riferiti all'appalto</h3>
                     <b-row>
-                      <b-col :class="container_specs">
+                      <b-col cols="12" :class="container_specs">
                         <FieldTitle   req="yes" description="Contabilità di commessa anno 2020 (in excel)" />
                         <b-container>
                           <b-row>
-                            <b-col xl="10">
+                            <b-col cols="10" xl="10">
                               <b-form-file
                                 v-model="dati_comune.cont_commessa_anno1"
                                 placeholder="File Excel"
@@ -299,19 +303,19 @@ import CostiSmaltimento from '../components/CostiSmaltimento'
                                 {{dati_comune.cont_commessa_anno1}}
                               </font>
                             </b-col>
-                            <b-col xl="2">
-                              <b-icon v-if="dati_comune.cont_commessa_anno1 !== null " class="h4 p-0 b-0 m-0 mt-1" variant="success" icon="check-circle-fill"></b-icon>
-                              <b-icon v-if="dati_comune.cont_commessa_anno1  === null"  class="h4 p-0 b-0 m-0 mt-1" variant="danger" icon="x-circle-fill"></b-icon>
+                            <b-col cols="2" xl="2">
+                              <b-icon v-if="dati_comune.cont_commessa_anno1 !== '' " class="h4 p-0 b-0 m-0 mt-1" variant="success" icon="check-circle-fill"></b-icon>
+                              <b-icon v-if="dati_comune.cont_commessa_anno1  === ''"  class="h4 p-0 b-0 m-0 mt-1" variant="danger" icon="x-circle-fill"></b-icon>
                             </b-col>
                           </b-row>
                         </b-container>
                       </b-col>
 
-                      <b-col :class="container_specs">
+                      <b-col cols="12" :class="container_specs">
                         <FieldTitle req="yes" description="Contabilità di commessa anno 2021 (in excel)" />
                         <b-container>
                           <b-row>
-                            <b-col xl="10">
+                            <b-col cols="10" xl="10">
                               <b-form-file
                                 v-model="dati_comune.cont_commessa_anno2"
                                 placeholder="File Excel"
@@ -321,9 +325,9 @@ import CostiSmaltimento from '../components/CostiSmaltimento'
                                 {{dati_comune.cont_commessa_anno2}}
                               </font>
                             </b-col>
-                            <b-col xl="2">
-                              <b-icon v-if="dati_comune.cont_commessa_anno2  !== null" class="h4 p-0 b-0 m-0 mt-1" variant="success" icon="check-circle-fill"></b-icon>
-                              <b-icon v-if="dati_comune.cont_commessa_anno2  === null"  class="h4 p-0 b-0 m-0 mt-1" variant="danger" icon="x-circle-fill"></b-icon>
+                            <b-col cols="2" xl="2">
+                              <b-icon v-if="dati_comune.cont_commessa_anno2  !== ''" class="h4 p-0 b-0 m-0 mt-1" variant="success" icon="check-circle-fill"></b-icon>
+                              <b-icon v-if="dati_comune.cont_commessa_anno2  === ''"  class="h4 p-0 b-0 m-0 mt-1" variant="danger" icon="x-circle-fill"></b-icon>
                             </b-col>
                           </b-row>
                         </b-container>
@@ -331,11 +335,11 @@ import CostiSmaltimento from '../components/CostiSmaltimento'
                     </b-row>
 
                     <b-row>
-                      <b-col :class="container_specs">
+                      <b-col cols="12" :class="container_specs">
                         <FieldTitle  req="yes" description="Contratto d'appalto vigente" />
                         <b-container>
                           <b-row>
-                            <b-col xl="10">
+                            <b-col cols="10" xl="10">
                               <b-form-file
                                 v-model="dati_comune.contratto_appalto"
                                 placeholder="File PDF"
@@ -345,18 +349,18 @@ import CostiSmaltimento from '../components/CostiSmaltimento'
                                 {{dati_comune.contratto_appalto}}
                               </font>
                             </b-col>
-                            <b-col xl="2">
-                              <b-icon v-if="dati_comune.contratto_appalto !== null " class="h4 p-0 b-0 m-0 mt-1" variant="success" icon="check-circle-fill"></b-icon>
-                              <b-icon v-if="dati_comune.contratto_appalto  === null"  class="h4 p-0 b-0 m-0 mt-1" variant="danger" icon="x-circle-fill"></b-icon>
+                            <b-col cols="2" xl="2">
+                              <b-icon v-if="dati_comune.contratto_appalto !== '' " class="h4 p-0 b-0 m-0 mt-1" variant="success" icon="check-circle-fill"></b-icon>
+                              <b-icon v-if="dati_comune.contratto_appalto  === ''"  class="h4 p-0 b-0 m-0 mt-1" variant="danger" icon="x-circle-fill"></b-icon>
                             </b-col>
                           </b-row>
                         </b-container>
                       </b-col>
-                      <b-col :class="container_specs">
+                      <b-col cols="12" :class="container_specs">
                         <FieldTitle req="yes" description="Ultimo PEF validato dall'ETC (Delibera + Relazione con allegati in file .zip)" />
                         <b-container>
                           <b-row>
-                            <b-col xl="10">
+                            <b-col cols="10" xl="10">
                               <b-form-file
                                 v-model="dati_comune.ultimo_pef"
                                 placeholder="File Zip"
@@ -366,36 +370,24 @@ import CostiSmaltimento from '../components/CostiSmaltimento'
                                 {{dati_comune.ultimo_pef}}
                               </font>
                             </b-col>
-                            <b-col xl="2">
-                              <b-icon v-if="dati_comune.ultimo_pef !== null " class="h4 p-0 b-0 m-0 mt-1" variant="success" icon="check-circle-fill"></b-icon>
-                              <b-icon v-if="dati_comune.ultimo_pef  === null"  class="h4 p-0 b-0 m-0 mt-1" variant="danger" icon="x-circle-fill"></b-icon>
+                            <b-col cols="2" xl="2">
+                              <b-icon v-if="dati_comune.ultimo_pef !== '' " class="h4 p-0 b-0 m-0 mt-1" variant="success" icon="check-circle-fill"></b-icon>
+                              <b-icon v-if="dati_comune.ultimo_pef  === ''"  class="h4 p-0 b-0 m-0 mt-1" variant="danger" icon="x-circle-fill"></b-icon>
                             </b-col>
                           </b-row>
                         </b-container>
                       </b-col>
                     </b-row>
                   </b-container>
-                </ol>
-
-                    <!--
-                    <b-row>
-                      <b-col :class="container_specs">
-                        <FieldTitle    name="" description="" />
-                      </b-col>
-                    </b-row>
-
-                    <b-row>
-                      <b-col :class="container_specs">
-                        <FieldTitle    name="" description="" />
-                      </b-col>
-                    </b-row> -->
-
+                </div>
+              </ol>
 
             </b-col>
           </b-row>
         </b-container>
 
-        <b-row class="ml-3 mr-3 mb-5 pb-5">
+
+        <b-row v-bind:class="{'disabled-container' : azienda.report_is_sent || azienda.report_attempts <= 0 }" v-if="current_section === 4" class="ml-3 mr-3 mb-5 pb-5">
           <b-col xl="12">
             <h3>Costi Smaltimento / Trattamento</h3>
             <b-row>
@@ -403,11 +395,11 @@ import CostiSmaltimento from '../components/CostiSmaltimento'
                 Anno
               </b-col>
 
-              <b-col xl="2">
+              <b-col class="text-danger" xl="2">
                 Impianto di smaltimento
               </b-col>
 
-              <b-col xl="2">
+              <b-col class="text-danger" xl="2">
                 Codice CER/Tipo di rifiuto
               </b-col>
 
@@ -488,7 +480,7 @@ import CostiSmaltimento from '../components/CostiSmaltimento'
               </b-col>
 
               <b-col xl="2">
-                <textarea class="form-control" v-model="extra.tipo_rifiuto">{{extra.tipo_rifiuto}}</textarea>
+                <textarea  class="form-control" v-model="extra.tipo_rifiuto">{{extra.tipo_rifiuto}}</textarea>
               </b-col>
 
               <b-col class="p-0 pr-1" xl="1">
@@ -499,15 +491,15 @@ import CostiSmaltimento from '../components/CostiSmaltimento'
               </b-col>
 
               <b-col xl="1">
-                <input class="form-control" min="0" type="number" @change="extra.importo = extra.tons * extra.prezzo_unitario" v-model="extra.tons">
+                <input class="form-control pl-1" min="0" type="number" @change="extra.importo = extra.tons * extra.prezzo_unitario" v-model="extra.tons">
               </b-col>
 
               <b-col xl="2">
-                <b-input class="form-control" min="0" type="number" @change="extra.importo = extra.tons * extra.prezzo_unitario" v-model="extra.prezzo_unitario"></b-input>
+                <b-input class="form-control pl-1" min="0" type="number" @change="extra.importo = extra.tons * extra.prezzo_unitario" v-model="extra.prezzo_unitario"></b-input>
               </b-col>
 
               <b-col xl="2">
-                <input class="form-control" min="0" type="number" v-model="extra.importo">
+                <input class="form-control pl-1" min="0" type="number" v-model="extra.importo">
               </b-col>
 
               <b-col xl="1">
@@ -530,7 +522,7 @@ import CostiSmaltimento from '../components/CostiSmaltimento'
             </b-row>
           </b-col>
         </b-row>
-      </div>
+        </div>
 
       <b-container v-if="is_logged === false" class="mb-3">
         <b-row>
@@ -586,37 +578,48 @@ import CostiSmaltimento from '../components/CostiSmaltimento'
       </b-container>
 
 
-        <div v-if="dati_comune !== false && is_logged === true && is_company_set === true" class="bg-light fixed-bottom p-2">
-          <b-container class="container">
-            <b-row class="row">
-              <b-col class="xl-2">
-                <b-button to="../../home" block variant="infowaste">
-                    Indietro
-                </b-button>
-              </b-col>
+      <div v-if="dati_comune !== false && is_logged === true && is_company_set === true" class="bg-light fixed-bottom p-2">
+        <b-container class="container">
+          <b-row class="mb-3">
+            <b-col xl="5" cols="6">
+              <b-button v-if="current_section > 1" @click="changeSection(0)" block variant="white">
+                <b-icon icon="arrow-left"></b-icon>
+                  Pagina precendente<br>{{sections[current_section - 2].text}}
+              </b-button>
+            </b-col>
+            <b-col xl="5" offset-xl="2" cols="6">
+              <b-button v-if="current_section < sections.length" @click="changeSection(1)" block variant="white">
+                  Pagina successiva<br>{{sections[current_section].text}}
+                 <b-icon icon="arrow-right"></b-icon>
+              </b-button>
+            </b-col>
+          </b-row>
+          <b-row class="row">
+            <b-col class="xl-2">
+              <b-button to="../../home" block variant="infowaste">
+                  Indietro
+              </b-button>
+            </b-col>
 
-              <b-col class="xl-1 offset-xl-4">
-                <b-button v-b-modal="'help-tab'" block variant="link">
-                    Help
-                </b-button>
-              </b-col>
+            <b-col class="xl-1 offset-xl-4">
+              <b-button v-b-modal="'help-tab'" block variant="link">
+                  Help
+              </b-button>
+            </b-col>
 
-              <b-col class="xl-1 offset-xl-4">
-                <b-button block @click="saveDatiComune(dati_comune)" variant="infowaste">
-                    Salva
-                </b-button>
-              </b-col>
-            </b-row>
-          </b-container>
-        </div>
+            <b-col class="xl-1 offset-xl-4">
+              <b-button block @click="saveDatiComune(dati_comune)" variant="infowaste">
+                  Salva
+              </b-button>
+            </b-col>
+          </b-row>
+        </b-container>
+      </div>
 
-
-        <!-- The modal -->
         <b-modal id="help-tab" cancel-title="Annulla" ok-title="Invia">
           <h5>Messaggio</h5>
           <b-form-input></b-form-input>
         </b-modal>
-
         <b-modal id="bv-modal-save-msg" hide-footer>
           <div class="text-center">
             <h5>{{save.msg}}</h5>
@@ -632,7 +635,6 @@ import CostiSmaltimento from '../components/CostiSmaltimento'
             </b-row>
           </b-container>
         </b-modal>
-
       </main>
   </template>
 
@@ -645,7 +647,6 @@ import CostiSmaltimento from '../components/CostiSmaltimento'
 
     async asyncData({ $axios, params })
     {
-
         try {
           $axios.defaults.withCredentials = true;
 
@@ -655,62 +656,82 @@ import CostiSmaltimento from '../components/CostiSmaltimento'
           if(is_logged == true && is_company_set == true)
           {
               var dati_comune = await $axios.$post(`/get_dati_comune`,{id: params.id});
+              var current_section = dati_comune['current_section'];
               var azienda = await $axios.$get(`/get_company_data`);
               var costi_smaltimento = await $axios.$post(`/get_costi_smaltimento` ,{id: params.id});
 
-              const filenames =["cont_commessa_anno1","cont_commessa_anno2","contratto_appalto","ultimo_pef",]
-
-
-              for (var count = 0; count < filenames.length; count++)
+              const filenames = ["cont_commessa_anno1","cont_commessa_anno2","contratto_appalto","ultimo_pef",]
+              /*for (var count = 0; count < filenames.length; count++)
               {
-                var filename = dati_comune[filenames[count]]
+                    var filename = dati_comune[filenames[count]]
 
-                if(filename)
-                {
-                  var i = filename.length
-                  var j = 0
-                  do {
-
-                    if(filename[i] == '/')
+                    if(filename)
                     {
-                      j = i
-                      i = 0
-                      var str = []
-                      var cont = 0
+                      var i = filename.length
+                      var j = 0
+                          do
+                          {
+                                if(filename[i] == '/')
+                                {
+                                  j = i
+                                  i = 0
+                                  var str = []
+                                  var cont = 0
+                                  for (var k = j + 1; k < filename.length; k++)
+                                  {
+                                    str[cont] = filename[k]
+                                    cont++
+                                  }
+                            }
 
-                      for (var k = j + 1; k < filename.length; k++)
-                      {
-                        str[cont] = filename[k]
-                        cont++
-                      }
+
+                        i--
+
+                      } while (i > 0);
+
+
+                      str = str.join('')
+                      str = str.toString()
+                      dati_comune[filenames[count]] = str
 
                     }
-
-
-                    i--
-
-                  } while (i > 0);
-
-
-                  str = str.join('')
-                  str = str.toString()
-                  dati_comune[filenames[count]] = str
-
-                }
-              }
+              }*/
           }
 
-          return {azienda,is_logged,is_company_set,dati_comune,costi_smaltimento};
+          return {current_section,azienda,is_logged,is_company_set,dati_comune,costi_smaltimento};
         } catch (e) {
 
           return {dati_comune: false,azienda:[],costi_smaltimento:[]};
           }
 
     },
+    mounted () {
 
+      this.width = window.innerWidth
+      console.log(this.width)
+    },
 
     methods:
     {
+        changeSection(direction)
+        {
+           if (this.current_section >= 1 &&  this.current_section <= this.sections.length) {
+
+              if (direction) {
+
+                this.current_section++
+
+              }else {
+
+                this.current_section--
+
+              }
+          }
+
+        },
+
+
+
         uploadFiles(dati_comune)
         {
 
@@ -954,6 +975,26 @@ import CostiSmaltimento from '../components/CostiSmaltimento'
             is_completed = 0
           }
 
+          //controllo invio dei FILES
+          if(dati_comune.cont_commessa_anno1 != '[object File]' && dati_comune.cont_commessa_anno1 == '')
+          {
+            is_completed = 0
+          }
+
+              if(dati_comune.cont_commessa_anno2 != '[object File]' && dati_comune.cont_commessa_anno2 == '')
+              {
+                is_completed = 0
+              }
+
+                  if(dati_comune.contratto_appalto != '[object File]' && dati_comune.contratto_appalto == '')
+                  {
+                    is_completed = 0
+                  }
+
+                      if(dati_comune.ultimo_pef != '[object File]' && dati_comune.ultimo_pef == '')
+                      {
+                        is_completed = 0
+                      }
 
 
           this.$axios.post('/save_dati_comune', {
@@ -1000,6 +1041,7 @@ import CostiSmaltimento from '../components/CostiSmaltimento'
             xcent_media_imp_plastica: dati_comune.xcent_media_imp_plastica,
             xcent_media_imp_metallo: dati_comune.xcent_media_imp_metallo,
             xcent_media_imp_vetro: dati_comune.xcent_media_imp_vetro,
+            current_section: this.current_section,
             completed: is_completed
 
           })
@@ -1011,7 +1053,7 @@ import CostiSmaltimento from '../components/CostiSmaltimento'
               {
                 this.save.msg="Salvataggio avvenuto con successo!"
                 this.save.color="success"
-                this.$bvModal.show('bv-modal-save-msg')
+                //this.$bvModal.show('bv-modal-save-msg')
               }
           })
 
@@ -1020,7 +1062,7 @@ import CostiSmaltimento from '../components/CostiSmaltimento'
               console.log(error);
               this.save.msg=error
               this.save.color="danger"
-              this.$bvModal.show('bv-modal-save-msg')
+              //this.$bvModal.show('bv-modal-save-msg')
 
           });
 
@@ -1034,7 +1076,14 @@ import CostiSmaltimento from '../components/CostiSmaltimento'
     data() {
 
         return {
-
+                  sections:
+                  [
+                    {num:1 , text:"Dati Generali"},
+                    {num:2 , text:"Dati tecnici dell'appalto"},
+                    {num:3 , text:"Documenti riferiti all'appalto"},
+                    {num:4 , text:"Costi Smaltimento / Trattamento"}
+                  ],
+                  width:0,
                   page_id:0,
                   is_logged:false,
                   is_company_set:false,
@@ -1063,7 +1112,7 @@ import CostiSmaltimento from '../components/CostiSmaltimento'
 
                   },
 
-                  container_specs:'col-xl-6 col-md-12 col-lg-12 col-sm-12 p-2 pl-3 pr-3 mt-4 mb-4',
+                  container_specs:'col-12 col-xl-6 p-2 pl-3 pr-3 mt-3 mb-3',
                   file1: null,
                   file2: null,
                   file3: null,

@@ -48,10 +48,13 @@ class Azienda(models.Model):
 
     ragione_sociale = models.CharField(max_length = 255,default='')
     partita_iva = models.CharField(max_length = 11,default='')
-    bilancio_depositato_anno1 = models.FileField(default='', blank=True)
-    bilancio_depositato_anno2 = models.FileField(default='', blank=True)
-    ammortamenti = models.FileField(default='',blank=True)
-    export_daticomuni = models.FileField(default='',blank=True)
+    bilancio_depositato_anno1 = models.CharField(max_length= 512,default='',blank=True)
+    bilancio_depositato_anno2 = models.CharField(max_length= 512,default='',blank=True)
+    ammortamenti = models.CharField(max_length= 512,default='',blank=True)
+    export_daticomuni = models.CharField(max_length= 512,default='',blank=True)
+    report_attempts = models.IntegerField(default = 5)
+    report_is_sent = models.BooleanField(default = False)
+
     scelte_pef = (
         [('CALCOLATO', 'CALCOLATO'),
         ('MISURATO', 'MISURATO')]
@@ -125,10 +128,19 @@ def password_reset_token_created(sender, instance, reset_password_token, *args, 
         [reset_password_token.user.email]
     )
 
+class Report(models.Model):
+
+    azienda =  models.ForeignKey(Azienda, default = '', null=True, blank=True,on_delete=models.SET_DEFAULT)
+    user_sent_id = models.ForeignKey(User, default = '', null=True, blank=True,on_delete=models.SET_DEFAULT)
+    request_date = models.DateTimeField(default = datetime.datetime.now())
+
+
 class DatiComune(models.Model):
 
     comune = models.ForeignKey(comuni_italiani.Comune, default='', on_delete = models.SET_DEFAULT)
     azienda =  models.ForeignKey(Azienda, default='', on_delete = models.CASCADE)
+
+    current_section = models.IntegerField(default=1)
 
 
     scelte_pef = (
@@ -203,10 +215,10 @@ class DatiComune(models.Model):
     xcent_media_imp_metallo = models.FloatField(default = 0)
     xcent_media_imp_vetro = models.FloatField(default = 0)
 
-    cont_commessa_anno1 = models.FileField(default='', blank=True)
-    cont_commessa_anno2 = models.FileField(default='', blank=True)
-    contratto_appalto = models.FileField(default='', blank=True)
-    ultimo_pef = models.FileField(default='', blank=True)
+    cont_commessa_anno1 = models.CharField(max_length = 512,default = '',blank = True)
+    cont_commessa_anno2 = models.CharField(max_length = 512,default = '',blank = True)
+    contratto_appalto = models.CharField(max_length = 512,default = '',blank = True)
+    ultimo_pef = models.CharField(max_length = 512,default = '',blank = True)
 
 
 

@@ -5,7 +5,7 @@ from .views import RegisterUserView, login,logout,add_comune_azienda,role,is_com
 
 
 from .views import UserViewSet,get_user_data
-from .views import AziendaViewSet,savePEF,add_azienda,upload_company_files,del_azienda
+from .views import AziendaViewSet,savePEF,add_azienda,upload_company_files,del_azienda,update_report
 from .views import DatiComuneViewSet,get_dati_comune,del_comune_azienda,save_dati_comune,upload_comune_files
 from .views import CostoSmaltimentoViewSet,get_costi_smaltimento
 from .views import ChangePasswordView
@@ -13,7 +13,7 @@ from .views import ChangePasswordView
 
 router = DefaultRouter()
 
-#router.register(r'utenti', UserViewSet)
+router.register(r'utenti', UserViewSet)
 #router.register(r'aziende', AziendaViewSet)
 #router.register(r'dati_comuni', DatiComuneViewSet)
 router.register(r'costi_smaltimento', CostoSmaltimentoViewSet)
@@ -34,6 +34,7 @@ urlpatterns = [
         path('del_azienda', del_azienda),
         path('get_company_data', get_company_data),
         path('upload_company_files', upload_company_files),
+        path('update_report', update_report),
         path('get_dati_comune', get_dati_comune),
         path('get_costi_smaltimento', get_costi_smaltimento),
         path('savePEF', savePEF),

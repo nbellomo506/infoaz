@@ -1,11 +1,12 @@
 # Create your views here.
 import requests
 import json
-import os
+import os.path
 
 from rest_framework import status
 from rest_framework import generics
 from rest_framework import viewsets
+from rest_framework import mixins
 from rest_framework.generics import CreateAPIView
 from django.contrib.auth import authenticate
 from django.shortcuts import render
@@ -27,6 +28,9 @@ from .serializers import ChangePasswordSerializer
 from django.core import serializers
 from django.conf import settings
 
+from django.core.files.base import ContentFile
+from django.core.files.storage import default_storage
+
 from .models import Azienda
 from .serializers import AziendaSerializer
 
@@ -42,7 +46,8 @@ from .serializers import CostoSmaltimentoSerializer
 from comuni_italiani.models import Comune
 import xlwt
 
-basedir = "C:/Users/Nicolas/OneDrive/infowaste-aziende-test/"
+
+basedir = settings.MEDIA_ROOT
 #basedir = "C:/Users/Administrator/OneDrive/infowaste-aziende/"
 
 
@@ -152,9 +157,9 @@ def add_comune_azienda(request):
 
                     obj = DatiComune.objects.create(comune_id =  comune , azienda_id = request.session['azienda'])
                     obj.save()
-                    comune = str(obj.azienda)
-                    azienda = str(obj.comune)
-                    os.mkdir(os.path.join(basedir, comune+'/'+azienda))
+                    comune = str(obj.comune)
+                    azienda = str(obj.azienda)
+                    os.mkdir(os.path.join(basedir, azienda+'/'+comune))
 
                     return HttpResponse("OK")
 
@@ -212,6 +217,7 @@ def save_dati_comune(request):
                         obj.xcent_media_imp_plastica = body['xcent_media_imp_plastica']
                         obj.xcent_media_imp_metallo = body['xcent_media_imp_metallo']
                         obj.xcent_media_imp_vetro = body['xcent_media_imp_vetro']
+                        obj.current_section = body['current_section']
                         obj.completed = body['completed']
 
                         obj.save()
@@ -294,35 +300,46 @@ def upload_comune_files(request):
     if request.session['logged'] == True:
         if 'user_id' and 'azienda' in request.session is not None:
             if azienda == request.session['azienda']:
+                obj = DatiComune.objects.get(pk = id , azienda_id = azienda)
+                az = Azienda.objects.get(pk = azienda)
 
-                print("vada")
                 try:
-                    obj = DatiComune.objects.get(pk = id , azienda_id = azienda)
-                    az = Azienda.objects.get(pk = azienda)
-
-                    print(settings.MEDIA_ROOT)
-                    settings.MEDIA_ROOT = basedir + az.ragione_sociale + '/' + str(obj.comune)
-                    print(settings.MEDIA_ROOT)
 
                     if 'cont_commessa_anno1' in request.FILES is not None:
-                         obj.cont_commessa_anno1 = request.FILES['cont_commessa_anno1']
+                         file = request.FILES['cont_commessa_anno1']
+                         obj.cont_commessa_anno1 = file.name
                          obj.save()
+
+                         with open(basedir + '/' + az.ragione_sociale + '/' + str(obj.comune) + '/' + file.name,'wb+') as destination:
+                             for chunk in file.chunks():
+                                 destination.write(chunk)
 
                     if 'cont_commessa_anno2' in request.FILES is not None:
-
-                         obj.cont_commessa_anno2 = request.FILES['cont_commessa_anno2']
+                         file = request.FILES['cont_commessa_anno2']
+                         obj.cont_commessa_anno2 = file.name
                          obj.save()
+
+                         with open(basedir + '/' + az.ragione_sociale + '/' + str(obj.comune) + '/' + file.name,'wb+') as destination:
+                             for chunk in file.chunks():
+                                 destination.write(chunk)
 
                     if 'contratto_appalto' in request.FILES is not None:
-
-                         obj.contratto_appalto = request.FILES['contratto_appalto']
+                         file = request.FILES['contratto_appalto']
+                         obj.contratto_appalto = file.name
                          obj.save()
+
+                         with open(basedir + '/' + az.ragione_sociale + '/' + str(obj.comune) + '/' + file.name,'wb+') as destination:
+                             for chunk in file.chunks():
+                                 destination.write(chunk)
 
                     if 'ultimo_pef' in request.FILES is not None:
-
-                         obj.ultimo_pef = request.FILES['ultimo_pef']
+                         file = request.FILES['ultimo_pef']
+                         obj.ultimo_pef = file.name
                          obj.save()
 
+                         with open(basedir + '/' + az.ragione_sociale + '/' + str(obj.comune) + '/' + file.name,'wb+') as destination:
+                             for chunk in file.chunks():
+                                 destination.write(chunk)
                     error= "OK"
                     return HttpResponse(error)
 
@@ -346,25 +363,46 @@ def upload_company_files(request):
         if request.session['logged'] == True:
             if request.session['azienda'] > 0 and request.session['is_assigned'] == True:
 
-                 obj = Azienda.objects.get(pk = request.session['azienda'])
-                 print(settings.MEDIA_ROOT)
-                 settings.MEDIA_ROOT = basedir + obj.ragione_sociale
-                 print(settings.MEDIA_ROOT)
+                 az = Azienda.objects.get(pk = request.session['azienda'])
 
                  if 'ammortamenti' in request.FILES is not None:
-                     obj.ammortamenti = request.FILES['ammortamenti']
-                     obj.save()
+                     file = request.FILES['ammortamenti']
+                     az.ammortamenti = file.name
+                     az.save()
+                     with open(basedir + '/' + az.ragione_sociale + '/' + file.name,'wb+') as destination:
+                         for chunk in file.chunks():
+                             destination.write(chunk)
+
+
 
                  if 'bilancio_depositato_anno1' in request.FILES is not None:
 
-                     obj.bilancio_depositato_anno1 = request.FILES['bilancio_depositato_anno1']
-                     obj.save()
+                     file = request.FILES['bilancio_depositato_anno1']
+                     az.bilancio_depositato_anno1 = file.name
+                     az.save()
+                     with open(basedir + '/' + az.ragione_sociale + '/' + file.name,'wb+') as destination:
+                         for chunk in az.bilancio_depositato_anno1.chunks():
+                             destination.write(chunk)
 
                  if 'bilancio_depositato_anno2' in request.FILES is not None:
 
-                     obj.bilancio_depositato_anno2 = request.FILES['bilancio_depositato_anno2']
-                     obj.save()
+                     file = request.FILES['bilancio_depositato_anno2']
+                     az.bilancio_depositato_anno2 = file.name
+                     az.save()
+                     az.bilancio_depositato_anno2 = request.FILES['bilancio_depositato_anno2']
+                     file = az.bilancio_depositato_anno2
+                     with open(basedir + '/' + az.ragione_sociale + '/' + file.name,'wb+') as destination:
+                         for chunk in az.bilancio_depositato_anno2.chunks():
+                             destination.write(chunk)
 
+
+                 if 'export_daticomuni' in request.FILES is not None:
+                     az.export_daticomuni = request.FILES['export_daticomuni']
+                     file = az.export_daticomuni
+                     with open(basedir + '/' + az.ragione_sociale + '/' + file.name,'wb+') as destination:
+                         for chunk in az.export_daticomuni.chunks():
+                             destination.write(chunk)
+                     #az.save()
 
             else:
                 return JsonResponse("False",content_type="application/json",safe=False)
@@ -374,7 +412,28 @@ def upload_company_files(request):
 
     return JsonResponse("False",content_type="application/json",safe=False)
 
+def update_report(request):
 
+
+    if 'logged' in request.session is not None:
+        if request.session['logged'] == True:
+            if request.session['azienda'] > 0 and request.session['is_assigned'] == True:
+
+                az = Azienda.objects.get(pk = request.session['azienda'])
+
+                if az.report_attempts > 0:
+                    az.report_is_sent = not az.report_is_sent
+                    az.report_attempts = az.report_attempts - 1
+
+                az.save()
+
+            else:
+                return JsonResponse("False",content_type="application/json",safe=False)
+
+        else:
+            return JsonResponse("False",content_type="application/json",safe=False)
+
+    return JsonResponse("False",content_type="application/json",safe=False)
 
 def get_costi_smaltimento(request):
 
@@ -564,7 +623,8 @@ class CurrentLoggedInUser(ModelViewSet):
 
 class UserViewSet(viewsets.ModelViewSet):
     serializer_class = UserSerializer
-    queryset = User.objects.order_by('id')
+    queryset = User.objects.filter(pk = -1)
+    http_method_names = [ 'post']
 
 class ChangePasswordView(generics.UpdateAPIView):
     """
