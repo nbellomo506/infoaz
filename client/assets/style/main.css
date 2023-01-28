@@ -5,18 +5,26 @@
   --black: #212529;
 }
 
-.dropdown-item:active {
+.dropdown-item:active
+{
     background-color: var(--theme) ;
     color: var(--white)
 }
 
-.dropdown-item:hover {
+.dropdown-item:hover
+{
     background-color: var(--theme) ;
-    color: var(--white)
+    color: var(--white);
 }
+
+.navbar-dark .navbar-nav .nav-link {
+    color: rgba(255, 255, 255, 1);
+}
+
 .bg-infowaste
 {
   background-color:var(--theme);
+  color:var(--white)
 }
 
 .btn-white
@@ -29,8 +37,13 @@
 {
   color: var(--white);
   background-color:var(--theme);
-
 }
+
+.btn
+{
+  border-radius: 20px
+}
+
 .btn-infowaste:hover
 {
   color: var(--white);

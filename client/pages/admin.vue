@@ -10,7 +10,6 @@ import CostiSmaltimento from '../components/CostiSmaltimento'
   <main>
     <Header/>
 
-
       <div class="p-0 m-0 b-0">
         <b-container class="pb-5" v-if="is_logged === true && role === 'Admin'">
           <b-row>
@@ -44,13 +43,15 @@ import CostiSmaltimento from '../components/CostiSmaltimento'
                       {{utente.nome}} {{utente.cognome}}
                     </b-col>
                     <b-col xl="3">
-                      {{utente.email}} - {{utente.telefono}}
+                      {{utente.email}} <br> {{utente.telefono}}
                     </b-col>
                     <b-col xl="2">
-                      {{utente.p_iva}} - <br> {{utente.ragione_sociale}}
+                      {{utente.p_iva}} <br> {{utente.ragione_sociale}}
                     </b-col>
                     <b-col xl="2">
-                      {{utente.request_date}}
+                      {{utente.data}}
+                      <br>
+                      {{utente.orario}}
                     </b-col>
                     <b-col xl="3">
                       <b-container class="b-0 m-0 p-0">
@@ -96,13 +97,15 @@ import CostiSmaltimento from '../components/CostiSmaltimento'
                       {{utente.nome}} {{utente.cognome}}
                     </b-col>
                     <b-col xl="3">
-                      {{utente.email}} - {{utente.telefono}}
+                      {{utente.email}} <br> {{utente.telefono}}
                     </b-col>
                     <b-col xl="2">
-                      {{utente.p_iva}} - <br> {{utente.ragione_sociale}}
+                      {{utente.p_iva}} <br> {{utente.ragione_sociale}}
                     </b-col>
                     <b-col xl="2">
-                      {{utente.request_date}}
+                      {{utente.data}}
+                      <br>
+                      {{utente.orario}}
                     </b-col>
                     <b-col xl="3">
                       <b-container class="b-0 m-0 p-0">
@@ -110,7 +113,7 @@ import CostiSmaltimento from '../components/CostiSmaltimento'
                           <b-col xl="6">
                             <select class="w-100 custom-select" v-model="utente.azienda" :key="utente.email" >
                               <option :selected="utente.azienda === azienda.id" v-for="azienda in aziende" :key="azienda.id" :value="azienda.id">
-                                  {{ azienda.ragione_sociale }}
+                                  {{azienda.ragione_sociale}}
                               </option>
                             </select>
                           </b-col>
@@ -199,9 +202,7 @@ import CostiSmaltimento from '../components/CostiSmaltimento'
                       <h1>Attenzione</h1>
                       <p>
                         <a v-if="is_logged === false" href="./login">Accedi</a>
-                        <a v-else="role==='Normal'" >Accedi</a>
-
-                        come Admin per visualizzare il contenuto
+                        <a v-else="role==='Normal'" >Accedi</a> come Admin per visualizzare il contenuto
                       </p>
                     </b-col>
                   </b-row>
@@ -231,6 +232,53 @@ import CostiSmaltimento from '../components/CostiSmaltimento'
             if(is_logged == true && role == "Admin")
             {
               var utenti = await $axios.$get(`/get_utenti`);
+
+                  for (var i = 0; i < utenti.length; i++)
+                  {
+                      var data = []
+                      var orario = []
+
+                        for (var j = 0; utenti[i].request_date[j] != 'T'; j++)
+                        {
+                          console.log(data)
+                          data[j] = utenti[i].request_date[j]
+                        }
+
+                        j++
+                        var k = 0
+
+                          while (j < utenti[i].request_date.length )
+                          {
+                              if (utenti[i].request_date[j] == '+' || utenti[i].request_date[j] == '.')
+                              {
+                                j = utenti[i].request_date.length
+
+                              }
+                                  else
+                                  {
+
+                                    orario[k] = utenti[i].request_date[j]
+
+                                  }
+                              j++
+                              k++
+                          }
+
+
+
+                      data = data.join('')
+                      data.toString()
+
+                      orario = orario.join('')
+                      orario.toString()
+
+                      utenti[i].data = data
+                      utenti[i].orario = orario
+
+
+                  }
+
+
               var aziende = await $axios.$get(`/get_aziende`);
 
             }

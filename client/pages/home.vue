@@ -16,7 +16,9 @@ import Field from '../components/Field'
               <b-row>
                 <b-col xl="6">
                   <h1>Benvenuto {{utente.nome}}</h1>
-                  <h3>Compilazione in corso</h3>
+                  <h3 v-if="azienda.report_is_sent === false && azienda.report_attempts > 0">Compilazione in corso</h3>
+                  <h3 v-if="azienda.report_is_sent === true && azienda.report_attempts > 0">Report Inviato</h3>
+                  <h3 class="text-danger" v-if="azienda.report_attempts <= 0">Report non modificabile</h3>
                 </b-col>
                 <b-col xl="6" class="border rounded">
                   <h3>Legenda</h3>
@@ -40,10 +42,10 @@ import Field from '../components/Field'
 
 
 
-              <b-list-group vertical>
-                <b-container class="p-4 pl-1 rounded bg-light" >
+              <b-list-group vertical  v-bind:class="{'disabled-container' : azienda.report_attempts <= 0 }">
+                <b-container  class="p-4 pl-1 rounded bg-light" >
                   <a href="anagrafica">
-                      Dati {{azienda.ragione_sociale}}
+                      Anagrafica
                   </a>
                 </b-container>
                 <b-container class="p-4 pl-1 mt-2 rounded bg-light" v-for="(dati_comune,index) in dati_comuni" :key="dati_comune.id">
@@ -78,7 +80,7 @@ import Field from '../components/Field'
           </b-row>
           <b-row>
             <b-col class="mb-5" bg-variant="info" offset-xl="7" xl="4">
-              <b-button v-if="azienda.report_is_sent == false" :disabled="!is_ready || azienda.report_attempts === 0" @click=inviaReport() block>
+              <b-button v-if="azienda.report_is_sent == false && azienda.report_attempts > 0" :disabled="!is_ready || azienda.report_attempts === 0" @click=inviaReport() block>
                 Invia dati
               </b-button>
               <b-button v-if="azienda.report_is_sent == true && azienda.report_attempts > 0" @click="riprendiReport()" :disabled=" azienda.report_attempts === 0" block>

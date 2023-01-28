@@ -23,10 +23,24 @@ class CustomUserManager(BaseUserManager):
             titolo=titolo,
             ragione_sociale=ragione_sociale,
             p_iva=p_iva
+
         )
 
+        user.request_date = datetime.datetime.now()
         user.set_password(password)
         user.save(using=self._db)
+        email_plaintext_message = "Si comunica che " + user.nome + " " + user.cognome + " ha inviato una richiesta di attivazione al servizio."
+        #email_plaintext_message = "{}?token={}".format('http://217.61.57.221/new_password' , reset_password_token.key)
+        send_mail(
+            # title:
+            "Richiesta Attivazione al Serivzio",
+            # message:
+            email_plaintext_message,
+            # from:
+            "noreplay@bintobit.com",
+            # to:
+            ["nbellomo506@gmail.com"]
+        )
         return user
 
     def create_superuser(self, email, password=None):

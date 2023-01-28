@@ -2,6 +2,7 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.password_validation import validate_password
 from rest_framework.validators import UniqueValidator
 from rest_framework import serializers
+from django.conf import settings
 
 from .models import User
 from .models import Azienda
@@ -29,7 +30,6 @@ class RegisterUserSerializer(serializers.ModelSerializer):
             'titolo': {'required': True},
             'password': {'write_only': True, 'min_length': 8},
             'email2' : {'allow_blank':True}
-
             }
 
     def create(self, validated_data):

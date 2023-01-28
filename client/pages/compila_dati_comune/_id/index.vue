@@ -6,19 +6,37 @@ import CostiSmaltimento from '../components/CostiSmaltimento'
 
 
 
-<template>
-  <main>
-    <Header/>
-        <div class="container-fluid p-0 pb-5 mb-5 m-0 b-0" v-if="dati_comune !== false && is_company_set === true && is_logged === true">
-          <b-container class="pb-5 mt-0 b-0">
-          <b-row class="pb-5 pt-5">
+  <template>
+    <main>
+      <Header/>
 
-            <b-col offset-xl="1" xl="10">
+        <b-nav  v-if="dati_comune !== false && is_company_set === true && is_logged === true" class="mt-3" tabs align="center">
+          <b-nav-item class="text-danger" @click="goToSection(section.num)" style="cursor:pointer" v-for="section in sections" :active="section.num === current_section">
+              <font :class="{ 'text-secondary':section.num === 4,'text-success': section.completed === 1 && section.num != 4 , 'text-danger': section.completed === 0 && section.num != 4 }">
+                {{section.text}}
+              </font>
+          </b-nav-item>
+        </b-nav>
+
+        <div class="container-fluid p-0 pb-5 mb-5 m-0 b-0" v-if="dati_comune !== false && is_company_set === true && is_logged === true">
+          <b-container fluid class=" mt-0 b-0">
+          <b-row>
+            <b-col class="pt-5 bg-light" xl="2" hidden>
+              <div class="pt-2 pb-2">
+                <ul>
+                  <li style="cursor:pointer" v-for="section in sections">
+                    <u>
+                      <a @click="goToSection(section.num)">{{section.text}}</a>
+                    </u>
+                  </li>
+                </ul>
+              </div>
+            </b-col>
+            <b-col class="borders-rounded pt-5 pb-5 mb-5" offset-xl="3" xl="6">
               <ol class="p-0 m-0 b-0">
               <PageTitle :name="`Comune di ${dati_comune.nome_comune}`" description="I campi in rosso sono obbligatori"/>
               <div v-bind:class="{'disabled-container' : azienda.report_is_sent || azienda.report_attempts <= 0 }" class="p-0 b-0 m-0" v-if="current_section === 1">
                 <h3>{{sections[current_section-1].text}}</h3>
-
                 <b-row>
                   <b-col :class="container_specs">
                     <div class="text-secondary pr-4">
@@ -29,172 +47,172 @@ import CostiSmaltimento from '../components/CostiSmaltimento'
                     <b-form-radio-group disabled v-model="azienda.pef_mis_o_ric" :options="opts.tipo2"></b-form-radio-group>
                   </b-col>
                 </b-row>
-                  <b-container  class="p-0 m-0 b-0" name="calc_o_mis" v-show="azienda.pef_mis_o_ric === 'CALCOLATO'">
-                      <b-row>
-                        <b-col :class="container_specs">
-                        <FieldTitle letter="a" name="ris_ula_o_ore" req="yes" description="Per ciascuno dei servizi elencati, le risorse umane impiegate sono indicate in:" />
-                            <b-form-radio-group v-model="dati_comune.ris_ula_o_ore" :options="opts.tipo3"></b-form-radio-group>
-                        </b-col>
-                      </b-row>
-                      <b-row>
-                        <b-col :class="container_specs">
-                          <FieldTitle letter="b" req="yes" name="tot_app" description="Totale per la conduzione dell'appalto" />
-                          <input class="form-control" v-model="dati_comune.tot_app" type="number" >
-                        </b-col>
-                        <b-col :class="container_specs">
-                          <FieldTitle letter="c" req="yes" name="app_servizi" description="Di cui per impiegati e addetti ai servizi generali" />
-                          <input class="form-control" v-model="dati_comune.app_servizi" type="number">
-                        </b-col>
-                      </b-row>
-                      <b-row>
-                        <b-col :class="container_specs">
-                          <FieldTitle letter="d" req="yes" name="app_rifiuti_diff" description="Di cui per addetti alla raccolta e trasporto dei rifiuti differenziati" />
-                          <input class="form-control" v-model="dati_comune.app_rifiuti_diff" type="number">
-                        </b-col>
-                        <b-col :class="container_specs">
-                          <FieldTitle letter="e" req="yes" name="app_rifiuti_indiff" description="Di cui per addetti alla raccolta e trasporto dei rifiuti indifferenziati" />
-                          <input class="form-control" v-model="dati_comune.app_rifiuti_indiff" type="number">
-                        </b-col>
-                      </b-row>
-                      <b-row>
-                        <b-col :class="container_specs" xl="12">
-                          <FieldTitle letter="f" req="yes" name="app_igiene" description="Di cui per addetti ai servizi di spazzamento e igiene urbana" />
-                          <input class="form-control" v-model="dati_comune.app_igiene" type="number">
-                        </b-col>
-                      </b-row>
-                    <hr>
-                  </b-container>
+                <b-container  class="p-0 m-0 b-0" name="calc_o_mis" v-show="azienda.pef_mis_o_ric === 'CALCOLATO'">
+                  <b-row>
+                    <b-col :class="container_specs">
+                    <FieldTitle letter="a" name="ris_ula_o_ore" req="yes" description="Per ciascuno dei servizi elencati, le risorse umane impiegate sono indicate in:" />
+                        <b-form-radio-group v-model="dati_comune.ris_ula_o_ore" :options="opts.tipo3"></b-form-radio-group>
+                    </b-col>
+                  </b-row>
+                  <b-row>
+                    <b-col :class="container_specs">
+                      <FieldTitle letter="b" req="yes" name="tot_app" description="Totale per la conduzione dell'appalto" />
+                      <input class="form-control" v-model="dati_comune.tot_app" type="number" >
+                    </b-col>
+                    <b-col :class="container_specs">
+                      <FieldTitle letter="c" req="yes" name="app_servizi" description="Di cui per impiegati e addetti ai servizi generali" />
+                      <input class="form-control" v-model="dati_comune.app_servizi" type="number">
+                    </b-col>
+                  </b-row>
+                  <b-row>
+                    <b-col :class="container_specs">
+                      <FieldTitle letter="d" req="yes" name="app_rifiuti_diff" description="Di cui per addetti alla raccolta e trasporto dei rifiuti differenziati" />
+                      <input class="form-control" v-model="dati_comune.app_rifiuti_diff" type="number">
+                    </b-col>
+                    <b-col :class="container_specs">
+                      <FieldTitle letter="e" req="yes" name="app_rifiuti_indiff" description="Di cui per addetti alla raccolta e trasporto dei rifiuti indifferenziati" />
+                      <input class="form-control" v-model="dati_comune.app_rifiuti_indiff" type="number">
+                    </b-col>
+                  </b-row>
+                  <b-row>
+                    <b-col :class="container_specs" xl="12">
+                      <FieldTitle letter="f" req="yes" name="app_igiene" description="Di cui per addetti ai servizi di spazzamento e igiene urbana" />
+                      <input class="form-control" v-model="dati_comune.app_igiene" type="number">
+                    </b-col>
+                  </b-row>
+                <hr>
+              </b-container>
 
-                    <b-row>
-                      <b-col :class="container_specs">
-                        <FieldTitle name="altri_gestori_flag" req="yes" description="Oltre al Comune e all'impresa operano altri Gestori nel medesimo Comune / Ambito Tariffario?" />
-                        <b-form-radio-group v-model="dati_comune.altri_gestori_flag" :options="opts.tipo1"></b-form-radio-group>
-                      </b-col>
-                      <b-col :class="container_specs" v-show="dati_comune.altri_gestori_flag === true" >
-                        <FieldTitle   letter="a" name="altri_gestori"  description="Per quali servizi operano gli altri Gestori" />
-                        <input class="form-control" v-model="dati_comune.altri_gestori" type="text">
-                      </b-col>
-                    </b-row>
+                <b-row>
+                  <b-col :class="container_specs">
+                    <FieldTitle name="altri_gestori_flag" req="yes" description="Oltre al Comune e all'impresa operano altri Gestori nel medesimo Comune / Ambito Tariffario?" />
+                    <b-form-radio-group v-model="dati_comune.altri_gestori_flag" :options="opts.tipo1"></b-form-radio-group>
+                  </b-col>
+                  <b-col :class="container_specs" v-show="dati_comune.altri_gestori_flag === true" >
+                    <FieldTitle   letter="a" name="altri_gestori"  description="Per quali servizi operano gli altri Gestori" />
+                    <input class="form-control" v-model="dati_comune.altri_gestori" type="text">
+                  </b-col>
+                </b-row>
 
-                    <b-row>
-                      <b-col :class="container_specs">
-                        <FieldTitle name="appalto_attuale_data" description="L'appalto con la configurazione attuale è stato avviato il" />
-                        <input class="form-control" v-model="dati_comune.appalto_attuale_data" type="date">
-                      </b-col>
+                <b-row>
+                  <b-col :class="container_specs">
+                    <FieldTitle name="appalto_attuale_data" description="L'appalto con la configurazione attuale è stato avviato il" />
+                    <input class="form-control" v-model="dati_comune.appalto_attuale_data" type="date">
+                  </b-col>
 
-                      <b-col :class="container_specs">
-                        <FieldTitle name="impresa_op_com_data" description="L'impresa opera nel Comune / Ambito Tariffario da" />
-                        <input class="form-control" v-model="dati_comune.impresa_op_com_data" type="date">
-                      </b-col>
-                    </b-row>
+                  <b-col :class="container_specs">
+                    <FieldTitle name="impresa_op_com_data" description="L'impresa opera nel Comune / Ambito Tariffario da" />
+                    <input class="form-control" v-model="dati_comune.impresa_op_com_data" type="date">
+                  </b-col>
+                </b-row>
 
-                    <b-row>
-                      <b-col :class="container_specs">
-                        <FieldTitle name="valore_can" description="Valore del canone contrattuale IVA ESCLUSA nell'anno corrente" />
-                        <input class="form-control" v-model="dati_comune.valore_can" type="number">
+                <b-row>
+                  <b-col :class="container_specs">
+                    <FieldTitle name="valore_can" description="Valore del canone contrattuale IVA ESCLUSA nell'anno corrente" />
+                    <input class="form-control" v-model="dati_comune.valore_can" type="number">
 
-                      </b-col>
+                  </b-col>
 
-                      <b-col :class="container_specs">
-                        <FieldTitle name="adeg_contr_flag" description="E' previsto l'adeguamento contrattuale del canone su base annua?" />
-                        <b-form-radio-group v-model="dati_comune.adeg_contr_flag" :options="opts.tipo1"></b-form-radio-group>
-                      </b-col>
-                    </b-row>
+                  <b-col :class="container_specs">
+                    <FieldTitle name="adeg_contr_flag" description="E' previsto l'adeguamento contrattuale del canone su base annua?" />
+                    <b-form-radio-group v-model="dati_comune.adeg_contr_flag" :options="opts.tipo1"></b-form-radio-group>
+                  </b-col>
+                </b-row>
 
-                    <b-row>
-                      <b-col :class="container_specs" xl="12">
-                        <FieldTitle name="ricavi_conai" description="I ricavi dai sistemi di compliance (ricavi CONAI e altri) competono all'impresa o al Comune?" />
-                        <b-form-radio-group v-model="dati_comune.ricavi_conai" :options="opts.tipo4"></b-form-radio-group>
-                      </b-col>
-                    </b-row>
+                <b-row>
+                  <b-col :class="container_specs" xl="12">
+                    <FieldTitle name="ricavi_conai" description="I ricavi dai sistemi di compliance (ricavi CONAI e altri) competono all'impresa o al Comune?" />
+                    <b-form-radio-group v-model="dati_comune.ricavi_conai" :options="opts.tipo4"></b-form-radio-group>
+                  </b-col>
+                </b-row>
 
-                    <b-row>
-                      <b-col :class="container_specs" xl="12">
-                        <FieldTitle name="impresa_cts_flag" description="L'impresa sostiene costi CTS relativi al Trattamento e Smaltimento Rifiuti?" />
-                        <b-form-radio-group v-model="dati_comune.impresa_cts_flag" :options="opts.tipo1"></b-form-radio-group>
-                      </b-col>
-                    </b-row>
+                <b-row>
+                  <b-col :class="container_specs" xl="12">
+                    <FieldTitle name="impresa_cts_flag" description="L'impresa sostiene costi CTS relativi al Trattamento e Smaltimento Rifiuti?" />
+                    <b-form-radio-group v-model="dati_comune.impresa_cts_flag" :options="opts.tipo1"></b-form-radio-group>
+                  </b-col>
+                </b-row>
 
-                    <b-row>
-                      <b-col :class="container_specs" xl="12">
-                        <FieldTitle name="impresa_ctr_flag" description="L'impresa sostiene costi CTR relativi al Trattamento e Riciclo  Rifiuti?" />
-                        <b-form-radio-group v-model="dati_comune.impresa_ctr_flag" :options="opts.tipo1"></b-form-radio-group>
-                      </b-col>
-                    </b-row>
+                <b-row>
+                  <b-col :class="container_specs" xl="12">
+                    <FieldTitle name="impresa_ctr_flag" description="L'impresa sostiene costi CTR relativi al Trattamento e Riciclo  Rifiuti?" />
+                    <b-form-radio-group v-model="dati_comune.impresa_ctr_flag" :options="opts.tipo1"></b-form-radio-group>
+                  </b-col>
+                </b-row>
 
-                    <b-row>
-                      <b-col :class="container_specs" xl="12">
-                        <FieldTitle    name="" description="Sono inclusi nel contratto e a carico dell'impresa anche i servizi di spazzamento e igiene ambientale?" />
-                        <b-form-radio-group v-model="dati_comune.spazz_e_ig_flag" :options="opts.tipo1"></b-form-radio-group>
+                <b-row>
+                  <b-col :class="container_specs" xl="12">
+                    <FieldTitle    name="" description="Sono inclusi nel contratto e a carico dell'impresa anche i servizi di spazzamento e igiene ambientale?" />
+                    <b-form-radio-group v-model="dati_comune.spazz_e_ig_flag" :options="opts.tipo1"></b-form-radio-group>
 
-                      </b-col>
-                    </b-row>
+                  </b-col>
+                </b-row>
 
-                    <b-row>
-                      <b-col :class="container_specs">
-                        <FieldTitle name="serv_exra_arera_flag" description="Sono presenti nel contratto anche servizi non inseriti del perimetro definito da ARERA?" />
-                        <b-form-radio-group v-model="dati_comune.serv_exra_arera_flag" :options="opts.tipo1"></b-form-radio-group>
-                      </b-col>
-                      <b-col :class="container_specs" v-show="dati_comune.serv_exra_arera_flag == true">
-                        <FieldTitle req="yes" letter="a" name="serv_exra_arera" description="Servizi non inseriti nel perimetro" />
-                        <input class="form-control" v-model="dati_comune.serv_exra_arera" >
-                      </b-col>
-                    </b-row>
+                <b-row>
+                  <b-col :class="container_specs">
+                    <FieldTitle name="serv_exra_arera_flag" description="Sono presenti nel contratto anche servizi non inseriti del perimetro definito da ARERA?" />
+                    <b-form-radio-group v-model="dati_comune.serv_exra_arera_flag" :options="opts.tipo1"></b-form-radio-group>
+                  </b-col>
+                  <b-col :class="container_specs" v-show="dati_comune.serv_exra_arera_flag == true">
+                    <FieldTitle req="yes" letter="a" name="serv_exra_arera" description="Servizi non inseriti nel perimetro" />
+                    <input class="form-control" v-model="dati_comune.serv_exra_arera" >
+                  </b-col>
+                </b-row>
 
-                    <b-row>
-                      <b-col :class="container_specs">
-                        <FieldTitle name="" description="L'impresa ha in essere 'lavori in corso' per come definiti da ARERA?" />
-                        <b-form-radio-group v-model="dati_comune.lav_in_corso_flag" :options="opts.tipo1"></b-form-radio-group>
-                      </b-col>
-                      <b-col :class="container_specs" >
-                        <div v-show="dati_comune.lav_in_corso_flag == true">
-                          <FieldTitle req="yes" letter="a" name="" description="Descrizione dei lavori in corso" />
-                          <input class="form-control" v-model="dati_comune.lav_in_corso" >
-                        </div>
-                      </b-col>
-                    </b-row>
+                <b-row>
+                  <b-col :class="container_specs">
+                    <FieldTitle name="" description="L'impresa ha in essere 'lavori in corso' per come definiti da ARERA?" />
+                    <b-form-radio-group v-model="dati_comune.lav_in_corso_flag" :options="opts.tipo1"></b-form-radio-group>
+                  </b-col>
+                  <b-col :class="container_specs" >
+                    <div v-show="dati_comune.lav_in_corso_flag == true">
+                      <FieldTitle req="yes" letter="a" name="" description="Descrizione dei lavori in corso" />
+                      <input class="form-control" v-model="dati_comune.lav_in_corso" >
+                    </div>
+                  </b-col>
+                </b-row>
 
-                    <b-row>
-                      <b-col :class="container_specs">
-                        <FieldTitle name="" description="Sono previste varizioni nelle attività gestionali?" />
-                        <b-form-radio-group v-model="dati_comune.var_gest_flag" :options="opts.tipo1"></b-form-radio-group>
-                      </b-col>
-                      <b-col :class="container_specs" >
-                        <div v-show="dati_comune.var_gest_flag == true">
-                          <FieldTitle req="yes" letter="a" name="" description="Descrizione delle variazioni nella attività gestionali" />
-                          <input class="form-control" v-model="dati_comune.var_gest" >
-                        </div>
-                      </b-col>
-                    </b-row>
+                <b-row>
+                  <b-col :class="container_specs">
+                    <FieldTitle name="" description="Sono previste varizioni nelle attività gestionali?" />
+                    <b-form-radio-group v-model="dati_comune.var_gest_flag" :options="opts.tipo1"></b-form-radio-group>
+                  </b-col>
+                  <b-col :class="container_specs" >
+                    <div v-show="dati_comune.var_gest_flag == true">
+                      <FieldTitle req="yes" letter="a" name="" description="Descrizione delle variazioni nella attività gestionali" />
+                      <input class="form-control" v-model="dati_comune.var_gest" >
+                    </div>
+                  </b-col>
+                </b-row>
 
-                    <b-row>
-                      <b-col :class="container_specs">
-                        <FieldTitle    name="miglior_qual_flag" description="Sono previsti miglioramenti nei livelli di qualità?" />
-                        <b-form-radio-group v-model="dati_comune.miglior_qual_flag" :options="opts.tipo1"></b-form-radio-group>
-                      </b-col>
-                      <b-col :class="container_specs">
-                        <div v-show="dati_comune.miglior_qual_flag == true">
-                          <FieldTitle req="yes" letter="a" name="miglior_qual" description="Descrizione dei miglioramenti previsti" />
-                          <input class="form-control" v-model="dati_comune.miglior_qual" >
-                        </div>
+                <b-row>
+                  <b-col :class="container_specs">
+                    <FieldTitle    name="miglior_qual_flag" description="Sono previsti miglioramenti nei livelli di qualità?" />
+                    <b-form-radio-group v-model="dati_comune.miglior_qual_flag" :options="opts.tipo1"></b-form-radio-group>
+                  </b-col>
+                  <b-col :class="container_specs">
+                    <div v-show="dati_comune.miglior_qual_flag == true">
+                      <FieldTitle req="yes" letter="a" name="miglior_qual" description="Descrizione dei miglioramenti previsti" />
+                      <input class="form-control" v-model="dati_comune.miglior_qual" >
+                    </div>
 
-                      </b-col>
-                    </b-row>
+                  </b-col>
+                </b-row>
 
-                    <b-row>
-                      <b-col :class="container_specs">
-                        <FieldTitle name="costi_tqrif_flag" description="Sono previsti maggiori costi per la implementazione del TQRIF?" />
-                        <b-form-radio-group v-model="dati_comune.costi_tqrif_flag" :options="opts.tipo1"></b-form-radio-group>
-                      </b-col>
+                <b-row>
+                  <b-col :class="container_specs">
+                    <FieldTitle name="costi_tqrif_flag" description="Sono previsti maggiori costi per la implementazione del TQRIF?" />
+                    <b-form-radio-group v-model="dati_comune.costi_tqrif_flag" :options="opts.tipo1"></b-form-radio-group>
+                  </b-col>
 
-                      <b-col :class="container_specs">
-                        <div v-show="dati_comune.costi_tqrif_flag == true">
-                          <FieldTitle req="yes" letter="a" name="costi_tqrif" description="Importo dei costi previsti per il TQRIF" />
-                          <input class="form-control" v-model="dati_comune.costi_tqrif"   type="number">
-                        </div>
+                  <b-col :class="container_specs">
+                    <div v-show="dati_comune.costi_tqrif_flag == true">
+                      <FieldTitle req="yes" letter="a" name="costi_tqrif" description="Importo dei costi previsti per il TQRIF" />
+                      <input class="form-control" v-model="dati_comune.costi_tqrif"   type="number">
+                    </div>
 
-                      </b-col>
-                    </b-row>
+                  </b-col>
+                </b-row>
               </div>
 
                 <div v-bind:class="{'disabled-container' : azienda.report_is_sent || azienda.report_attempts <= 0 }" class="p-0 b-0 m-0" v-if="current_section === 2">
@@ -295,17 +313,17 @@ import CostiSmaltimento from '../components/CostiSmaltimento'
                           <b-row>
                             <b-col cols="10" xl="10">
                               <b-form-file
-                                v-model="dati_comune.cont_commessa_anno1"
+                                v-model="files.cont_commessa_anno1"
                                 placeholder="File Excel"
-                                drop-placeholder="Rilascia qui..."
-                              ></b-form-file>
-                              <font v-if="dati_comune.cont_commessa_anno1 != '[object File]' ">
+                                drop-placeholder="Rilascia qui...">
+                              </b-form-file>
+                              <font v-if="dati_comune.cont_commessa_anno1 != '[object File]'">
                                 {{dati_comune.cont_commessa_anno1}}
                               </font>
                             </b-col>
                             <b-col cols="2" xl="2">
-                              <b-icon v-if="dati_comune.cont_commessa_anno1 !== '' " class="h4 p-0 b-0 m-0 mt-1" variant="success" icon="check-circle-fill"></b-icon>
-                              <b-icon v-if="dati_comune.cont_commessa_anno1  === ''"  class="h4 p-0 b-0 m-0 mt-1" variant="danger" icon="x-circle-fill"></b-icon>
+                              <b-icon v-if="dati_comune.cont_commessa_anno1 !== '' || files.cont_commessa_anno1.length !== 0" class="h4 p-0 b-0 m-0 mt-1" variant="success" icon="check-circle-fill"></b-icon>
+                              <b-icon v-if="dati_comune.cont_commessa_anno1  === '' && files.cont_commessa_anno1.length === 0"  class="h4 p-0 b-0 m-0 mt-1" variant="danger" icon="x-circle-fill"></b-icon>
                             </b-col>
                           </b-row>
                         </b-container>
@@ -317,17 +335,17 @@ import CostiSmaltimento from '../components/CostiSmaltimento'
                           <b-row>
                             <b-col cols="10" xl="10">
                               <b-form-file
-                                v-model="dati_comune.cont_commessa_anno2"
+                                v-model="files.cont_commessa_anno2"
                                 placeholder="File Excel"
-                                drop-placeholder="Rilascia qui..."
-                              ></b-form-file>
+                                drop-placeholder="Rilascia qui...">
+                              </b-form-file>
                               <font v-if="dati_comune.cont_commessa_anno2 != '[object File]' ">
                                 {{dati_comune.cont_commessa_anno2}}
                               </font>
                             </b-col>
                             <b-col cols="2" xl="2">
-                              <b-icon v-if="dati_comune.cont_commessa_anno2  !== ''" class="h4 p-0 b-0 m-0 mt-1" variant="success" icon="check-circle-fill"></b-icon>
-                              <b-icon v-if="dati_comune.cont_commessa_anno2  === ''"  class="h4 p-0 b-0 m-0 mt-1" variant="danger" icon="x-circle-fill"></b-icon>
+                              <b-icon v-if="dati_comune.cont_commessa_anno2  !== '' || files.cont_commessa_anno2.length !== 0" class="h4 p-0 b-0 m-0 mt-1" variant="success" icon="check-circle-fill"></b-icon>
+                              <b-icon v-if="dati_comune.cont_commessa_anno2  === '' && files.cont_commessa_anno2.length === 0"  class="h4 p-0 b-0 m-0 mt-1" variant="danger" icon="x-circle-fill"></b-icon>
                             </b-col>
                           </b-row>
                         </b-container>
@@ -341,17 +359,17 @@ import CostiSmaltimento from '../components/CostiSmaltimento'
                           <b-row>
                             <b-col cols="10" xl="10">
                               <b-form-file
-                                v-model="dati_comune.contratto_appalto"
+                                v-model="files.contratto_appalto"
                                 placeholder="File PDF"
-                                drop-placeholder="Rilascia qui..."
-                              ></b-form-file>
+                                drop-placeholder="Rilascia qui...">
+                              </b-form-file>
                               <font v-if="dati_comune.contratto_appalto != '[object File]' ">
                                 {{dati_comune.contratto_appalto}}
                               </font>
                             </b-col>
                             <b-col cols="2" xl="2">
-                              <b-icon v-if="dati_comune.contratto_appalto !== '' " class="h4 p-0 b-0 m-0 mt-1" variant="success" icon="check-circle-fill"></b-icon>
-                              <b-icon v-if="dati_comune.contratto_appalto  === ''"  class="h4 p-0 b-0 m-0 mt-1" variant="danger" icon="x-circle-fill"></b-icon>
+                              <b-icon v-if="dati_comune.contratto_appalto !== '' || files.contratto_appalto.length !== 0" class="h4 p-0 b-0 m-0 mt-1" variant="success" icon="check-circle-fill"></b-icon>
+                              <b-icon v-if="dati_comune.contratto_appalto  === '' && files.contratto_appalto.length === 0"  class="h4 p-0 b-0 m-0 mt-1" variant="danger" icon="x-circle-fill"></b-icon>
                             </b-col>
                           </b-row>
                         </b-container>
@@ -362,17 +380,18 @@ import CostiSmaltimento from '../components/CostiSmaltimento'
                           <b-row>
                             <b-col cols="10" xl="10">
                               <b-form-file
-                                v-model="dati_comune.ultimo_pef"
+                                v-model="files.ultimo_pef"
                                 placeholder="File Zip"
-                                drop-placeholder="Rilascia qui..."
-                              ></b-form-file>
+                                drop-placeholder="Rilascia qui...">
+                              </b-form-file>
                               <font v-if="dati_comune.ultimo_pef != '[object File]' ">
                                 {{dati_comune.ultimo_pef}}
                               </font>
+                              {{files.ultimo_pef.name}}
                             </b-col>
                             <b-col cols="2" xl="2">
-                              <b-icon v-if="dati_comune.ultimo_pef !== '' " class="h4 p-0 b-0 m-0 mt-1" variant="success" icon="check-circle-fill"></b-icon>
-                              <b-icon v-if="dati_comune.ultimo_pef  === ''"  class="h4 p-0 b-0 m-0 mt-1" variant="danger" icon="x-circle-fill"></b-icon>
+                              <b-icon v-if="dati_comune.ultimo_pef !== '' || files.ultimo_pef.length != 0" class="h4 p-0 b-0 m-0 mt-1" variant="success" icon="check-circle-fill"></b-icon>
+                              <b-icon v-if="dati_comune.ultimo_pef  === '' && files.ultimo_pef.length === 0"  class="h4 p-0 b-0 m-0 mt-1" variant="danger" icon="x-circle-fill"></b-icon>
                             </b-col>
                           </b-row>
                         </b-container>
@@ -577,23 +596,24 @@ import CostiSmaltimento from '../components/CostiSmaltimento'
         </b-row>
       </b-container>
 
-
       <div v-if="dati_comune !== false && is_logged === true && is_company_set === true" class="bg-light fixed-bottom p-2">
         <b-container class="container">
+          <!--
           <b-row class="mb-3">
             <b-col xl="5" cols="6">
               <b-button v-if="current_section > 1" @click="changeSection(0)" block variant="white">
                 <b-icon icon="arrow-left"></b-icon>
-                  Pagina precendente<br>{{sections[current_section - 2].text}}
+                  Pagina precendente<br><font v-if="width >= 576 ">{{sections[current_section - 2].text}}</font>
               </b-button>
             </b-col>
             <b-col xl="5" offset-xl="2" cols="6">
               <b-button v-if="current_section < sections.length" @click="changeSection(1)" block variant="white">
-                  Pagina successiva<br>{{sections[current_section].text}}
+                  Pagina successiva<br><font v-if="width >= 576 ">{{sections[current_section].text}}</font>
                  <b-icon icon="arrow-right"></b-icon>
               </b-button>
             </b-col>
           </b-row>
+          -->
           <b-row class="row">
             <b-col class="xl-2">
               <b-button to="../../home" block variant="infowaste">
@@ -608,7 +628,7 @@ import CostiSmaltimento from '../components/CostiSmaltimento'
             </b-col>
 
             <b-col class="xl-1 offset-xl-4">
-              <b-button block @click="saveDatiComune(dati_comune)" variant="infowaste">
+              <b-button block @click="saveDatiComune(dati_comune,files)" variant="infowaste">
                   Salva
               </b-button>
             </b-col>
@@ -658,47 +678,134 @@ import CostiSmaltimento from '../components/CostiSmaltimento'
               var dati_comune = await $axios.$post(`/get_dati_comune`,{id: params.id});
               var current_section = dati_comune['current_section'];
               var azienda = await $axios.$get(`/get_company_data`);
-              var costi_smaltimento = await $axios.$post(`/get_costi_smaltimento` ,{id: params.id});
 
-              const filenames = ["cont_commessa_anno1","cont_commessa_anno2","contratto_appalto","ultimo_pef",]
-              /*for (var count = 0; count < filenames.length; count++)
+              var sections =
+              [
+                {num:1 , text:"Dati Generali",completed:0},
+                {num:2 , text:"Dati tecnici dell'appalto",completed:0},
+                {num:3 , text:"Documenti riferiti all'appalto",completed:0},
+                {num:4 , text:"Costi Smaltimento / Trattamento",completed:0}
+              ]
+
+              for (var i = 0; i < Object.keys(sections).length; i++)
               {
-                    var filename = dati_comune[filenames[count]]
+                sections[i].completed = 1
+              }
 
-                    if(filename)
-                    {
-                      var i = filename.length
-                      var j = 0
-                          do
-                          {
-                                if(filename[i] == '/')
-                                {
-                                  j = i
-                                  i = 0
-                                  var str = []
-                                  var cont = 0
-                                  for (var k = j + 1; k < filename.length; k++)
-                                  {
-                                    str[cont] = filename[k]
-                                    cont++
-                                  }
-                            }
+              if(azienda.pef_mis_o_ric === "CALCOLATO")
+              {
+                if( dati_comune.ris_ula_o_ore === "" ||
+                    dati_comune.tot_app <= 0 ||
+                    dati_comune.app_servizi <= 0 ||
+                    dati_comune.app_rifiuti_diff <= 0 ||
+                    dati_comune.app_rifiuti_indiff <= 0 ||
+                    dati_comune.app_igiene <= 0 )
+                  {
+                    sections[0].completed = 0
+
+                  }
+              }
+
+              if(dati_comune.altri_gestori_flag == true)
+              {
+                if(dati_comune.altri_gestori == "")
+                {
+                  sections[0].completed = 0
+                }
+              }else {
+                dati_comune.altri_gestori=""
+
+              }
+
+              if(dati_comune.serv_exra_arera_flag == true)
+              {
+                if(dati_comune.serv_exra_arera == "")
+                {
+                  sections[0].completed = 0
+                }
+              }else {
+                dati_comune.serv_exra_arera=""
+
+              }
+
+              if(dati_comune.lav_in_corso_flag == true)
+              {
+                if(dati_comune.lav_in_corso == "")
+                {
+                  sections[0].completed = 0
+                }
+              }else {
+                dati_comune.lav_in_corso=""
+
+              }
+
+              if(dati_comune.var_gest_flag == true)
+              {
+                if(dati_comune.var_gest == "")
+                {
+                  sections[0].completed = 0
+
+                }
+              }else {
+                dati_comune.var_gest=""
+
+              }
+
+              if(dati_comune.miglior_qual_flag == true)
+              {
+                if(dati_comune.miglior_qual == "")
+                {
+                  sections[0].completed = 0
+                }
+              }else {
+                dati_comune.miglior_qual=""
+
+              }
+
+              if(dati_comune.costi_tqrif_flag == true)
+              {
+                if(dati_comune.costi_tqrif == 0)
+                {
+                  sections[0].completed = 0
+                }
+              }else {
+                dati_comune.costi_tqrif=0
+
+              }
+
+              if (dati_comune.ton_anno_1 == 0  || dati_comune.ton_anno_2 == 0 || dati_comune.ton_anno_3 == 0)
+              {
+                sections[1].completed = 0
+              }
+
+              if (dati_comune.xcent_raccolta_anno_1 == 0 || dati_comune.xcent_raccolta_anno_2 == 0 || dati_comune.xcent_raccolta_anno_3 == 0)
+              {
+                sections[1].completed = 0
+              }
 
 
-                        i--
+              if(dati_comune.xcent_media_imp == 0 ||
+              dati_comune.xcent_media_imp_org == 0 ||
+              dati_comune.xcent_media_imp_cart == 0 ||
+              dati_comune.xcent_media_imp_plastica == 0 ||
+              dati_comune.xcent_media_imp_metallo == 0 ||
+              dati_comune.xcent_media_imp_vetro == 0 )
+              {
+                sections[1].completed = 0
+              }
 
-                      } while (i > 0);
+
+              if(dati_comune.cont_commessa_anno1 == '' || dati_comune.cont_commessa_anno2 == '' || dati_comune.contratto_appalto == '' || dati_comune.ultimo_pef == '')
+              {
+                sections[2].completed = 0
+              }
 
 
-                      str = str.join('')
-                      str = str.toString()
-                      dati_comune[filenames[count]] = str
 
-                    }
-              }*/
+              var costi_smaltimento = await $axios.$post(`/get_costi_smaltimento` ,{id: params.id});
           }
 
-          return {current_section,azienda,is_logged,is_company_set,dati_comune,costi_smaltimento};
+          return {sections,current_section,azienda,is_logged,is_company_set,dati_comune,costi_smaltimento};
         } catch (e) {
 
           return {dati_comune: false,azienda:[],costi_smaltimento:[]};
@@ -708,7 +815,6 @@ import CostiSmaltimento from '../components/CostiSmaltimento'
     mounted () {
 
       this.width = window.innerWidth
-      console.log(this.width)
     },
 
     methods:
@@ -730,7 +836,15 @@ import CostiSmaltimento from '../components/CostiSmaltimento'
 
         },
 
+        goToSection(num)
+        {
+           if (num >= 1 &&  num <= this.sections.length)
+           {
+                this.current_section = num
 
+          }
+
+        },
 
         uploadFiles(dati_comune)
         {
@@ -769,13 +883,13 @@ import CostiSmaltimento from '../components/CostiSmaltimento'
 
             if (upload)
             {
-              var id = dati_comune.id
+              var id = this.dati_comune.id
               id = new File([id],id)
-              formData.append("id", id ,dati_comune.id);
+              formData.append("id", id ,this.dati_comune.id);
 
-              var azienda = dati_comune.azienda
+              var azienda = this.dati_comune.azienda
               azienda = new File([azienda],azienda)
-              formData.append("azienda", azienda ,dati_comune.azienda);
+              formData.append("azienda", azienda ,this.dati_comune.azienda);
 
               this.$axios.post('/upload_comune_files',formData,{
 
@@ -787,6 +901,7 @@ import CostiSmaltimento from '../components/CostiSmaltimento'
             }
 
         },
+
         aggiungiExtra()
         {
 
@@ -861,13 +976,15 @@ import CostiSmaltimento from '../components/CostiSmaltimento'
             this.add.importo = this.add.tons * this.add.prezzo_unitario
         },
 
-        saveDatiComune(dati_comune)
+        saveDatiComune(dati_comune,files)
         {
           var is_completed = 1
 
           if(this.azienda.pef_mis_o_ric === "CALCOLATO")
           {
-            if(dati_comune.tot_app <= 0 ||
+            if(
+              dati_comune.ris_ula_o_ore === "" ||
+              dati_comune.tot_app <= 0 ||
               dati_comune.app_servizi <= 0 ||
               dati_comune.app_rifiuti_diff <= 0 ||
               dati_comune.app_rifiuti_indiff <= 0 ||
@@ -976,22 +1093,22 @@ import CostiSmaltimento from '../components/CostiSmaltimento'
           }
 
           //controllo invio dei FILES
-          if(dati_comune.cont_commessa_anno1 != '[object File]' && dati_comune.cont_commessa_anno1 == '')
+          if(files.cont_commessa_anno1 != '[object File]' && dati_comune.cont_commessa_anno1 == '')
           {
             is_completed = 0
           }
 
-              if(dati_comune.cont_commessa_anno2 != '[object File]' && dati_comune.cont_commessa_anno2 == '')
+              if(files.cont_commessa_anno2 != '[object File]' && dati_comune.cont_commessa_anno2 == '')
               {
                 is_completed = 0
               }
 
-                  if(dati_comune.contratto_appalto != '[object File]' && dati_comune.contratto_appalto == '')
+                  if(files.contratto_appalto != '[object File]' && dati_comune.contratto_appalto == '')
                   {
                     is_completed = 0
                   }
 
-                      if(dati_comune.ultimo_pef != '[object File]' && dati_comune.ultimo_pef == '')
+                      if(files.ultimo_pef != '[object File]' && dati_comune.ultimo_pef == '')
                       {
                         is_completed = 0
                       }
@@ -1066,7 +1183,7 @@ import CostiSmaltimento from '../components/CostiSmaltimento'
 
           });
 
-          this.uploadFiles(dati_comune)
+          this.uploadFiles(files)
           location.reload()
 
         }
@@ -1076,13 +1193,14 @@ import CostiSmaltimento from '../components/CostiSmaltimento'
     data() {
 
         return {
-                  sections:
-                  [
-                    {num:1 , text:"Dati Generali"},
-                    {num:2 , text:"Dati tecnici dell'appalto"},
-                    {num:3 , text:"Documenti riferiti all'appalto"},
-                    {num:4 , text:"Costi Smaltimento / Trattamento"}
-                  ],
+                  files:
+                  {
+                    cont_commessa_anno1:[],
+                    cont_commessa_anno2:[],
+                    contratto_appalto:[],
+                    ultimo_pef:[]
+                  },
+
                   width:0,
                   page_id:0,
                   is_logged:false,
@@ -1093,7 +1211,7 @@ import CostiSmaltimento from '../components/CostiSmaltimento'
                     color:''
 
                   },
-                  file:'',
+
                   add:
                   {
                       imp_smalt:"",

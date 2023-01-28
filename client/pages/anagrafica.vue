@@ -53,7 +53,7 @@ import TownSelect from '../components/TownSelect'
                       <p>Ammortamenti (<b-link href="/files/Ammortamenti.xlsx">Scarica Modello</b-link>)
                       </p>
                     </b-col>
-                    <b-col xl="5">
+                    <b-col cols="11" xl="5">
                       <p>
                         <b-form-file v-model="upload.ammortamenti"  placeholder="File Excel" drop-placeholder="Rilascia qui"></b-form-file>
                         <font v-if="azienda.ammortamenti != ''">
@@ -61,7 +61,7 @@ import TownSelect from '../components/TownSelect'
                         </font>
                       </p>
                     </b-col>
-                    <b-col xl="1" class="pt-2 p-0">
+                    <b-col cols="1" xl="1" class="pt-2 p-0">
                       <b-icon v-if="azienda.ammortamenti !== '' || upload.ammortamenti != 0 " class="h4 p-0 b-0 m-0" variant="success" icon="check-circle-fill"></b-icon>
                       <b-icon v-if="azienda.ammortamenti === '' && upload.ammortamenti === 0" class="h4 p-0 b-0 m-0" variant="danger" icon="x-circle-fill"></b-icon>
                     </b-col>
@@ -74,7 +74,7 @@ import TownSelect from '../components/TownSelect'
                         Bilancio Depositato 2020
                       </p>
                     </b-col>
-                    <b-col xl="5">
+                    <b-col cols="11" xl="5">
                       <p>
                         <b-form-file v-model="upload.bilancio_depositato_anno1" placeholder="File" drop-placeholder="Rilascia qui"></b-form-file>
                         <font v-if="azienda.bilancio_depositato_anno1 != '' ">
@@ -82,7 +82,7 @@ import TownSelect from '../components/TownSelect'
                         </font>
                       </p>
                     </b-col>
-                    <b-col xl="1" class="pt-2 p-0">
+                    <b-col cols="1" xl="1" class="pt-2 p-0">
                       <b-icon v-if="azienda.bilancio_depositato_anno1 !== '' || upload.bilancio_depositato_anno1 != 0" class="h4 p-0 b-0 m-0" variant="success" icon="check-circle-fill"></b-icon>
                       <b-icon v-if="azienda.bilancio_depositato_anno1 === '' && upload.bilancio_depositato_anno1 === 0" class="h4 p-0 b-0 m-0" variant="danger" icon="x-circle-fill"></b-icon>
                     </b-col>
@@ -93,7 +93,7 @@ import TownSelect from '../components/TownSelect'
                         Bilancio Depositato 2021
                       </p>
                     </b-col>
-                    <b-col xl="5">
+                    <b-col cols="11" xl="5">
                       <p>
                         <b-form-file v-model="upload.bilancio_depositato_anno2" placeholder="File" drop-placeholder="Rilascia qui"></b-form-file>
                         <font v-if="azienda.bilancio_depositato_anno2 === '' ">
@@ -101,16 +101,16 @@ import TownSelect from '../components/TownSelect'
                         </font>
                       </p>
                     </b-col>
-                    <b-col xl="1" class="pt-2 p-0">
+                    <b-col cols="1" xl="1" class="pt-2 p-0">
                       <b-icon v-if="azienda.bilancio_depositato_anno2 !== '' || upload.bilancio_depositato_anno2 != 0" class="h4 p-0 b-0 m-0" variant="success" icon="check-circle-fill"></b-icon>
                       <b-icon v-if="azienda.bilancio_depositato_anno2 === '' && upload.bilancio_depositato_anno2 === 0" class="h4 p-0 b-0 m-0" variant="danger" icon="x-circle-fill"></b-icon>
                     </b-col>
                   </b-row>
 
                   <b-row class="p-2">
-                    <b-col offset-xl="9" xl="2">
+                    <b-col offset-xl="10" xl="2">
                       <p>
-                        <b-button @click="updateFiles(upload)" variant="info" block> Salva </b-button>
+                        <b-button @click="updateFiles(upload)" variant="infowaste" block> Salva </b-button>
                       </p>
                     </b-col>
                   </b-row>
@@ -255,7 +255,7 @@ import TownSelect from '../components/TownSelect'
             const filenames = ["ammortamenti","bilancio_depositato_anno1","bilancio_depositato_anno2"]
 
 
-            /*for (var count = 0; count < filenames.length; count++)
+            for (var count = 0; count < filenames.length; count++)
             {
               var filename = azienda[filenames[count]]
 
@@ -292,7 +292,7 @@ import TownSelect from '../components/TownSelect'
 
               }
             }
-            */
+
           return { is_logged,utente,is_company_set,role,regioni_req,province_req,comuni_azienda,azienda};
         }
               catch (e)
@@ -441,7 +441,6 @@ import TownSelect from '../components/TownSelect'
         is_logged:false,
         is_company_set:false,
         role:'Normal',
-
         upload:
         {
           ammortamenti:0,

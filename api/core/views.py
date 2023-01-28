@@ -27,6 +27,7 @@ from django.contrib.auth.models import User
 from .serializers import ChangePasswordSerializer
 from django.core import serializers
 from django.conf import settings
+from django.core.mail import send_mail
 
 from django.core.files.base import ContentFile
 from django.core.files.storage import default_storage
@@ -55,6 +56,49 @@ class RegisterUserView(CreateAPIView):
     queryset = get_user_model().objects.all()
     permission_classes = (AllowAny,)
     serializer_class = RegisterUserSerializer
+
+def new_user(request):
+
+    body_unicode = request.body.decode('utf-8')
+    body = json.loads(body_unicode)
+
+    nome = body['nome']
+    cognome = body['cognome']
+    titolo = body['titolo']
+    ragione_sociale = body['ragione_sociale']
+    p_iva = body['p_iva']
+    telefono = body['telefono']
+    email = body['email']
+    email2 = body['email2']
+    password = body['password']
+
+    user = User.objects.create(
+                                 nome = nome,
+                                 cognome = cognome,
+                                 titolo = titolo,
+                                 ragione_sociale = ragione_sociale,
+                                 p_iva = p_iva,
+                                 telefono = telefono,
+                                 email = normalize_email(email),
+                                 email2 = normalize_email(email2),
+                               )
+
+    user.set_password(password)
+    user.save()
+
+    email_plaintext_message = "Si comunica che " + user.nome + " " + user.cognome + " ha inviato una richiesta di attivazione al servizio."
+    #email_plaintext_message = "{}?token={}".format('http://217.61.57.221/new_password' , reset_password_token.key)
+    send_mail(
+        # title:
+        "Richiesta Attivazione al Serivzio",
+        # message:
+        email_plaintext_message,
+        # from:
+        "noreplay@bintobit.com",
+        # to:
+        ["nbellomo506@gmail.com"]
+    )
+
 
 
 def assign_azienda(request):
@@ -175,60 +219,62 @@ def save_dati_comune(request):
         if request.session['logged'] == True:
             if 'user_id' and 'azienda' in request.session is not None:
                 if azienda == request.session['azienda']:
-                    try:
-                        obj = DatiComune.objects.get(pk =  id , azienda_id = azienda)
-                        obj.ris_ula_o_ore = body['ris_ula_o_ore']
-                        obj.tot_app = body['tot_app']
-                        obj.app_servizi = body['app_servizi']
-                        obj.app_rifiuti_diff = body['app_rifiuti_diff']
-                        obj.app_rifiuti_indiff = body['app_rifiuti_indiff']
-                        obj.app_igiene = body['app_igiene']
-                        obj.altri_gestori_flag = body['altri_gestori_flag']
-                        obj.altri_gestori = body['altri_gestori']
-                        obj.appalto_attuale_data = body['appalto_attuale_data']
-                        obj.impresa_op_com_data = body['impresa_op_com_data']
-                        obj.valore_can = body['valore_can']
-                        obj.adeg_contr_flag = body['adeg_contr_flag']
-                        obj.ricavi_conai = body['ricavi_conai']
-                        obj.impresa_cts_flag = body['impresa_cts_flag']
-                        obj.impresa_ctr_flag = body['impresa_ctr_flag']
-                        obj.spazz_e_ig_flag = body['spazz_e_ig_flag']
-                        obj.serv_exra_arera_flag = body['serv_exra_arera_flag']
-                        obj.serv_exra_arera = body['serv_exra_arera']
-                        obj.lav_in_corso_flag = body['lav_in_corso_flag']
-                        obj.lav_in_corso = body['lav_in_corso']
-                        obj.var_gest_flag = body['var_gest_flag']
-                        obj.var_gest = body['var_gest']
-                        obj.miglior_qual_flag = body['miglior_qual_flag']
-                        obj.miglior_qual = body['miglior_qual']
-                        obj.costi_tqrif_flag = body['costi_tqrif_flag']
-                        obj.costi_tqrif = body['costi_tqrif']
-                        obj.ton_totali = body['ton_totali']
-                        obj.ton_anno_1 = body['ton_anno_1']
-                        obj.ton_anno_2 = body['ton_anno_2']
-                        obj.ton_anno_3 = body['ton_anno_3']
-                        obj.xcent_raccolta_diff = body['xcent_raccolta_diff']
-                        obj.xcent_raccolta_anno_1 = body['xcent_raccolta_anno_1']
-                        obj.xcent_raccolta_anno_2 = body['xcent_raccolta_anno_2']
-                        obj.xcent_raccolta_anno_3 = body['xcent_raccolta_anno_3']
-                        obj.xcent_media_imp = body['xcent_media_imp']
-                        obj.xcent_media_imp_org = body['xcent_media_imp_org']
-                        obj.xcent_media_imp_cart = body['xcent_media_imp_cart']
-                        obj.xcent_media_imp_plastica = body['xcent_media_imp_plastica']
-                        obj.xcent_media_imp_metallo = body['xcent_media_imp_metallo']
-                        obj.xcent_media_imp_vetro = body['xcent_media_imp_vetro']
-                        obj.current_section = body['current_section']
-                        obj.completed = body['completed']
+                    az = Azienda.objects.get(pk = request.session['azienda'])
+                    if az.report_attempts > 0 :
+                        try:
+                            obj = DatiComune.objects.get(pk =  id , azienda_id = azienda)
+                            obj.ris_ula_o_ore = body['ris_ula_o_ore']
+                            obj.tot_app = body['tot_app']
+                            obj.app_servizi = body['app_servizi']
+                            obj.app_rifiuti_diff = body['app_rifiuti_diff']
+                            obj.app_rifiuti_indiff = body['app_rifiuti_indiff']
+                            obj.app_igiene = body['app_igiene']
+                            obj.altri_gestori_flag = body['altri_gestori_flag']
+                            obj.altri_gestori = body['altri_gestori']
+                            obj.appalto_attuale_data = body['appalto_attuale_data']
+                            obj.impresa_op_com_data = body['impresa_op_com_data']
+                            obj.valore_can = body['valore_can']
+                            obj.adeg_contr_flag = body['adeg_contr_flag']
+                            obj.ricavi_conai = body['ricavi_conai']
+                            obj.impresa_cts_flag = body['impresa_cts_flag']
+                            obj.impresa_ctr_flag = body['impresa_ctr_flag']
+                            obj.spazz_e_ig_flag = body['spazz_e_ig_flag']
+                            obj.serv_exra_arera_flag = body['serv_exra_arera_flag']
+                            obj.serv_exra_arera = body['serv_exra_arera']
+                            obj.lav_in_corso_flag = body['lav_in_corso_flag']
+                            obj.lav_in_corso = body['lav_in_corso']
+                            obj.var_gest_flag = body['var_gest_flag']
+                            obj.var_gest = body['var_gest']
+                            obj.miglior_qual_flag = body['miglior_qual_flag']
+                            obj.miglior_qual = body['miglior_qual']
+                            obj.costi_tqrif_flag = body['costi_tqrif_flag']
+                            obj.costi_tqrif = body['costi_tqrif']
+                            obj.ton_totali = body['ton_totali']
+                            obj.ton_anno_1 = body['ton_anno_1']
+                            obj.ton_anno_2 = body['ton_anno_2']
+                            obj.ton_anno_3 = body['ton_anno_3']
+                            obj.xcent_raccolta_diff = body['xcent_raccolta_diff']
+                            obj.xcent_raccolta_anno_1 = body['xcent_raccolta_anno_1']
+                            obj.xcent_raccolta_anno_2 = body['xcent_raccolta_anno_2']
+                            obj.xcent_raccolta_anno_3 = body['xcent_raccolta_anno_3']
+                            obj.xcent_media_imp = body['xcent_media_imp']
+                            obj.xcent_media_imp_org = body['xcent_media_imp_org']
+                            obj.xcent_media_imp_cart = body['xcent_media_imp_cart']
+                            obj.xcent_media_imp_plastica = body['xcent_media_imp_plastica']
+                            obj.xcent_media_imp_metallo = body['xcent_media_imp_metallo']
+                            obj.xcent_media_imp_vetro = body['xcent_media_imp_vetro']
+                            obj.current_section = body['current_section']
+                            obj.completed = body['completed']
 
-                        obj.save()
-                        error = "OK"
-                        return HttpResponse(error)
+                            obj.save()
+                            error = "OK"
+                            return HttpResponse(error)
 
-                    except DatiComune.DoesNotExist:
+                        except DatiComune.DoesNotExist:
 
-                        error = "Qualcosa è andato storto"
+                            error = "Qualcosa è andato storto"
 
-                        return HttpResponse("OK")
+                            return HttpResponse("OK")
 
 def del_comune_azienda(request):
 
@@ -250,7 +296,6 @@ def del_comune_azienda(request):
 
                     error = "Coune non trovato"
                     return HttpResponse(error)
-
 
 def get_dati_comuni(request):
 
@@ -356,7 +401,6 @@ def upload_comune_files(request):
     else:
         return HttpResponse("not logged")
 
-
 def upload_company_files(request):
 
     if 'logged' in request.session is not None:
@@ -415,7 +459,6 @@ def upload_company_files(request):
 def update_report(request):
 
 
-    if 'logged' in request.session is not None:
         if request.session['logged'] == True:
             if request.session['azienda'] > 0 and request.session['is_assigned'] == True:
 
@@ -425,7 +468,23 @@ def update_report(request):
                     az.report_is_sent = not az.report_is_sent
                     az.report_attempts = az.report_attempts - 1
 
-                az.save()
+                    if az.report_is_sent == True:
+
+                        user = User.objects.get(pk = request.session['user_id'])
+                        email_plaintext_message = "Si comunica che " + user.nome + " " + user.cognome + " ha inviato il report relativo all'azienda " + az.ragione_sociale + ".\nQuesta azienda ha inviato il report " + str( 5 - az.report_attempts ) + " volte"
+                        #email_plaintext_message = "{}?token={}".format('http://217.61.57.221/new_password' , reset_password_token.key)
+                        send_mail(
+                            # title:
+                            "Invio Report",
+                            # message:
+                            email_plaintext_message,
+                            # from:
+                            "noreplay@bintobit.com",
+                            # to:
+                            ["nbellomo506@gmail.com"]
+                        )
+
+                    az.save()
 
             else:
                 return JsonResponse("False",content_type="application/json",safe=False)
@@ -433,7 +492,7 @@ def update_report(request):
         else:
             return JsonResponse("False",content_type="application/json",safe=False)
 
-    return JsonResponse("False",content_type="application/json",safe=False)
+        return JsonResponse("False",content_type="application/json",safe=False)
 
 def get_costi_smaltimento(request):
 
@@ -607,6 +666,7 @@ def logout(request):
         del request.session['is_active']
 
     return HttpResponse("Arrivederci")
+
 
 
 class CurrentLoggedInUser(ModelViewSet):

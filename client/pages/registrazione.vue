@@ -161,26 +161,26 @@ export default {
     data() {
       return {
         form: {
-          nome: '',
-          cognome: '',
-          titolo:'',
-          ragione_sociale: '',
-          p_iva: '',
-          telefono: '',
-          email: '',
+          nome:'Provo',
+          cognome:'Lone',
+          titolo:'ambiente',
+          ragione_sociale: 'nonloso',
+          p_iva: '12121211111',
+          telefono: '21212121',
+          email: 'ciao@gmail.com',
           email2: '',
-          password: '',
-          conferma_password:'',
+          password: 'Ciao2002.',
+          conferma_password:'Ciao2002.',
           load:true,
           check:{
             serv:{
               attivo:false,
-              value:0,
+              value:1,
 
             },
             priv:{
               attivo:false,
-              value:0
+              value:1
             }
 
           }
