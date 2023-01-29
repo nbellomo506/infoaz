@@ -61,14 +61,30 @@
           <div v-if="is_logged === true">
 
             <b-collapse id="nav-collapse" is-nav>
-              <b-navbar-nav class="ml-auto">
+              <b-navbar-nav>
+                <b-nav-item>
+                  <b-container class="p-0 m-0 b-0">
+                    <b-row>
+                      <b-col>
+                        <b-button class="ml-5" v-if="this.$route.name !== 'home'" :to="locations.home" variant="white">
+                          <b-icon class="text-dark" icon="house-fill">
+                          </b-icon>
+                          Home
+                        </b-button>
+                      </b-col>
+                    </b-row>
+                  </b-container>
+                </b-nav-item>
+              </b-navbar-nav>
+
+                <b-navbar-nav class="ml-auto">
 
                   <b-nav-item-dropdown class="text-light" right>
                     <!-- Using 'button-content' slot -->
                     <template #button-content>
                       Menu
                     </template>
-                      <b-dropdown-item :to="locations.home"  v-if="this.$route.name !== 'home'">Home</b-dropdown-item>
+                      <b-dropdown-item :to="locations.home" v-if="this.$route.name !== 'home'">Home</b-dropdown-item>
                       <b-dropdown-item :to="locations.anagrafica" v-if="this.$route.name !== 'anagrafica' && (is_logged === true ) ">Anagrafica</b-dropdown-item>
                       <b-dropdown-item :to="locations.admin" variant="infowaste" v-if="this.$route.name !== 'admin' && is_logged === true && role==='Admin'">Admin</b-dropdown-item>
                       <b-dropdown-item :to="locations.login" class="bg-danger"  @click="findPath('login')">

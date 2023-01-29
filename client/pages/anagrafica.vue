@@ -62,8 +62,8 @@ import TownSelect from '../components/TownSelect'
                       </p>
                     </b-col>
                     <b-col cols="1" xl="1" class="pt-2 p-0">
-                      <b-icon v-if="azienda.ammortamenti !== '' || upload.ammortamenti != 0 " class="h4 p-0 b-0 m-0" variant="success" icon="check-circle-fill"></b-icon>
-                      <b-icon v-if="azienda.ammortamenti === '' && upload.ammortamenti === 0" class="h4 p-0 b-0 m-0" variant="danger" icon="x-circle-fill"></b-icon>
+                      <b-icon v-if="azienda.ammortamenti !== '' || upload.ammortamenti.length != 0 " class="h4 p-0 b-0 m-0" variant="success" icon="check-circle-fill"></b-icon>
+                      <b-icon v-if="azienda.ammortamenti === '' && upload.ammortamenti.length === 0" class="h4 p-0 b-0 m-0" variant="danger" icon="x-circle-fill"></b-icon>
                     </b-col>
                   </b-row>
 
@@ -83,8 +83,8 @@ import TownSelect from '../components/TownSelect'
                       </p>
                     </b-col>
                     <b-col cols="1" xl="1" class="pt-2 p-0">
-                      <b-icon v-if="azienda.bilancio_depositato_anno1 !== '' || upload.bilancio_depositato_anno1 != 0" class="h4 p-0 b-0 m-0" variant="success" icon="check-circle-fill"></b-icon>
-                      <b-icon v-if="azienda.bilancio_depositato_anno1 === '' && upload.bilancio_depositato_anno1 === 0" class="h4 p-0 b-0 m-0" variant="danger" icon="x-circle-fill"></b-icon>
+                      <b-icon v-if="azienda.bilancio_depositato_anno1 !== '' || upload.bilancio_depositato_anno1.length != 0" class="h4 p-0 b-0 m-0" variant="success" icon="check-circle-fill"></b-icon>
+                      <b-icon v-if="azienda.bilancio_depositato_anno1 === '' && upload.bilancio_depositato_anno1.length === 0" class="h4 p-0 b-0 m-0" variant="danger" icon="x-circle-fill"></b-icon>
                     </b-col>
                   </b-row>
                   <b-row class="p-2">
@@ -102,8 +102,8 @@ import TownSelect from '../components/TownSelect'
                       </p>
                     </b-col>
                     <b-col cols="1" xl="1" class="pt-2 p-0">
-                      <b-icon v-if="azienda.bilancio_depositato_anno2 !== '' || upload.bilancio_depositato_anno2 != 0" class="h4 p-0 b-0 m-0" variant="success" icon="check-circle-fill"></b-icon>
-                      <b-icon v-if="azienda.bilancio_depositato_anno2 === '' && upload.bilancio_depositato_anno2 === 0" class="h4 p-0 b-0 m-0" variant="danger" icon="x-circle-fill"></b-icon>
+                      <b-icon v-if="azienda.bilancio_depositato_anno2 !== '' || upload.bilancio_depositato_anno2.length != 0" class="h4 p-0 b-0 m-0" variant="success" icon="check-circle-fill"></b-icon>
+                      <b-icon v-if="azienda.bilancio_depositato_anno2 === '' && upload.bilancio_depositato_anno2.length === 0" class="h4 p-0 b-0 m-0" variant="danger" icon="x-circle-fill"></b-icon>
                     </b-col>
                   </b-row>
 
@@ -229,6 +229,7 @@ import TownSelect from '../components/TownSelect'
   import axios from 'axios'
 
   export default {
+
     async asyncData({ $axios, params })
       {
 
@@ -252,46 +253,6 @@ import TownSelect from '../components/TownSelect'
 
             }
 
-            /*const filenames = ["ammortamenti","bilancio_depositato_anno1","bilancio_depositato_anno2"]
-
-
-            for (var count = 0; count < filenames.length; count++)
-            {
-              var filename = azienda[filenames[count]]
-
-              if(filename)
-              {
-                var i = filename.length
-                var j = 0
-                do {
-
-                  if(filename[i] == '/')
-                  {
-                    j = i
-                    i = 0
-                    var str = []
-                    var cont = 0
-
-                    for (var k = j + 1; k < filename.length; k++)
-                    {
-                      str[cont] = filename[k]
-                      cont++
-                    }
-
-                  }
-
-
-                  i--
-
-                } while (i > 0);
-
-
-                str = str.join('')
-                str = str.toString()
-                azienda[filenames[count]] = str
-
-              }
-            }*/
 
           return { is_logged,utente,is_company_set,role,regioni_req,province_req,comuni_azienda,azienda};
         }
@@ -443,9 +404,9 @@ import TownSelect from '../components/TownSelect'
         role:'Normal',
         upload:
         {
-          ammortamenti:0,
-          bilancio_depositato_anno1:0,
-          bilancio_depositato_anno2:0,
+          ammortamenti:[],
+          bilancio_depositato_anno1:[],
+          bilancio_depositato_anno2:[],
         },
         luogo: {
                  reg: '16',

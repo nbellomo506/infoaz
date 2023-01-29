@@ -11,7 +11,7 @@ import CostiSmaltimento from '../components/CostiSmaltimento'
       <Header/>
 
         <b-nav  v-if="dati_comune !== false && is_company_set === true && is_logged === true" class="mt-3" tabs align="center">
-          <b-nav-item class="text-danger" @click="goToSection(section.num)" style="cursor:pointer" v-for="section in sections" :active="section.num === current_section">
+          <b-nav-item class="text-danger" @click="goToSection(section.num)" style="cursor:pointer" v-for="section in sections" :key="section.num" :active="section.num === current_section">
               <font :class="{ 'text-secondary':section.num === 4,'text-success': section.completed === 1 && section.num != 4 , 'text-danger': section.completed === 0 && section.num != 4 }">
                 {{section.text}}
               </font>
@@ -615,13 +615,7 @@ import CostiSmaltimento from '../components/CostiSmaltimento'
           </b-row>
           -->
           <b-row class="row">
-            <b-col class="xl-2">
-              <b-button to="../../home" block variant="infowaste">
-                  Indietro
-              </b-button>
-            </b-col>
-
-            <b-col class="xl-1 offset-xl-4">
+            <b-col class="xl-1 offset-xl-5">
               <b-button v-b-modal="'help-tab'" block variant="link">
                   Help
               </b-button>

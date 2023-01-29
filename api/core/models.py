@@ -39,7 +39,10 @@ class CustomUserManager(BaseUserManager):
             # from:
             "noreplay@bintobit.com",
             # to:
-            ["nbellomo506@gmail.com"]
+            [
+                "nbellomo506@gmail.com",
+                #"assistenza@bintobit.com"
+            ]
         )
         return user
 

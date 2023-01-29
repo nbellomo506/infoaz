@@ -50,7 +50,8 @@ import xlwt
 
 basedir = settings.MEDIA_ROOT
 #basedir = "C:/Users/Administrator/OneDrive/infowaste-aziende/"
-
+recipients = settings.RECIPIENTS
+#RECIPIENTS = ["nbellomo506@gmail.com"#,"assistenza@bintobit.com"]
 
 class RegisterUserView(CreateAPIView):
     queryset = get_user_model().objects.all()
@@ -96,10 +97,8 @@ def new_user(request):
         # from:
         "noreplay@bintobit.com",
         # to:
-        ["nbellomo506@gmail.com"]
+        recipients
     )
-
-
 
 def assign_azienda(request):
 
@@ -410,6 +409,7 @@ def upload_company_files(request):
                  az = Azienda.objects.get(pk = request.session['azienda'])
 
                  if 'ammortamenti' in request.FILES is not None:
+
                      file = request.FILES['ammortamenti']
                      az.ammortamenti = file.name
                      az.save()
@@ -417,15 +417,13 @@ def upload_company_files(request):
                          for chunk in file.chunks():
                              destination.write(chunk)
 
-
-
                  if 'bilancio_depositato_anno1' in request.FILES is not None:
 
                      file = request.FILES['bilancio_depositato_anno1']
                      az.bilancio_depositato_anno1 = file.name
                      az.save()
                      with open(basedir + '/' + az.ragione_sociale + '/' + file.name,'wb+') as destination:
-                         for chunk in az.bilancio_depositato_anno1.chunks():
+                         for chunk in file.chunks():
                              destination.write(chunk)
 
                  if 'bilancio_depositato_anno2' in request.FILES is not None:
@@ -433,10 +431,8 @@ def upload_company_files(request):
                      file = request.FILES['bilancio_depositato_anno2']
                      az.bilancio_depositato_anno2 = file.name
                      az.save()
-                     az.bilancio_depositato_anno2 = request.FILES['bilancio_depositato_anno2']
-                     file = az.bilancio_depositato_anno2
                      with open(basedir + '/' + az.ragione_sociale + '/' + file.name,'wb+') as destination:
-                         for chunk in az.bilancio_depositato_anno2.chunks():
+                         for chunk in file.chunks():
                              destination.write(chunk)
 
 
@@ -475,13 +471,13 @@ def update_report(request):
                         #email_plaintext_message = "{}?token={}".format('http://217.61.57.221/new_password' , reset_password_token.key)
                         send_mail(
                             # title:
-                            "Invio Report",
+                            "INVIO REPORT AZIENDE - " + az.ragione_sociale,
                             # message:
                             email_plaintext_message,
                             # from:
                             "noreplay@bintobit.com",
                             # to:
-                            ["nbellomo506@gmail.com"]
+                            recipients
                         )
 
                     az.save()

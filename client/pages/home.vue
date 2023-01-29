@@ -15,7 +15,7 @@ import Field from '../components/Field'
             <b-container class="mb-3">
               <b-row>
                 <b-col xl="6">
-                  <h1>Benvenuto {{utente.nome}}</h1>
+                  <h1>Benvenut* {{utente.nome}}</h1>
                   <h3 v-if="azienda.report_is_sent === false && azienda.report_attempts > 0">Compilazione in corso</h3>
                   <h3 v-if="azienda.report_is_sent === true && azienda.report_attempts > 0">Report Inviato</h3>
                   <h3 class="text-danger" v-if="azienda.report_attempts <= 0">Report non modificabile</h3>
