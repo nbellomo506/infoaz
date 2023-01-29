@@ -240,7 +240,6 @@ import CostiSmaltimento from '../components/CostiSmaltimento'
 
                         for (var j = 0; utenti[i].request_date[j] != 'T'; j++)
                         {
-                          console.log(data)
                           data[j] = utenti[i].request_date[j]
                         }
 

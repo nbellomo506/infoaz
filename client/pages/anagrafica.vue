@@ -96,7 +96,7 @@ import TownSelect from '../components/TownSelect'
                     <b-col cols="11" xl="5">
                       <p>
                         <b-form-file v-model="upload.bilancio_depositato_anno2" placeholder="File" drop-placeholder="Rilascia qui"></b-form-file>
-                        <font v-if="azienda.bilancio_depositato_anno2 === '' ">
+                        <font v-if="azienda.bilancio_depositato_anno2 != '' ">
                           {{azienda.bilancio_depositato_anno2}}
                         </font>
                       </p>
@@ -252,7 +252,7 @@ import TownSelect from '../components/TownSelect'
 
             }
 
-            const filenames = ["ammortamenti","bilancio_depositato_anno1","bilancio_depositato_anno2"]
+            /*const filenames = ["ammortamenti","bilancio_depositato_anno1","bilancio_depositato_anno2"]
 
 
             for (var count = 0; count < filenames.length; count++)
@@ -291,7 +291,7 @@ import TownSelect from '../components/TownSelect'
                 azienda[filenames[count]] = str
 
               }
-            }
+            }*/
 
           return { is_logged,utente,is_company_set,role,regioni_req,province_req,comuni_azienda,azienda};
         }
