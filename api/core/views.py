@@ -206,6 +206,39 @@ def add_comune_azienda(request):
 
                     return HttpResponse("OK")
 
+def askHelp(request):
+
+    body_unicode = request.body.decode('utf-8')
+    body = json.loads(body_unicode)
+
+    message = body['message']
+    section = body['section']
+
+    if request.session['user_id'] > 0 and request.session['is_assigned'] == True and request.session['logged'] == True:
+
+        try:
+            user = User.objects.get(pk = request.session['user_id'])
+            email_plaintext_message = user.email+" ha inviato un messaggio di help nella sezione " + section + ":\n" + message
+            #email_plaintext_message = "{}?token={}".format('http://217.61.57.221/new_password' , reset_password_token.key)
+            send_mail(
+                # title:
+                "Richiesta Assitenza - ",
+                # message:
+                email_plaintext_message,
+                # from:
+                "noreplay@bintobit.com",
+                # to:
+                recipients,
+            )
+            return HttpResponse("Messaggio Inviato")
+
+        except:
+            return HttpResponse("Invio messaggio fallito")
+
+    else:
+        return HttpResponse("Accesso negato")
+
+
 def save_dati_comune(request):
 
     body_unicode = request.body.decode('utf-8')

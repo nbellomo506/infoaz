@@ -26,89 +26,48 @@
               </b-col>
             </b-row>
           </b-container>
-
-
-          <b-container fluid class="bg-infowaste" hidden>
-            <b-row class="pt-3 pb-3">
-              <!--<b-col v-if="is_logged === true" class="text-white pt-1 mb-1" sm="6" xl="2">
-                <b-button class="p-2 h-100" onclick="history.back()" v-if="this.$route.name === 'anagrafica' || this.$route.name === 'admin'" type="button" block variant="light" name="button">
-                  <b-icon class="h4 p-0 b-0 m-0" variant="dark" icon="arrow-left">
-                  </b-icon>
-                  Indietro
-                </b-button>
-              </b-col>-->
-              <b-col v-if="is_logged === true" class="text-white mt-1" sm="6" offset-xl="1" xl="2">
-                <b-dropdown block size="lg"  variant="light" toggle-class="text-decoration-none" no-caret>
-                  <template #button-content>
-                    <b-icon class="h4 p-0 b-0 m-0" variant="dark" icon="list"></b-icon>
-                  </template>
-                  <b-dropdown-item :to="locations.home" v-if="this.$route.name !== 'home'">Home</b-dropdown-item>
-                  <b-dropdown-item :to="locations.anagrafica" v-if="this.$route.name !== 'anagrafica' && (is_logged === true ) ">Anagrafica</b-dropdown-item>
-                  <b-dropdown-item :to="locations.admin" v-if="this.$route.name !== 'admin' && is_logged === true && role==='Admin'">Admin</b-dropdown-item>
-
-                  <b-dropdown-item :to="locations.login" @click="findPath('login')" class="bg-danger" >
-                    <font class="text-white">
-                      Esci
-                    </font>
-                  </b-dropdown-item>
-                </b-dropdown>
-              </b-col>
-            </b-row>
-          </b-container>
         </div>
 
-        <b-navbar style="text-align:center;display:inherit;font-size:large" type="dark" variant="infowaste">
-          <div v-if="is_logged === true">
 
-            <b-collapse id="nav-collapse" is-nav>
-              <b-navbar-nav>
-                <b-nav-item>
+        <b-container  fluid class="bg-infowaste p-3 m-0 b-0">
+          <b-row>
+            <b-col cols="6" offset-xl="1" xl="1" offset-lg="2" lg="2">
+              <b-button block :to="locations.home" variant="white">
+                <b-icon class="text-dark" icon="house-fill">
+                </b-icon>
+                Home
+              </b-button>
+            </b-col>
+
+            <b-col cols="6" offset-xl="8" xl="1" offset-lg="4" lg="2">
+              <b-dropdown block variant="white" text="Menu">
+                <b-dropdown-item :to="locations.home" v-if="this.$route.name !== 'home'">Home</b-dropdown-item>
+                <b-dropdown-item :to="locations.anagrafica" v-if="this.$route.name !== 'anagrafica' && (is_logged === true ) ">Anagrafica</b-dropdown-item>
+                <b-dropdown-item :to="locations.admin" variant="infowaste" v-if="this.$route.name !== 'admin' && is_logged === true && role==='Admin'">Admin</b-dropdown-item>
+                <b-dropdown-item :to="locations.login" class="bg-danger"  @click="findPath('login')">
                   <b-container class="p-0 m-0 b-0">
                     <b-row>
-                      <b-col>
-                        <b-button class="ml-5" v-if="this.$route.name !== 'home'" :to="locations.home" variant="white">
-                          <b-icon class="text-dark" icon="house-fill">
-                          </b-icon>
-                          Home
-                        </b-button>
+                      <b-col cols="8">
+                        <font class="text-white">
+                          Esci
+                        </font>
+                      </b-col>
+                      <b-col cols="2">
+                        <b-icon class="text-white" icon="box-arrow-right"></b-icon>
                       </b-col>
                     </b-row>
                   </b-container>
-                </b-nav-item>
-              </b-navbar-nav>
+                </b-dropdown-item>
+              </b-dropdown>
+            </b-col>
 
-                <b-navbar-nav class="ml-auto">
+          </b-row>
+        </b-container>
 
-                  <b-nav-item-dropdown class="text-light" right>
-                    <!-- Using 'button-content' slot -->
-                    <template #button-content>
-                      Menu
-                    </template>
-                      <b-dropdown-item :to="locations.home" v-if="this.$route.name !== 'home'">Home</b-dropdown-item>
-                      <b-dropdown-item :to="locations.anagrafica" v-if="this.$route.name !== 'anagrafica' && (is_logged === true ) ">Anagrafica</b-dropdown-item>
-                      <b-dropdown-item :to="locations.admin" variant="infowaste" v-if="this.$route.name !== 'admin' && is_logged === true && role==='Admin'">Admin</b-dropdown-item>
-                      <b-dropdown-item :to="locations.login" class="bg-danger"  @click="findPath('login')">
-                          <b-container class="p-0 m-0 b-0">
-                            <b-row>
-                              <b-col cols="8">
-                                <font class="text-white">
-                                  Esci
-                                </font>
-                              </b-col>
-                              <b-col cols="2">
-                                <b-icon class="text-white" icon="box-arrow-right"></b-icon>
-                              </b-col>
-                            </b-row>
-                          </b-container>
-
-                      </b-dropdown-item>
-                  </b-nav-item-dropdown>
-                </b-navbar-nav>
-            </b-collapse>
-          </div>
-        </b-navbar>
       </main>
   </template>
+
+
   <script>
   import axios from '@nuxtjs/axios'
 

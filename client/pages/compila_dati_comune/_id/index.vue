@@ -9,7 +9,6 @@ import CostiSmaltimento from '../components/CostiSmaltimento'
   <template>
     <main>
       <Header/>
-
         <b-nav  v-if="dati_comune !== false && is_company_set === true && is_logged === true" class="mt-3" tabs align="center">
           <b-nav-item class="text-danger" @click="goToSection(section.num)" style="cursor:pointer" v-for="section in sections" :key="section.num" :active="section.num === current_section">
               <font :class="{ 'text-secondary':section.num === 4,'text-success': section.completed === 1 && section.num != 4 , 'text-danger': section.completed === 0 && section.num != 4 }">
@@ -413,32 +412,25 @@ import CostiSmaltimento from '../components/CostiSmaltimento'
               <b-col xl="1">
                 Anno
               </b-col>
-
               <b-col class="text-danger" xl="2">
                 Impianto di smaltimento
               </b-col>
-
               <b-col class="text-danger" xl="2">
                 Codice CER/Tipo di rifiuto
               </b-col>
-
               <b-col xl="1">
                 Tipologia costo
               </b-col>
-
               <b-col xl="1">
                 Quantitativi conferiti [ton]
               </b-col>
-
               <b-col xl="2">
               Prezzo unitario con IVA
               </b-col>
-
               <b-col xl="2">
               Importo IVA Inclusa
               </b-col>
             </b-row>
-
             <b-row class="bg-light rounded p-3">
               <b-col class="p-0 pl-1" xl="1">
                 <select class="form-control" v-model="add.anno">
@@ -541,7 +533,8 @@ import CostiSmaltimento from '../components/CostiSmaltimento'
             </b-row>
           </b-col>
         </b-row>
-        </div>
+
+      </div>
 
       <b-container v-if="is_logged === false" class="mb-3">
         <b-row>
@@ -598,29 +591,12 @@ import CostiSmaltimento from '../components/CostiSmaltimento'
 
       <div v-if="dati_comune !== false && is_logged === true && is_company_set === true" class="bg-light fixed-bottom p-2">
         <b-container class="container">
-          <!--
-          <b-row class="mb-3">
-            <b-col xl="5" cols="6">
-              <b-button v-if="current_section > 1" @click="changeSection(0)" block variant="white">
-                <b-icon icon="arrow-left"></b-icon>
-                  Pagina precendente<br><font v-if="width >= 576 ">{{sections[current_section - 2].text}}</font>
-              </b-button>
-            </b-col>
-            <b-col xl="5" offset-xl="2" cols="6">
-              <b-button v-if="current_section < sections.length" @click="changeSection(1)" block variant="white">
-                  Pagina successiva<br><font v-if="width >= 576 ">{{sections[current_section].text}}</font>
-                 <b-icon icon="arrow-right"></b-icon>
-              </b-button>
-            </b-col>
-          </b-row>
-          -->
           <b-row class="row">
             <b-col class="xl-1 offset-xl-5">
               <b-button v-b-modal="'help-tab'" block variant="link">
                   Help
               </b-button>
             </b-col>
-
             <b-col class="xl-1 offset-xl-4">
               <b-button block @click="saveDatiComune(dati_comune,files)" variant="infowaste">
                   Salva
@@ -630,10 +606,12 @@ import CostiSmaltimento from '../components/CostiSmaltimento'
         </b-container>
       </div>
 
-        <b-modal id="help-tab" cancel-title="Annulla" ok-title="Invia">
-          <h5>Messaggio</h5>
-          <b-form-input></b-form-input>
+        <b-modal id="help-tab" cancel-variant="danger" ok-variant="infowaste" @ok="askHelp" cancel-title="Annulla" ok-title="Invia">
+          <font class="h5">Messaggio</font><br>
+          (verrà inviata un'email ad assistenza@bintobit.com)
+          <b-form-input v-model="help_message"></b-form-input>
         </b-modal>
+
         <b-modal id="bv-modal-save-msg" hide-footer>
           <div class="text-center">
             <h5>{{save.msg}}</h5>
@@ -813,20 +791,17 @@ import CostiSmaltimento from '../components/CostiSmaltimento'
 
     methods:
     {
-        changeSection(direction)
+        askHelp()
         {
-           if (this.current_section >= 1 &&  this.current_section <= this.sections.length) {
+          var section = this.sections[this.current_section - 1].text
+          section = section
+          console.log(section)
+          this.$axios.post('/askHelp', {
 
-              if (direction) {
+            message: this.help_message,
+            section: section,
 
-                this.current_section++
-
-              }else {
-
-                this.current_section--
-
-              }
-          }
+          })
 
         },
 
@@ -1195,6 +1170,7 @@ import CostiSmaltimento from '../components/CostiSmaltimento'
                     ultimo_pef:[]
                   },
 
+                  help_message:"",
                   width:0,
                   page_id:0,
                   is_logged:false,
