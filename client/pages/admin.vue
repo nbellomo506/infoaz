@@ -248,7 +248,7 @@ import CostiSmaltimento from '../components/CostiSmaltimento'
 
                           while (j < utenti[i].request_date.length )
                           {
-                              if (utenti[i].request_date[j] == '+' || utenti[i].request_date[j] == '.')
+                              if (utenti[i].request_date[j] == '+' || utenti[i].request_date[j] == '.' || utenti[i].request_date[j] == 'Z')
                               {
                                 j = utenti[i].request_date.length
 
