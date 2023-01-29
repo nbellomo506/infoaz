@@ -213,6 +213,7 @@ import CostiSmaltimento from '../components/CostiSmaltimento'
         </div>
       </main>
   </template>
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 
   <script>
   import axios from 'axios'
@@ -297,7 +298,7 @@ import CostiSmaltimento from '../components/CostiSmaltimento'
     methods:
     {
 
-        assignAzienda(user_id,azienda_id)
+        async assignAzienda(user_id,azienda_id)
         {
           this.$axios.post('/assign_azienda', {
             user_id:user_id,
@@ -306,7 +307,7 @@ import CostiSmaltimento from '../components/CostiSmaltimento'
           window.location.reload()
         },
 
-        add_azienda(azienda)
+        async add_azienda(azienda)
         {
           if (azienda.ragione_sociale && azienda.partita_iva && azienda.pef_mis_o_ric)
           {
@@ -323,7 +324,7 @@ import CostiSmaltimento from '../components/CostiSmaltimento'
           }
         },
 
-        del_azienda(azienda)
+        async del_azienda(azienda)
         {
           this.$axios.post('/del_azienda', {
 
@@ -334,7 +335,7 @@ import CostiSmaltimento from '../components/CostiSmaltimento'
 
         },
 
-        savePEF(azienda)
+        async savePEF(azienda)
         {
           this.$axios.post('/savePEF', {
             azienda:azienda.id,

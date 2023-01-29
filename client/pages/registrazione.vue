@@ -1,14 +1,6 @@
 
 import Header from '../components/Header'
 
-<script>
-export default {
-
-}
-</script>
-
-
-
 <template>
   <main>
     <Header/>
@@ -161,26 +153,26 @@ export default {
     data() {
       return {
         form: {
-          nome:'Provo',
-          cognome:'Lone',
-          titolo:'ambiente',
-          ragione_sociale: 'nonloso',
-          p_iva: '12121211111',
-          telefono: '21212121',
-          email: 'ciao@gmail.com',
+          nome:'',
+          cognome:'',
+          titolo:'',
+          ragione_sociale: '',
+          p_iva: '',
+          telefono: '',
+          email: '',
           email2: '',
-          password: 'Ciao2002.',
-          conferma_password:'Ciao2002.',
+          password: '',
+          conferma_password:'',
           load:true,
           check:{
             serv:{
-              attivo:false,
-              value:1,
+              attivo:true,
+              value:0,
 
             },
             priv:{
-              attivo:false,
-              value:1
+              attivo:true,
+              value:0
             }
 
           }
