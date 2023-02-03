@@ -31,7 +31,7 @@
 
         <b-container fluid class="bg-infowaste p-3 m-0 b-0">
           <b-row v-if="is_logged == true">
-            <b-col cols="6" offset-xl="1" xl="1" offset-lg="2" lg="2">
+            <b-col class="pt-1 pb-1" cols="12" offset-xl="1" xl="1" offset-lg="2" lg="2">
               <b-button class="shadow-sm" v-if="this.$route.name !== 'home'" block :to="locations.home" variant="white">
                 <b-icon class="text-dark" icon="house-fill">
                 </b-icon>
@@ -39,7 +39,7 @@
               </b-button>
             </b-col>
 
-            <b-col cols="6" offset-xl="8" xl="1" offset-lg="4" lg="2">
+            <b-col class="pt-1 pb-1" cols="12" offset-xl="8" xl="1" offset-lg="4" lg="2">
               <b-dropdown class="shadow" block variant="white" text="Menu">
                 <b-dropdown-item :to="locations.home" v-if="this.$route.name !== 'home'">Home</b-dropdown-item>
                 <b-dropdown-item :to="locations.anagrafica" v-if="this.$route.name !== 'anagrafica' && (is_logged === true ) ">Anagrafica</b-dropdown-item>

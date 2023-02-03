@@ -53,6 +53,7 @@ class UserSerializer(serializers.ModelSerializer):
         model = get_user_model()
         fields = ('id','nome','cognome','azienda','titolo','ragione_sociale','p_iva','telefono','email','email2','password','request_date','is_assigned')
 
+
         extra_kwargs = {
             'nome': {'required': True},
             'cognome': {'required': True},
@@ -73,7 +74,7 @@ class ChangePasswordSerializer(serializers.Serializer):
 class AziendaSerializer(serializers.ModelSerializer):
     class Meta:
         model = Azienda
-        fields = ("id","report_is_sent","report_attempts","ragione_sociale", "partita_iva","bilancio_depositato_anno1","bilancio_depositato_anno2","ammortamenti","export_daticomuni","pef_mis_o_ric")
+        fields = ("id","report_is_sent","report_attempts","ragione_sociale", "partita_iva","bilancio_depositato_anno1","bilancio_depositato_anno2","cespiti","export_daticomuni","pef_mis_o_ric")
 
 class DatiComuneSerializer(serializers.ModelSerializer):
     nome_regione = serializers.StringRelatedField(source='comune.provincia.regione.name')

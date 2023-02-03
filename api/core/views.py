@@ -152,8 +152,11 @@ def add_azienda(request):
     if 'logged' in request.session is not None:
         if request.session['logged'] == True:
             if request.session['is_admin'] == True and request.session['is_staff'] == True and request.session['is_active'] == True:
+                try:
+                    os.mkdir(os.path.join(basedir, ragione_sociale))
+                except:
+                    print("cartella già esistente")
 
-                os.mkdir(os.path.join(basedir, ragione_sociale))
                 obj = Azienda.objects.create(ragione_sociale=ragione_sociale,partita_iva=partita_iva,pef_mis_o_ric=pef_mis_o_ric)
                 obj.save()
 
@@ -188,23 +191,23 @@ def add_comune_azienda(request):
 
     comune = body['comune']
 
-    if 'logged' in request.session is not None:
-        if request.session['logged'] == True:
-            if 'user_id' and 'azienda' in request.session is not None:
-                try:
-                    obj = DatiComune.objects.get(comune_id =  comune , azienda_id = request.session['azienda'])
-                    error = "Il comune inserito è già presente"
-                    return HttpResponse(error)
+    if request.session['logged'] == True and request.session['user_id'] > 0 and request.session['azienda'] is not None:
+        az = Azienda.objects.get(pk = request.session['azienda'])
+        if az.report_is_sent == False:
+            try:
+                obj = DatiComune.objects.get(comune_id =  comune , azienda_id = request.session['azienda'])
+                error = "Il comune inserito è già presente"
+                return HttpResponse(error)
 
-                except DatiComune.DoesNotExist:
+            except DatiComune.DoesNotExist:
 
-                    obj = DatiComune.objects.create(comune_id =  comune , azienda_id = request.session['azienda'])
-                    obj.save()
-                    comune = str(obj.comune)
-                    azienda = str(obj.azienda)
-                    os.mkdir(os.path.join(basedir, azienda+'/'+comune))
+                obj = DatiComune.objects.create(comune_id =  comune , azienda_id = request.session['azienda'])
+                obj.save()
+                comune = str(obj.comune)
+                azienda = str(obj.azienda)
+                os.mkdir(os.path.join(basedir, azienda+'/'+comune))
 
-                    return HttpResponse("OK")
+                return HttpResponse("OK")
 
 def askHelp(request):
 
@@ -237,7 +240,6 @@ def askHelp(request):
 
     else:
         return HttpResponse("Accesso negato")
-
 
 def save_dati_comune(request):
 
@@ -441,10 +443,10 @@ def upload_company_files(request):
 
                  az = Azienda.objects.get(pk = request.session['azienda'])
 
-                 if 'ammortamenti' in request.FILES is not None:
+                 if 'cespiti' in request.FILES is not None:
 
-                     file = request.FILES['ammortamenti']
-                     az.ammortamenti = file.name
+                     file = request.FILES['cespiti']
+                     az.cespiti = file.name
                      az.save()
                      with open(basedir + '/' + az.ragione_sociale + '/' + file.name,'wb+') as destination:
                          for chunk in file.chunks():
@@ -495,9 +497,10 @@ def update_report(request):
 
                 if az.report_attempts > 0:
                     az.report_is_sent = not az.report_is_sent
-                    az.report_attempts = az.report_attempts - 1
 
                     if az.report_is_sent == True:
+                        az.report_attempts = az.report_attempts - 1
+                        az.save()
 
                         user = User.objects.get(pk = request.session['user_id'])
                         email_plaintext_message = "Si comunica che " + user.nome + " " + user.cognome + " ha inviato il report relativo all'azienda " + az.ragione_sociale + ".\nQuesta azienda ha inviato il report " + str( 5 - az.report_attempts ) + " volte"
@@ -529,7 +532,8 @@ def get_costi_smaltimento(request):
     body = json.loads(body_unicode)
     id = body['id']
 
-    if 'logged' in request.session is not None:
+
+    if 'logged' and 'azienda' in request.session is not None:
         if request.session['logged'] == True:
             if request.session['azienda'] > 0 and request.session['is_assigned'] == True:
                 try:
@@ -537,6 +541,113 @@ def get_costi_smaltimento(request):
                  serializer = DatiComuneSerializer(qs)
                  qs = CostoSmaltimento.objects.filter(daticomune = id)
                  serializer = CostoSmaltimentoSerializer(qs,many=True)
+
+                 return JsonResponse(serializer.data,content_type="application/json",safe=False)
+                except DatiComune.DoesNotExist:
+                 return JsonResponse(False,content_type="application/json",safe=False)
+
+            else:
+                return JsonResponse("No Company",content_type="application/json",safe=False)
+
+        else:
+            return JsonResponse("Not Logged",content_type="application/json",safe=False)
+
+def add_costi_smaltimento(request):
+
+    body_unicode = request.body.decode('utf-8')
+    body = json.loads(body_unicode)
+
+    daticomune = body['daticomune']
+    imp_smalt = body['imp_smalt']
+    tipo_rifiuto = body['tipo_rifiuto']
+    tipo_costo = body['tipo_costo']
+    anno = body['anno']
+    tons = body['tons']
+    prezzo_unitario = body['prezzo_unitario']
+    importo =  body['importo']
+
+    if 'logged' and 'azienda' in request.session is not None:
+        if request.session['logged'] == True:
+            if request.session['azienda'] > 0 and request.session['is_assigned'] == True:
+                try:
+                 qs = DatiComune.objects.get(pk = daticomune ,azienda = request.session['azienda'])
+                 serializer = DatiComuneSerializer(qs)
+
+                 obj = CostoSmaltimento.objects.create(daticomune = qs,imp_smalt=imp_smalt,tipo_rifiuto=tipo_rifiuto,tipo_costo=tipo_costo,anno=anno,tons=tons,prezzo_unitario=prezzo_unitario,importo=importo)
+                 obj.save()
+
+                 return JsonResponse(serializer.data,content_type="application/json",safe=False)
+                except DatiComune.DoesNotExist:
+                 return JsonResponse(False,content_type="application/json",safe=False)
+
+            else:
+                return JsonResponse("No Company",content_type="application/json",safe=False)
+
+        else:
+            return JsonResponse("Not Logged",content_type="application/json",safe=False)
+
+def update_costi_smaltimento(request):
+
+    body_unicode = request.body.decode('utf-8')
+    body = json.loads(body_unicode)
+
+    id = body['id']
+    daticomune = body['daticomune']
+    imp_smalt = body['imp_smalt']
+    tipo_rifiuto = body['tipo_rifiuto']
+    tipo_costo = body['tipo_costo']
+    anno = body['anno']
+    tons = body['tons']
+    prezzo_unitario = body['prezzo_unitario']
+    importo =  body['importo']
+
+    if 'logged' and 'azienda' in request.session is not None:
+        if request.session['logged'] == True:
+            if request.session['azienda'] > 0 and request.session['is_assigned'] == True:
+                try:
+                 qs = DatiComune.objects.get(pk = daticomune ,azienda = request.session['azienda'])
+                 serializer = DatiComuneSerializer(qs)
+
+                 obj = CostoSmaltimento.objects.get(pk = id)
+                 obj.imp_smalt = body['imp_smalt']
+                 obj.tipo_rifiuto = body['tipo_rifiuto']
+                 obj.tipo_costo = body['tipo_costo']
+                 obj.anno = body['anno']
+                 obj.tons = body['tons']
+                 obj.prezzo_unitario = body['prezzo_unitario']
+                 obj.importo = body['importo']
+                 obj.save()
+
+                 return JsonResponse(serializer.data,content_type="application/json",safe=False)
+                except DatiComune.DoesNotExist:
+                 return JsonResponse(False,content_type="application/json",safe=False)
+
+            else:
+                return JsonResponse("No Company",content_type="application/json",safe=False)
+
+        else:
+            return JsonResponse("Not Logged",content_type="application/json",safe=False)
+
+def del_costi_smaltimento(request):
+
+    body_unicode = request.body.decode('utf-8')
+    body = json.loads(body_unicode)
+
+    id = body['id']
+    daticomune = body['daticomune']
+
+
+    if 'logged' and 'azienda' in request.session is not None:
+        if request.session['logged'] == True:
+            if request.session['azienda'] > 0 and request.session['is_assigned'] == True:
+                try:
+                 qs = DatiComune.objects.get(pk = daticomune ,azienda = request.session['azienda'])
+                 serializer = DatiComuneSerializer(qs)
+
+                 obj = CostoSmaltimento.objects.get(pk = id)
+                 obj.delete()
+
+
                  return JsonResponse(serializer.data,content_type="application/json",safe=False)
                 except DatiComune.DoesNotExist:
                  return JsonResponse(False,content_type="application/json",safe=False)
@@ -592,14 +703,14 @@ def role(request):
 def is_company_set(request):
     is_company_set = False
 
-    if 'logged' in request.session is not None:
+    if 'logged' in request.session is not None :
         if request.session['logged'] == True:
             qs = User.objects.get(pk = request.session['user_id'])
             serializer = UserSerializer(qs)
             request.session['azienda'] = serializer.data['azienda']
             request.session['is_assigned'] = serializer.data['is_assigned']
 
-            if request.session['azienda'] > 0 and request.session['is_assigned'] == True:
+            if request.session['azienda'] is not None and request.session['is_assigned'] is not None and request.session['is_assigned'] is True :
                 is_company_set = True
 
 

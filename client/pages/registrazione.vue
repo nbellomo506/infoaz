@@ -166,12 +166,12 @@ import Header from '../components/Header'
           load:true,
           check:{
             serv:{
-              attivo:true,
+              attivo:false,
               value:0,
 
             },
             priv:{
-              attivo:true,
+              attivo:false,
               value:0
             }
 

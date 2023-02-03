@@ -42,28 +42,30 @@ import TownSelect from '../components/TownSelect'
                 <b-container disabled="true" class="bg-light rounded p-3 mb-5">
                   <b-row class="pb-4">
                     <b-col>
-                      <p>
-                        Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                      <p class="font-1">
+                        In questa sezione vanno caricati i file dei <b>bilanci depositati</b> riferiti alle annualità 2020 e 2021.<br>
+
+                        Per quanto attiene i <b>CESPITI</b> l’utente deve scaricare e compilare il file excel che si intende riferito alla totalità dei beni impiegati nella conduzione degli appalti in tutti i Comuni, precisando per ogni bene le percentuali di impiego riferite a ciascun Comune (colonna S e successive).
                       </p>
                     </b-col>
                   </b-row>
 
                   <b-row class="p-2">
                     <b-col offset-xl="1" xl="4">
-                      <p>Ammortamenti (<b-link href="/files/Ammortamenti.xlsx">Scarica Modello</b-link>)
+                      <p>Cespiti (<b-link href="/files/cespiti.xlsx">Scarica Modello</b-link>)
                       </p>
                     </b-col>
                     <b-col cols="11" xl="5">
                       <p>
-                        <b-form-file v-model="upload.ammortamenti"  placeholder="File Excel" drop-placeholder="Rilascia qui"></b-form-file>
-                        <font v-if="azienda.ammortamenti != ''">
-                          {{azienda.ammortamenti}}
+                        <b-form-file v-model="upload.cespiti"  placeholder="File Excel" drop-placeholder="Rilascia qui"></b-form-file>
+                        <font v-if="azienda.cespiti != ''">
+                          {{azienda.cespiti}}
                         </font>
                       </p>
                     </b-col>
                     <b-col cols="1" xl="1" class="pt-2 p-0">
-                      <b-icon v-if="azienda.ammortamenti !== '' || upload.ammortamenti.length != 0 " class="h4 p-0 b-0 m-0" variant="success" icon="check-circle-fill"></b-icon>
-                      <b-icon v-if="azienda.ammortamenti === '' && upload.ammortamenti.length === 0" class="h4 p-0 b-0 m-0" variant="danger" icon="x-circle-fill"></b-icon>
+                      <b-icon v-if="azienda.cespiti !== '' || upload.cespiti.length != 0 " class="h4 p-0 b-0 m-0" variant="success" icon="check-circle-fill"></b-icon>
+                      <b-icon v-if="azienda.cespiti === '' && upload.cespiti.length === 0" class="h4 p-0 b-0 m-0" variant="danger" icon="x-circle-fill"></b-icon>
                     </b-col>
                   </b-row>
 
@@ -269,17 +271,16 @@ import TownSelect from '../components/TownSelect'
     methods:
     {
 
-
         async updateFiles(azienda)
         {
             var formData = new FormData();
             var upload = false
 
-            if(azienda.ammortamenti == '[object File]')
+            if(azienda.cespiti == '[object File]')
             {
               upload = true
-              azienda.ammortamenti = new File([azienda.ammortamenti],azienda.ammortamenti.name)
-              formData.append("ammortamenti", azienda.ammortamenti,azienda.ammortamenti.name);
+              azienda.cespiti = new File([azienda.cespiti],azienda.cespiti.name)
+              formData.append("cespiti", azienda.cespiti,azienda.cespiti.name);
             }
             if(azienda.bilancio_depositato_anno1 == '[object File]')
             {
@@ -404,7 +405,7 @@ import TownSelect from '../components/TownSelect'
         role:'Normal',
         upload:
         {
-          ammortamenti:[],
+          cespiti:[],
           bilancio_depositato_anno1:[],
           bilancio_depositato_anno2:[],
         },

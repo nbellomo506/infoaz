@@ -67,7 +67,7 @@ class Azienda(models.Model):
     partita_iva = models.CharField(max_length = 11,default='')
     bilancio_depositato_anno1 = models.CharField(max_length= 512,default='',blank=True)
     bilancio_depositato_anno2 = models.CharField(max_length= 512,default='',blank=True)
-    ammortamenti = models.CharField(max_length= 512,default='',blank=True)
+    cespiti = models.CharField(max_length = 512,default='',blank=True)
     export_daticomuni = models.CharField(max_length= 512,default='',blank=True)
     report_attempts = models.IntegerField(default = 5)
     report_is_sent = models.BooleanField(default = False)
@@ -132,8 +132,8 @@ class User(AbstractUser, PermissionsMixin):
 @receiver(reset_password_token_created)
 def password_reset_token_created(sender, instance, reset_password_token, *args, **kwargs):
 
-    email_plaintext_message = "{}?token={}".format('http://localhost:3000/new_password' , reset_password_token.key)
-    #email_plaintext_message = "{}?token={}".format('http://217.61.57.221/new_password' , reset_password_token.key)
+    #email_plaintext_message = "{}?token={}".format('http://localhost:3000/new_password' , reset_password_token.key)
+    email_plaintext_message = "{}?token={}".format('http://217.61.57.221/new_password' , reset_password_token.key)
     send_mail(
         # title:
         "Richiesta recupero password {title}".format(title="Infowaste Modulo Aziende"),

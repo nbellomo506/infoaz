@@ -9,7 +9,6 @@ import CostiSmaltimento from '../components/CostiSmaltimento'
 <template>
   <main>
     <Header/>
-
       <div class="p-0 m-0 b-0">
         <b-container class="pb-5" v-if="is_logged === true && role === 'Admin'">
           <b-row>
@@ -22,23 +21,35 @@ import CostiSmaltimento from '../components/CostiSmaltimento'
                     </b-col>
                   </b-row>
                   <b-row class="border bg-light">
-                    <b-col xl="2">
+                    <b-col xl="2" >
                       Nome Completo
+                      <b-button @click="orderUsers('nome',false)" type="button" variant="light" name="button">
+                        <b-icon icon="sort-down-alt"></b-icon>
+                      </b-button>
                     </b-col>
                     <b-col xl="3">
                       Contatti
+                      <b-button @click="orderUsers('email',false)" type="button" variant="light" name="button">
+                        <b-icon icon="sort-down-alt"></b-icon>
+                      </b-button>
                     </b-col>
                     <b-col xl="2">
                       Partita IVA - Ragione Sociale
+                      <b-button @click="orderUsers('ragione_sociale',false)" type="button" variant="light" name="button">
+                        <b-icon icon="sort-down-alt"></b-icon>
+                      </b-button>
                     </b-col>
                     <b-col xl="2">
                       Data Richiesta
+                      <b-button @click="orderUsers('request_date',false)" type="button" variant="light" name="button">
+                        <b-icon icon="sort-down-alt"></b-icon>
+                      </b-button>
                     </b-col>
                     <b-col xl="3">
                       <b>Azienda</b>
                     </b-col>
                   </b-row>
-                  <b-row class="border pt-3 pb-2" v-for="utente in utenti" :key="utente.id" v-if="utente.is_assigned === false">
+                  <b-row class="border pt-3 pb-2" v-for="utente in utenti_non_azienda" :key="utente.id">
                     <b-col xl="2">
                       {{utente.nome}} {{utente.cognome}}
                     </b-col>
@@ -76,23 +87,35 @@ import CostiSmaltimento from '../components/CostiSmaltimento'
                     </b-col>
                   </b-row>
                   <b-row class="border bg-light">
-                    <b-col xl="2">
+                    <b-col xl="2" >
                       Nome Completo
+                      <b-button @click="orderUsers('nome',true)" type="button" variant="light" name="button">
+                        <b-icon icon="sort-down-alt"></b-icon>
+                      </b-button>
                     </b-col>
                     <b-col xl="3">
                       Contatti
+                      <b-button @click="orderUsers('email',true)" type="button" variant="light" name="button">
+                        <b-icon icon="sort-down-alt"></b-icon>
+                      </b-button>
                     </b-col>
                     <b-col xl="2">
                       Partita IVA - Ragione Sociale
+                      <b-button @click="orderUsers('ragione_sociale',true)" type="button" variant="light" name="button">
+                        <b-icon icon="sort-down-alt"></b-icon>
+                      </b-button>
                     </b-col>
                     <b-col xl="2">
                       Data Richiesta
+                      <b-button @click="orderUsers('request_date',true)" type="button" variant="light" name="button">
+                        <b-icon icon="sort-down-alt"></b-icon>
+                      </b-button>
                     </b-col>
                     <b-col xl="3">
                       <b>Azienda</b>
                     </b-col>
                   </b-row>
-                  <b-row class="pt-3 pb-2 border" :key="utente.id" v-for="utente in utenti" v-if="utente.is_assigned === true ">
+                  <b-row class="pt-3 pb-2 border" :key="utente.id" v-for="utente in utenti_azienda">
                     <b-col xl="2">
                       {{utente.nome}} {{utente.cognome}}
                     </b-col>
@@ -147,7 +170,7 @@ import CostiSmaltimento from '../components/CostiSmaltimento'
                     <b-col offset-xl="1" xl="2">
                       <b-button block @click="savePEF(azienda)" variant="success" name="button">Salva</b-button>
                     </b-col>
-                    <b-col v-if="azienda.id != 1" xl="2">
+                    <b-col v-if="azienda.ragione_sociale !== 'infowaste'" xl="2">
                       <b-button block @click="del_azienda(azienda)" variant="danger" name="button">
                         <b-icon class="h4 p-0 b-0 m-0" variant="white" icon="trash"></b-icon>
                       </b-button>
@@ -175,7 +198,7 @@ import CostiSmaltimento from '../components/CostiSmaltimento'
                       </b-form-input>
                     </b-col>
                     <b-col xl="3">
-                      <b-form-input v-model="new_azienda.partita_iva" required>
+                      <b-form-input maxlength="11" v-model="new_azienda.partita_iva" required>
                       </b-form-input>
                     </b-col>
                     <b-col xl="4">
@@ -252,19 +275,14 @@ import CostiSmaltimento from '../components/CostiSmaltimento'
                               if (utenti[i].request_date[j] == '+' || utenti[i].request_date[j] == '.' || utenti[i].request_date[j] == 'Z')
                               {
                                 j = utenti[i].request_date.length
-
                               }
                                   else
                                   {
-
                                     orario[k] = utenti[i].request_date[j]
-
                                   }
                               j++
                               k++
                           }
-
-
 
                       data = data.join('')
                       data.toString()
@@ -275,15 +293,31 @@ import CostiSmaltimento from '../components/CostiSmaltimento'
                       utenti[i].data = data
                       utenti[i].orario = orario
 
-
                   }
 
+              var utenti_non_azienda = []
+              var utenti_azienda = []
+
+              for (var i = 0; i < utenti.length; i++)
+              {
+                if (utenti[i].azienda !== null && utenti[i].is_assigned === true)
+                {
+                  utenti_azienda.push(utenti[i])
+                }
+                  else
+                      {
+                        utenti_non_azienda.push(utenti[i])
+                      }
+              }
+              console.log(utenti_non_azienda)
+              console.log(utenti_azienda)
+              console.log(utenti)
 
               var aziende = await $axios.$get(`/get_aziende`);
 
             }
 
-          return {is_logged,role,aziende,utenti};
+          return {is_logged,role,aziende,utenti,utenti_azienda,utenti_non_azienda};
 
         } catch (e) {
 
@@ -298,13 +332,26 @@ import CostiSmaltimento from '../components/CostiSmaltimento'
     methods:
     {
 
+        async orderUsers(by,assigned)
+        {
+
+            if (assigned)
+            {
+              this.utenti_azienda = this.utenti_azienda.sort((t1,t2) => t1[by] < t2[by] ? -1 : 1)
+            }
+            else {
+              this.utenti_non_azienda = this.utenti_non_azienda.sort((t1,t2) => t1[by] < t2[by] ? -1 : 1)
+            }
+
+        },
+
         async assignAzienda(user_id,azienda_id)
         {
           this.$axios.post('/assign_azienda', {
             user_id:user_id,
             azienda_id:azienda_id
           })
-          window.location.reload()
+          location.reload()
         },
 
         async add_azienda(azienda)
@@ -320,7 +367,7 @@ import CostiSmaltimento from '../components/CostiSmaltimento'
 
             })
 
-              window.location.reload()
+              location.reload()
           }
         },
 
@@ -331,7 +378,7 @@ import CostiSmaltimento from '../components/CostiSmaltimento'
             id:azienda.id
 
           })
-          window.location.reload()
+          location.reload()
 
         },
 
@@ -342,7 +389,7 @@ import CostiSmaltimento from '../components/CostiSmaltimento'
             pef:azienda.pef_mis_o_ric
           })
 
-          window.location.reload()
+          location.reload()
         }
 
     },
@@ -351,14 +398,13 @@ import CostiSmaltimento from '../components/CostiSmaltimento'
     data() {
 
         return {
-
                     new_azienda:
                     {
                       ragione_sociale:'',
                       partita_iva:'',
                       pef_mis_o_ric:''
                     },
-
+                    nome:"nome",
                     pef_opts:[
                       { text: 'CALCOLATO', value: 'CALCOLATO' },
                       { text: 'MISURATO', value: 'MISURATO' }

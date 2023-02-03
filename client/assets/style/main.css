@@ -5,6 +5,12 @@
   --black: #212529;
 }
 
+.font-1
+{
+  font-family: 'Calibri'
+}
+
+
 .dropdown-item:active
 {
     background-color: var(--theme) ;

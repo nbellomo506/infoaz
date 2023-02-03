@@ -69,13 +69,21 @@ import Field from '../components/Field'
             </b-col>
           </b-row>
 
-          <b-row>
-            <b-col class="mt-4" offset-xl="1" xl="10">
-              <p dir="ltr" style="line-height:1.295;text-align: justify;margin-top:0pt;margin-bottom:8pt;"><span style="font-size:12pt;font-family:Calibri,sans-serif;color:#000000;background-color:transparent;font-weight:700;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre;white-space:pre-wrap;">SUPPORTO PEF</span><span style="font-size:12pt;font-family:Calibri,sans-serif;color:#000000;background-color:transparent;font-weight:400;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre;white-space:pre-wrap;">&nbsp;&egrave; un servizio a disposizione delle imprese che operano nel settore della gestione dei rifiuti urbani per la compilazione del&nbsp;</span><span style="font-size:12pt;font-family:Calibri,sans-serif;color:#000000;background-color:transparent;font-weight:700;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre;white-space:pre-wrap;">PEF (Piano Economico Finanziario)</span><span style="font-size:12pt;font-family:Calibri,sans-serif;color:#000000;background-color:transparent;font-weight:400;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre;white-space:pre-wrap;">&nbsp;secondo le disposizioni di ARERA (</span><span style="font-size:12pt;font-family:Calibri,sans-serif;color:#000000;background-color:transparent;font-weight:700;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre;white-space:pre-wrap;">MTR-2</span><span style="font-size:12pt;font-family:Calibri,sans-serif;color:#000000;background-color:transparent;font-weight:400;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre;white-space:pre-wrap;">). Il servizio si svolge nel rispetto della normativa sulla privacy e sulla gestione dei dati sensibili.</span></p>
-              <p dir="ltr" style="line-height:1.295;text-align: justify;margin-top:0pt;margin-bottom:8pt;"><span style="font-size:12pt;font-family:Calibri,sans-serif;color:#000000;background-color:transparent;font-weight:400;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre;white-space:pre-wrap;">L&rsquo;utente dopo essere accreditato compila la sezione&nbsp;</span><span style="font-size:12pt;font-family:Calibri,sans-serif;color:#000000;background-color:transparent;font-weight:700;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre;white-space:pre-wrap;">ANAGRAFICA</span><span style="font-size:12pt;font-family:Calibri,sans-serif;color:#000000;background-color:transparent;font-weight:400;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre;white-space:pre-wrap;">&nbsp;e dichiara i Comuni presso i quali opera con conseguente obbligo di presentazione del PEF.</span></p>
-              <p dir="ltr" style="line-height:1.295;text-align: justify;margin-top:0pt;margin-bottom:8pt;"><span style="font-size:12pt;font-family:Calibri,sans-serif;color:#000000;background-color:transparent;font-weight:400;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre;white-space:pre-wrap;">Terminata questa fase, l&rsquo;utente procede alla compilazione del PEF riferito al singolo Comune, scegliendolo fra quelli dichiarati, ed individuando una delle due possibili opzioni con cui intende procedere:&nbsp;</span><span style="font-size:12pt;font-family:Calibri,sans-serif;color:#000000;background-color:transparent;font-weight:700;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre;white-space:pre-wrap;">PEF CALCOLATO</span><span style="font-size:12pt;font-family:Calibri,sans-serif;color:#000000;background-color:transparent;font-weight:400;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre;white-space:pre-wrap;">&nbsp;ovvero&nbsp;</span><span style="font-size:12pt;font-family:Calibri,sans-serif;color:#000000;background-color:transparent;font-weight:700;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre;white-space:pre-wrap;">PEF MISURATO</span><span style="font-size:12pt;font-family:Calibri,sans-serif;color:#000000;background-color:transparent;font-weight:400;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre;white-space:pre-wrap;">. In entrambi i casi l&rsquo;elaborazione fa riferimento ai dati di bilancio, alla contabilit&agrave; di commessa e dati tecnici che dovranno essere caricati e imputati negli appositi campi dell&rsquo;applicazione.</span></p>
-              <p dir="ltr" style="line-height:1.295;text-align: justify;margin-top:0pt;margin-bottom:8pt;"><span style="font-size:12pt;font-family:Calibri,sans-serif;color:#000000;background-color:transparent;font-weight:400;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre;white-space:pre-wrap;">Nel caso del&nbsp;</span><span style="font-size:12pt;font-family:Calibri,sans-serif;color:#000000;background-color:transparent;font-weight:700;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre;white-space:pre-wrap;">PEF CALCOLATO</span><span style="font-size:12pt;font-family:Calibri,sans-serif;color:#000000;background-color:transparent;font-weight:400;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre;white-space:pre-wrap;">&nbsp;i driver attraverso cui ripartire i costi sono elaborati prendendo a riferimento valori il pi&ugrave; possibile oggettivi (ad es. numero di abitanti per Comune). Nel caso del&nbsp;</span><span style="font-size:12pt;font-family:Calibri,sans-serif;color:#000000;background-color:transparent;font-weight:700;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre;white-space:pre-wrap;">PEF MISURATO</span><span style="font-size:12pt;font-family:Calibri,sans-serif;color:#000000;background-color:transparent;font-weight:400;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre;white-space:pre-wrap;">, invece, i driver sono individuati dall&rsquo;utente sulla base di un set messo a disposizione dall&rsquo;applicazione che li elabora attingendo dall&rsquo;ERP aziendale (</span><span style="font-size:12pt;font-family:Calibri,sans-serif;color:#000000;background-color:transparent;font-weight:700;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre;white-space:pre-wrap;">WMS / INNOVAMBIENTE</span><span style="font-size:12pt;font-family:Calibri,sans-serif;color:#000000;background-color:transparent;font-weight:400;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre;white-space:pre-wrap;">): numero di ore lavorate per servizio, numero di chilometri percorsi, numero di contenitori distribuiti&hellip;</span></p>
-              <p dir="ltr" style="line-height:1.295;text-align: justify;margin-top:0pt;margin-bottom:8pt;"><span style="font-size:12pt;font-family:Calibri,sans-serif;color:#000000;background-color:transparent;font-weight:400;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre;white-space:pre-wrap;">In entrambi i casi l&rsquo;attivit&agrave; di elaborazione prevede l&rsquo;erogazione di un&nbsp;</span><span style="font-size:12pt;font-family:Calibri,sans-serif;color:#000000;background-color:transparent;font-weight:700;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre;white-space:pre-wrap;">SERVIZIO DI ASSISTENZA</span><span style="font-size:12pt;font-family:Calibri,sans-serif;color:#000000;background-color:transparent;font-weight:400;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre;white-space:pre-wrap;">&nbsp;nell&rsquo;utilizzo dell&rsquo;applicazione e &ndash; se richiesto &ndash; di un&nbsp;</span><span style="font-size:12pt;font-family:Calibri,sans-serif;color:#000000;background-color:transparent;font-weight:700;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre;white-space:pre-wrap;">SERVIZIO DI CONSULENZA</span><span style="font-size:12pt;font-family:Calibri,sans-serif;color:#000000;background-color:transparent;font-weight:400;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre;white-space:pre-wrap;">&nbsp;per la revisione dei dati e la stesura della relazione di accompagnamento.</span></p>
+          <b-row class="mb-5">
+            <b-col class="mt-4 " offset-xl="1" xl="10">
+              <p class="font-1">
+                <b>SUPPORTO PEF</b> è un servizio a disposizione delle imprese che operano nel settore della gestione dei rifiuti urbani per la compilazione del PEF (Piano Economico Finanziario) secondo le disposizioni di ARERA (MTR-2).<br>
+                L’attività di compilazione e caricamento dei dati in piattaforma è preceduta da una fase di assessment condotta dai nostri tecnici in modo da definire lo scenario che può esser basato su <b>PEF CALCOLATO</b> (i driver attraverso cui ripartire i costi sono elaborati prendendo a riferimento valori il più possibile oggettivi) ovvero su <b>PEF MISURATO</b> (i driver sono individuati dall’utente sulla base di un set messo a disposizione dall’applicazione che li elabora attingendo dall’ERP aziendale <b>WMS / INNOVAMBIENTE</b>).<br>
+                In entrambi i casi l’elaborazione fa riferimento ai dati di bilancio, alla contabilità di commessa e dati tecnici che dovranno essere caricati e imputati negli appositi campi dell’applicazione.<br>
+
+                L’utente dopo essere accreditato compila la sezione <b>ANAGRAFICA</b> e dichiara i Comuni presso i quali opera con conseguente obbligo di presentazione del PEF.<br>
+
+                Terminata questa fase, l’utente procede alla compilazione e caricamento dei dati per ogni Comune, scegliendolo fra quelli dichiarati e visibili nella HOMEPAGE.<br>
+
+                Completata la fase di compilazione e caricamento dei dati Comune per Comune, è possibile segnalare il termine dell’attività premendo il pulsante <b>INVIA DATI</b>. L’opzione INVIA DATI è reversibile nel caso in cui sia necessario procedere ad ulteriori modiche ed aggiornamenti.<br>
+
+                L’attività di consulenza e assistenza condotta dai nostri tecnici viene avviata al completamento dell’attività di caricamento e compilazione svolta dall’utente e quindi alla ricezione dell’input conferito attraverso il tasto INVIA DATI.<br>
+              </p>
             </b-col>
           </b-row>
           <b-row>
@@ -133,7 +141,9 @@ import Field from '../components/Field'
           </td>
           <td>{{dati_comune.nome_comune}}</td>
         </tr>
-
+        <tr colspan="2" align="center">
+          <td><b>Dati Generali</b></td>
+        </tr>
         <tr>
           <td>PEF</td>
           <td>{{dati_comune.pef_mis_o_ric}}</td>
@@ -168,51 +178,139 @@ import Field from '../components/Field'
           <td>I ricavi dai sistemi di compliance (ricavi CONAI e altri) competono all'impresa o al Comune?</td>
           <td>{{dati_comune.ricavi_conai_flag}}</td>
         </tr>
+
         <tr>
           <td>L'impresa sostiene costi CTS relativi al Trattamento e Smaltimento Rifiuti?</td>
           <td>{{dati_comune.impresa_cts_flag}}</td>
         </tr>
+
         <tr>
           <td>L'impresa sostiene costi CTR relativi al Trattamento e Riciclo Rifiuti?</td>
           <td>{{dati_comune.impresa_ctr_flag}}</td>
         </tr>
+
         <tr>
           <td>Sono inclusi nel contratto e a carico dell'impresa anche i servizi di spazzamento e igiene ambientale?</td>
           <td>{{dati_comune.spazz_e_ig_flag}}</td>
         </tr>
+
         <tr>
           <td>Sono presenti nel contratto anche servizi non inseriti del perimetro definito da ARERA?</td>
           <td>{{dati_comune.serv_exra_arera}}</td>
         </tr>
+
         <tr>
-          <td>L'impresa ha in essere 'lavori in corso' per come definiti da ARERA?
-      </td>
+          <td>L'impresa ha in essere 'lavori in corso' per come definiti da ARERA?</td>
           <td>{{dati_comune.lav_in_corso}}</td>
         </tr>
+
         <tr>
-          <td>Sono previste varizioni nelle attività gestionali?
-      </td>
+          <td>Sono previste varizioni nelle attività gestionali?</td>
           <td>{{dati_comune.var_gest}}</td>
         </tr>
+
         <tr>
-          <td>Sono previsti miglioramenti nei livelli di qualità?
-      </td>
+          <td>Sono previsti miglioramenti nei livelli di qualità?</td>
           <td>{{dati_comune.miglior_qual}}</td>
         </tr>
+
         <tr>
-          <td>Sono previsti maggiori costi per la implementazione del TQRIF?
-      </td>
+          <td>Sono previsti maggiori costi per la implementazione del TQRIF?</td>
           <td>{{dati_comune.costi_tqrif}}</td>
         </tr>
 
 
-        <tr>
-          <td></td>
+        <tr colspan="2" align="center">
+          <td><b>Dati tecnici dell'appalto</b></td>
+        </tr>
+
+
+        <tr colspan="2" align="center">
+          <td>Quantitativi totali rifiuti raccolti [ton]</td>
         </tr>
 
 
         <tr>
-          <td><h6>Costi Smaltimento / Trattamento</h6></td>
+          <td>2020</td>
+          <td>{{dati_comune.ton_anno_1}} ton</td>
+        </tr>
+
+
+        <tr>
+          <td>2021</td>
+          <td>{{dati_comune.ton_anno_2}} ton</td>
+        </tr>
+
+
+        <tr>
+          <td>2022</td>
+          <td>{{dati_comune.ton_anno_3}} ton</td>
+        </tr>
+
+        <tr colspan="2" align="center">
+          <td>Percentuali raccolta differenziata</td>
+        </tr>
+
+        <tr>
+          <td>2020</td>
+          <td>{{dati_comune.xcent_raccolta_anno_1}}</td>
+        </tr>
+
+
+        <tr>
+          <td>2021</td>
+          <td>{{dati_comune.xcent_raccolta_anno_2}}</td>
+        </tr>
+
+
+        <tr>
+          <td>2022</td>
+          <td>{{dati_comune.xcent_raccolta_anno_3}}</td>
+        </tr>
+
+
+        <tr>
+          <td>Percentuali media delle impurità riscontrate nell'ultima annualità nelle frazioni differenziate</td>
+          <td>{{dati_comune.xcent_media_imp}}</td>
+        </tr>
+
+
+        <tr>
+          <td>Rifiuti organici</td>
+          <td>{{dati_comune.xcent_media_imp_org}}</td>
+        </tr>
+
+
+        <tr>
+          <td>Carta e cartone</td>
+          <td>{{dati_comune.xcent_media_imp_cart}}</td>
+        </tr>
+
+        <tr colspan="2" align="center">
+          <td>Imballaggi</td>
+        </tr>
+
+        <tr>
+          <td>Plastica</td>
+          <td>{{dati_comune.xcent_media_imp_plastica}}</td>
+        </tr>
+
+
+        <tr>
+          <td>Metallo</td>
+          <td>{{dati_comune.xcent_media_imp_metallo}}</td>
+        </tr>
+
+
+
+        <tr>
+          <td>Vetro</td>
+          <td>{{dati_comune.xcent_media_imp_vetro}}</td>
+        </tr>
+
+
+        <tr>
+          <td><b>Costi Smaltimento / Trattamento</b></td>
         </tr>
 
         <tr>
@@ -243,20 +341,27 @@ import Field from '../components/Field'
       }
 
       var i = 0
-      this.is_ready = true
 
-      if(this.is_logged && this.is_company_set)
+      if (this.dati_comuni.length > 0)
       {
-        while(i < this.dati_comuni.length)
+        this.is_ready = true
+        if(this.is_logged && this.is_company_set)
         {
-          if(this.dati_comuni[i].completed == false)
+          while(i < this.dati_comuni.length)
           {
-            this.is_ready = false
-            i = this.dati_comuni.length
+            if(this.dati_comuni[i].completed == false)
+            {
+              this.is_ready = false
+              i = this.dati_comuni.length
+            }
+            i++
           }
-          i++
         }
+      }else {
+        this.is_ready = false
+
       }
+
 
 
     },
@@ -331,23 +436,28 @@ import Field from '../components/Field'
             var i = 0
             while(i < this.dati_comuni.length)
             {
-                let costi_smaltimento = await this.$axios.$get(`/costi_smaltimento/?daticomune=` + this.dati_comuni[i].id);
+
+                var costi_smaltimento = await this.$axios.post(`/get_costi_smaltimento` ,{id: this.dati_comuni[i].id})
+                .then((costi_smaltimento) => {
+                  return costi_smaltimento.data;
+                });
+
                 var j = 0
                 if(costi_smaltimento.length >= 1)
                 {
                     var contenuto = ""
-                    while(j < costi_smaltimento.length)
-                    {
-                      contenuto = contenuto + "<tr><td>"+ costi_smaltimento[j].anno +"</td>";
-                      contenuto = contenuto + "<td>"+ costi_smaltimento[j].imp_smalt +"</td>";
-                      contenuto = contenuto + "<td>"+ costi_smaltimento[j].tipo_rifiuto +"</td>";
-                      contenuto = contenuto + "<td>"+ costi_smaltimento[j].tipo_costo +"</td>";
-                      contenuto = contenuto + "<td>"+ costi_smaltimento[j].tons +"</td>";
-                      contenuto = contenuto + "<td>"+ costi_smaltimento[j].prezzo_unitario +"</td>";
-                      contenuto = contenuto + "<td>"+ costi_smaltimento[j].importo +"</td></tr>";
+                      while(j < costi_smaltimento.length)
+                      {
+                        contenuto = contenuto + "<tr><td>"+ costi_smaltimento[j].anno +"</td>";
+                        contenuto = contenuto + "<td>"+ costi_smaltimento[j].imp_smalt +"</td>";
+                        contenuto = contenuto + "<td>"+ costi_smaltimento[j].tipo_rifiuto +"</td>";
+                        contenuto = contenuto + "<td>"+ costi_smaltimento[j].tipo_costo +"</td>";
+                        contenuto = contenuto + "<td>"+ costi_smaltimento[j].tons +"</td>";
+                        contenuto = contenuto + "<td>"+ costi_smaltimento[j].prezzo_unitario +"</td>";
+                        contenuto = contenuto + "<td>"+ costi_smaltimento[j].importo +"</td></tr>";
 
-                      j++
-                    }
+                        j++
+                      }
 
                 }
               document.getElementById('tab'+i).insertAdjacentHTML("beforeend", contenuto)
