@@ -309,9 +309,6 @@ import CostiSmaltimento from '../components/CostiSmaltimento'
                         utenti_non_azienda.push(utenti[i])
                       }
               }
-              console.log(utenti_non_azienda)
-              console.log(utenti_azienda)
-              console.log(utenti)
 
               var aziende = await $axios.$get(`/get_aziende`);
 
