@@ -16,7 +16,7 @@ router = DefaultRouter()
 router.register(r'utenti', UserViewSet)
 #router.register(r'aziende', AziendaViewSet)
 #router.register(r'dati_comuni', DatiComuneViewSet)
-router.register(r'costi_smaltimento', CostoSmaltimentoViewSet)
+#router.register(r'costi_smaltimento', CostoSmaltimentoViewSet)
 
 
 urlpatterns = [
