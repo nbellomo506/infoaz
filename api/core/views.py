@@ -28,6 +28,8 @@ from .serializers import ChangePasswordSerializer
 from django.core import serializers
 from django.conf import settings
 from django.core.mail import send_mail
+from django.db import models
+from django.contrib.auth.models import AbstractBaseUser, BaseUserManager,PermissionsMixin
 
 from django.core.files.base import ContentFile
 from django.core.files.storage import default_storage
@@ -60,45 +62,56 @@ class RegisterUserView(CreateAPIView):
 
 def new_user(request):
 
-    body_unicode = request.body.decode('utf-8')
-    body = json.loads(body_unicode)
+    try:
+        body_unicode = request.body.decode('utf-8')
+        body = json.loads(body_unicode)
 
-    nome = body['nome']
-    cognome = body['cognome']
-    titolo = body['titolo']
-    ragione_sociale = body['ragione_sociale']
-    p_iva = body['p_iva']
-    telefono = body['telefono']
-    email = body['email']
-    email2 = body['email2']
-    password = body['password']
+        nome = body['nome']
+        cognome = body['cognome']
+        titolo = body['titolo']
+        ragione_sociale = body['ragione_sociale']
+        p_iva = body['p_iva']
+        telefono = body['telefono']
+        email = body['email']
+        email2 = body['email2']
+        password = body['password']
 
-    user = User.objects.create(
-                                 nome = nome,
-                                 cognome = cognome,
-                                 titolo = titolo,
-                                 ragione_sociale = ragione_sociale,
-                                 p_iva = p_iva,
-                                 telefono = telefono,
-                                 email = normalize_email(email),
-                                 email2 = normalize_email(email2),
-                               )
+        obj = None
+        obj = User.objects.filter(email = email)
 
-    user.set_password(password)
-    user.save()
+        if not obj:
+            print("libero")
+            user = User.objects.create(
+                                         nome = nome,
+                                         cognome = cognome,
+                                         titolo = titolo,
+                                         ragione_sociale = ragione_sociale,
+                                         p_iva = p_iva,
+                                         telefono = telefono,
+                                         email = email,
+                                         email2 = email2,
+                                       )
 
-    email_plaintext_message = "Si comunica che " + user.nome + " " + user.cognome + " ha inviato una richiesta di attivazione al servizio."
-    #email_plaintext_message = "{}?token={}".format('http://217.61.57.221/new_password' , reset_password_token.key)
-    send_mail(
-        # title:
-        "Richiesta Attivazione al Serivzio",
-        # message:
-        email_plaintext_message,
-        # from:
-        "noreplay@bintobit.com",
-        # to:
-        recipients
-    )
+            user.set_password(password)
+            user.save()
+
+            email_plaintext_message = "Si comunica che " + user.nome + " " + user.cognome + " ha inviato una richiesta di attivazione al servizio."
+            #email_plaintext_message = "{}?token={}".format('http://217.61.57.221/new_password' , reset_password_token.key)
+            send_mail(
+                # title:
+                "Richiesta Attivazione al Serivzio",
+                # message:
+                email_plaintext_message,
+                # from:
+                "noreplay@bintobit.com",
+                # to:
+                recipients
+            )
+            return HttpResponse("OK")
+        else:
+            return HttpResponse("Un utente con questa email è gia registrato")
+    except:
+        return HttpResponse("Qualcosa è andato storto")
 
 def assign_azienda(request):
 

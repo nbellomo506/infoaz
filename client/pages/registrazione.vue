@@ -153,26 +153,26 @@ import Header from '../components/Header'
     data() {
       return {
         form: {
-          nome:'',
-          cognome:'',
-          titolo:'',
-          ragione_sociale: '',
-          p_iva: '',
-          telefono: '',
-          email: '',
+          nome:'PROVA',
+          cognome:'PROVA',
+          titolo:'ambiente',
+          ragione_sociale: 'asd',
+          p_iva: '11111111111',
+          telefono: '34343434',
+          email: 'ciao@gmail.com',
           email2: '',
-          password: '',
-          conferma_password:'',
+          password: 'Ciao2002.',
+          conferma_password:'Ciao2002.',
           load:true,
           check:{
             serv:{
               attivo:false,
-              value:0,
+              value:1,
 
             },
             priv:{
               attivo:false,
-              value:0
+              value:1
             }
 
           }
@@ -225,7 +225,7 @@ import Header from '../components/Header'
 
                 if( ris == 0)
                 {
-                  const ris = this.$axios.post('/utenti/', {
+                  const ris = this.$axios.post('/new_user', {
                     nome: this.form.nome,
                     cognome: this.form.cognome,
                     titolo:this.form.titolo,
@@ -241,8 +241,14 @@ import Header from '../components/Header'
 
                       if(response.status >= 200 && response.status < 300)
                       {
-                        this.$bvModal.show('registrazione-ok')
+                          console.log(response.data)
+                          if(response.data === "Un utente con questa email è gia registrato")
+                          {
+                            this.msg.email = response.data
 
+                          }else {
+                            this.$bvModal.show('registrazione-ok')
+                          }
                       }
                   })
 
@@ -252,6 +258,7 @@ import Header from '../components/Header'
                           // The request was made and the server responded with a status code
                           // that falls out of the range of 2xx
                           console.log(error.response.data);
+                          console.log(error);
                           if((error.response.data.email) && error.response.data.email == "user with this email already exists.")
                           {
                             this.msg.email="Un utente con l'email inserita è già registrato"

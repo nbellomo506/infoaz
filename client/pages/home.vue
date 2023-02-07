@@ -133,24 +133,54 @@ import Field from '../components/Field'
             </b-col>
           </b-row>
         </b-container>
-
-      <table v-for="(dati_comune,index) in dati_comuni" :id="`tab${index}`" hidden>
+      <table v-for="(dati_comune,index) in dati_comuni" :id="`tab${index}`" border="1" hidden>
         <tr>
           <td>
             <h6>{{index+1}}. Comune:</h6>
           </td>
           <td>{{dati_comune.nome_comune}}</td>
         </tr>
-        <tr colspan="2" align="center">
-          <td><b>Dati Generali</b></td>
+        <tr align="center">
+          <td colspan="2"><b>Dati Generali</b></td>
         </tr>
         <tr>
           <td>PEF</td>
-          <td>{{dati_comune.pef_mis_o_ric}}</td>
+          <td>{{azienda.pef_mis_o_ric}}</td>
+        </tr>
+
+        <tr>
+          <td>Per ciascuno dei servizi elencati, le risorse umane impiegate sono indicate in:</td>
+          <td>{{dati_comune.ris_ula_o_ore}}</td>
+        </tr>
+
+        <tr>
+          <td>Totale per la conduzione dell'appalto</td>
+          <td>{{dati_comune.tot_app}}</td>
+        </tr>
+
+        <tr>
+          <td>Di cui per impiegati e addetti ai servizi generali</td>
+          <td>{{dati_comune.app_servizi}}</td>
+        </tr>
+
+        <tr>
+          <td>Di cui per addetti alla raccolta e trasporto dei rifiuti differenziati</td>
+          <td>{{dati_comune.app_rifiuti_diff}}</td>
+        </tr>
+
+        <tr>
+          <td>Di cui per addetti alla raccolta e trasporto dei rifiuti indifferenziati</td>
+          <td>{{dati_comune.app_rifiuti_indiff}}</td>
+        </tr>
+
+        <tr>
+          <td>Di cui per addetti ai servizi di spazzamento e igiene urbana</td>
+          <td>{{dati_comune.app_igiene}}</td>
         </tr>
 
         <tr>
           <td>Oltre al Comune e all'impresa operano altri Gestori nel medesimo Comune / Ambito Tariffario?</td>
+          <td>{{dati_comune.altri_gestori_flag}}</td>
           <td>{{dati_comune.altri_gestori}}</td>
         </tr>
 
@@ -172,26 +202,30 @@ import Field from '../components/Field'
         <tr>
           <td>E' previsto l'adeguamento contrattuale del canone su base annua?</td>
           <td>{{dati_comune.adeg_contr_flag}}</td>
+          <td>{{dati_comune.adeg_contr}}</td>
         </tr>
 
         <tr>
           <td>I ricavi dai sistemi di compliance (ricavi CONAI e altri) competono all'impresa o al Comune?</td>
-          <td>{{dati_comune.ricavi_conai_flag}}</td>
+          <td>{{dati_comune.ricavi_conai}}</td>
         </tr>
 
         <tr>
           <td>L'impresa sostiene costi CTS relativi al Trattamento e Smaltimento Rifiuti?</td>
           <td>{{dati_comune.impresa_cts_flag}}</td>
+          <td>{{dati_comune.impresa_cts}}</td>
         </tr>
 
         <tr>
           <td>L'impresa sostiene costi CTR relativi al Trattamento e Riciclo Rifiuti?</td>
           <td>{{dati_comune.impresa_ctr_flag}}</td>
+          <td>{{dati_comune.impresa_ctr}}</td>
         </tr>
 
         <tr>
           <td>Sono inclusi nel contratto e a carico dell'impresa anche i servizi di spazzamento e igiene ambientale?</td>
           <td>{{dati_comune.spazz_e_ig_flag}}</td>
+          <td>{{dati_comune.spazz_e_ig}}</td>
         </tr>
 
         <tr>
@@ -220,13 +254,13 @@ import Field from '../components/Field'
         </tr>
 
 
-        <tr colspan="2" align="center">
-          <td><b>Dati tecnici dell'appalto</b></td>
+        <tr align="center">
+          <td colspan="2"><b>Dati tecnici dell'appalto</b></td>
         </tr>
 
 
-        <tr colspan="2" align="center">
-          <td>Quantitativi totali rifiuti raccolti [ton]</td>
+        <tr align="center">
+          <td colspan="2">Quantitativi totali rifiuti raccolti [ton]</td>
         </tr>
 
 
@@ -247,8 +281,8 @@ import Field from '../components/Field'
           <td>{{dati_comune.ton_anno_3}} ton</td>
         </tr>
 
-        <tr colspan="2" align="center">
-          <td>Percentuali raccolta differenziata</td>
+        <tr align="center">
+          <td colspan="2">Percentuali raccolta differenziata</td>
         </tr>
 
         <tr>
@@ -286,8 +320,8 @@ import Field from '../components/Field'
           <td>{{dati_comune.xcent_media_imp_cart}}</td>
         </tr>
 
-        <tr colspan="2" align="center">
-          <td>Imballaggi</td>
+        <tr align="center">
+          <td colspan="2">Imballaggi</td>
         </tr>
 
         <tr>
@@ -308,9 +342,32 @@ import Field from '../components/Field'
           <td>{{dati_comune.xcent_media_imp_vetro}}</td>
         </tr>
 
+        <tr align="center">
+          <td colspan="2"><b>Documenti riferiti all'appalto</b></td>
+        </tr>
+
 
         <tr>
-          <td><b>Costi Smaltimento / Trattamento</b></td>
+          <td>Contabilità di commessa anno 2020 (in excel)</td>
+          <td>{{dati_comune.cont_commessa_anno1}}</td>
+        </tr>
+
+        <tr>
+          <td>Contabilità di commessa anno 2021 (in excel)</td>
+          <td>{{dati_comune.cont_commessa_anno2}}</td>
+        </tr>
+
+        <tr>
+          <td>Contratto d'appalto vigente</td>
+          <td>{{dati_comune.contratto_appalto}}</td>
+        </tr>
+
+        <tr>
+          <td>Ultimo PEF validato dall'ETC (Delibera + Relazione con allegati in file .zip)</td>
+          <td>{{dati_comune.ultimo_pef}}</td>
+        </tr>
+        <tr align="center">
+          <td colspan="7"><b>Costi Smaltimento / Trattamento</b></td>
         </tr>
 
         <tr>
@@ -342,24 +399,27 @@ import Field from '../components/Field'
 
       var i = 0
 
-      if (this.dati_comuni.length > 0)
+      if (this.dati_comuni)
       {
-        this.is_ready = true
-        if(this.is_logged && this.is_company_set)
+        if (this.dati_comuni.length > 0)
         {
-          while(i < this.dati_comuni.length)
+          this.is_ready = true
+          if(this.is_logged && this.is_company_set)
           {
-            if(this.dati_comuni[i].completed == false)
+            while(i < this.dati_comuni.length)
             {
-              this.is_ready = false
-              i = this.dati_comuni.length
+              if(this.dati_comuni[i].completed == false)
+              {
+                this.is_ready = false
+                i = this.dati_comuni.length
+              }
+              i++
             }
-            i++
           }
-        }
-      }else {
-        this.is_ready = false
+        }else {
+          this.is_ready = false
 
+        }
       }
 
 
