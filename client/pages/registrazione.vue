@@ -153,26 +153,26 @@ import Header from '../components/Header'
     data() {
       return {
         form: {
-          nome:'PROVA',
-          cognome:'PROVA',
-          titolo:'ambiente',
-          ragione_sociale: 'asd',
-          p_iva: '11111111111',
-          telefono: '34343434',
-          email: 'ciao@gmail.com',
+          nome:'',
+          cognome:'',
+          titolo:'',
+          ragione_sociale: '',
+          p_iva: '',
+          telefono: '',
+          email: '',
           email2: '',
-          password: 'Ciao2002.',
-          conferma_password:'Ciao2002.',
+          password: '',
+          conferma_password:'',
           load:true,
           check:{
             serv:{
               attivo:false,
-              value:1,
+              value:0,
 
             },
             priv:{
               attivo:false,
-              value:1
+              value:0
             }
 
           }
