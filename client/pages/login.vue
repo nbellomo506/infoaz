@@ -65,13 +65,6 @@ export default {
 
         $axios.defaults.withCredentials = true;
         let is_logged = await $axios.$get(`/is_logged`);
-        console.log(is_logged)
-
-        if (is_logged === true)
-        {
-          window.location.replace("./home")
-        }
-        console.log(is_logged)
 
 
         return { is_logged };
@@ -102,6 +95,11 @@ export default {
       }
    },
    mounted () {
+
+     if(this.is_logged === true)
+     {
+        window.location.replace("home")
+     }
 
       this.$axios.defaults.withCredentials = true;
 

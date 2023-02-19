@@ -655,16 +655,6 @@ import CostiSmaltimento from '../components/CostiSmaltimento'
           $axios.defaults.withCredentials = true;
 
           let is_logged = await $axios.$get(`/is_logged`);
-
-          console.log(is_logged)
-
-          if(is_logged === false)
-          {
-
-             window.location.replace("../../login")
-
-          }
-
           let is_company_set = await $axios.$get(`/is_company_set`);
 
           if(is_logged === true && is_company_set === true)
@@ -810,6 +800,12 @@ import CostiSmaltimento from '../components/CostiSmaltimento'
 
     mounted () {
 
+      if(this.is_logged === false)
+      {
+
+         window.location.replace("../../login")
+
+      }
       this.width = window.innerWidth
 
     },
