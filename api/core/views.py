@@ -696,12 +696,12 @@ def get_utenti(request):
             return JsonResponse("Not Allowed",content_type="application/json",safe=False)
 
 def is_logged(request):
-    is_logged = False
 
     if 'logged' in request.session is not None:
         if request.session['logged'] == True:
-            is_logged = True
-    return JsonResponse(is_logged,safe=False)
+            return JsonResponse(True,safe=False)
+        else:
+            return JsonResponse(False,safe=False)
 
 def role(request):
     role='Normal'
