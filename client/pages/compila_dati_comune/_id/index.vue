@@ -801,7 +801,7 @@ import CostiSmaltimento from '../components/CostiSmaltimento'
           return {sections,current_section,azienda,is_logged,is_company_set,dati_comune,costi_smaltimento};
         } catch (e) {
 
-          return {dati_comune: false,azienda:[],costi_smaltimento:[]};
+          return {dati_comune: false,azienda:[],costi_smaltimento:[],is_logged:false,is_company_set:false};
           }
 
     },

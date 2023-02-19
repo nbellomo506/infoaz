@@ -404,7 +404,7 @@ import Field from '../components/Field'
                window.location.replace("./login")
             }
 
-            if(is_logged)
+            if(is_logged === true)
             {
 
               var utente = await $axios.$get(`/get_user_data`);
@@ -422,7 +422,7 @@ import Field from '../components/Field'
           } catch (e) {
 
               console.log(e)
-              return { dati_comuni: [] ,azienda:[],is_logged:false,is_company_set:false};
+              return { dati_comuni: [] ,azienda:[]};
         }
       },
 
