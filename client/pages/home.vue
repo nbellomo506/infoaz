@@ -431,7 +431,7 @@ import Field from '../components/Field'
 
         if(this.is_logged === false)
         {
-           window.location.replace("login")
+           window.location.replace("./login")
         }
 
         var i = 0
