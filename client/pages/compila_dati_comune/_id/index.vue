@@ -798,15 +798,18 @@ import CostiSmaltimento from '../components/CostiSmaltimento'
 
     },
 
-    mounted () {
+    mounted ()
+    {
       console.log(this.is_logged)
 
+      /*
       if(this.is_logged === false)
       {
 
          location.replace("../../login")
 
       }
+      */
       this.width = window.innerWidth
 
     },
@@ -1186,7 +1189,8 @@ import CostiSmaltimento from '../components/CostiSmaltimento'
     },
 
 
-    data() {
+    data()
+    {
 
         return {
                   files:
