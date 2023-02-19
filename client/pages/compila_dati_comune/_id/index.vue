@@ -557,9 +557,9 @@ import CostiSmaltimento from '../components/CostiSmaltimento'
             <b-container class="mb-3 mt-5">
               <b-row>
                 <b-col xl="12">
-                  <div class="d-flex justify-content-center mb-3">
-                    <b-spinner label="Attendere..."></b-spinner>
-                  </div>
+
+                  Manutenzione
+
                 </b-col>
               </b-row>
             </b-container>
