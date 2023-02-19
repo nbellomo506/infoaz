@@ -65,7 +65,6 @@ export default {
 
         $axios.defaults.withCredentials = true;
         let is_logged = await $axios.$get(`/is_logged`);
-        console.log(is_logged)
 
 
         return { is_logged };
@@ -96,6 +95,11 @@ export default {
       }
    },
    mounted () {
+
+     this.$axios.$get(`/is_logged`)
+       .then((response) => {
+         this.is_logged = response
+       })
 
      if(this.is_logged === true)
      {
