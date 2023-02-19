@@ -799,10 +799,10 @@ import CostiSmaltimento from '../components/CostiSmaltimento'
     },
 
     mounted () {
+      console.log(this.is_logged)
 
       if(this.is_logged === false)
       {
-        console.log(this.is_logged)
 
          location.replace("../../login")
 

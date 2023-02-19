@@ -95,10 +95,10 @@ export default {
       }
    },
    mounted () {
+     console.log(this.is_logged)
 
      if(this.is_logged === true)
      {
-       console.log(this.is_logged)
         location.replace("./home")
      }
 
