@@ -803,7 +803,7 @@ import CostiSmaltimento from '../components/CostiSmaltimento'
       this.width = window.innerWidth
       if(!this.is_logged)
       {
-        location.replace('../../login')
+        window.location.replace('../../login')
       }
     },
 

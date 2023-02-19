@@ -59,16 +59,16 @@ import Header from '../components/Header'
 
 export default {
 
-  async asyncData({ $axios, params })
+  async asyncData({ $axios, params})
     {
       try {
 
         $axios.defaults.withCredentials = true;
         let is_logged = await $axios.$get(`/is_logged`);
 
-        if (is_logged)
+        if (is_logged === true)
         {
-          location.replace("./home")
+          window.location.replace("home")
         }
         console.log(is_logged)
 

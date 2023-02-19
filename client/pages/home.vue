@@ -402,7 +402,7 @@ import Field from '../components/Field'
             if(!is_logged)
             {
 
-               location.replace("./login")
+               window.location.replace("./login")
 
             }
 
