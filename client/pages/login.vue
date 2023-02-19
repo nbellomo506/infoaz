@@ -95,11 +95,13 @@ export default {
       }
    },
    mounted () {
+     this.$axios.defaults.withCredentials = true;
+     
      console.log(this.is_logged)
 
      if(this.is_logged === true)
      {
-        location.replace("./home")
+       this.$router.push('./home')
      }
 
 

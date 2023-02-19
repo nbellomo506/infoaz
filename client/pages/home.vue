@@ -393,6 +393,7 @@ import Field from '../components/Field'
       async asyncData({ $axios, params })
         {
           try {
+
             $axios.defaults.withCredentials = true;
 
             let is_logged = await $axios.$get(`/is_logged`);
@@ -423,11 +424,13 @@ import Field from '../components/Field'
 
       mounted () {
 
+        this.$axios.defaults.withCredentials = true;
+
         console.log(this.is_logged)
 
         if(this.is_logged === false)
         {
-           location.replace("./login")
+          this.$router.push('./login')
         }
 
         var i = 0
