@@ -103,7 +103,7 @@ export default {
 
      if(this.is_logged === true)
      {
-        window.location.replace("./home")
+        location.replace("./home")
      }
 
       this.$axios.defaults.withCredentials = true;

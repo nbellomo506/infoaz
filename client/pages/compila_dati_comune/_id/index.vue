@@ -809,7 +809,7 @@ import CostiSmaltimento from '../components/CostiSmaltimento'
       if(this.is_logged === false)
       {
 
-         window.location.replace("../../login")
+         location.replace("../../login")
 
       }
       this.width = window.innerWidth
