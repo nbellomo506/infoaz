@@ -68,6 +68,7 @@ export default {
         if (is_logged)
         {
           location.replace("./home")
+          console.log("logged, login")
         }
 
         return { is_logged };
