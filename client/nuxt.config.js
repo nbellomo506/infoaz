@@ -4,11 +4,11 @@ export default {
   /*
    ** Auth module configuration
    */
-  
+
   head: {
     title: 'infowaste aziende',
     htmlAttrs: {
-      lang: 'en'
+      lang: 'it'
     },
     meta: [
       { charset: 'utf-8' },
@@ -17,7 +17,7 @@ export default {
       { name: 'format-detection', content: 'telephone=no' }
     ],
     link: [
-      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
+      { rel: 'icon', type: 'image/x-icon', href: '/iw.png' }
     ]
   },
 
@@ -41,15 +41,18 @@ export default {
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
     // https://go.nuxtjs.dev/bootstrap
-    'bootstrap-vue/nuxt','@nuxtjs/axios'
+    'bootstrap-vue/nuxt',
+    '@nuxtjs/axios'
+
     ],
 
   bootstrapVue: {
     icons: true
   },
   axios: {
-    
-    baseURL: "http://127.0.0.1:8000/api"
+
+    baseURL: "http://localhost:8000/api"
+
   },
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
