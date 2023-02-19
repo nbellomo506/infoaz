@@ -106,7 +106,6 @@ export default {
         location.replace("./home")
      }
 
-      this.$axios.defaults.withCredentials = true;
 
    },
    methods: {
