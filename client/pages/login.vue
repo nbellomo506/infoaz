@@ -55,7 +55,7 @@ import Header from '../components/Header'
 
 
 <script>
-  import axios from '@nuxtjs/axios'
+import axios from '@nuxtjs/axios'
 
 export default {
 
@@ -65,6 +65,7 @@ export default {
 
         $axios.defaults.withCredentials = true;
         let is_logged = await $axios.$get(`/is_logged`);
+        console.log(is_logged)
 
 
         return { is_logged };
