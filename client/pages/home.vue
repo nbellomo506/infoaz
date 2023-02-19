@@ -426,12 +426,6 @@ import Field from '../components/Field'
 
         this.$axios.defaults.withCredentials = true;
 
-        if(this.is_logged === false)
-        {
-          this.$router.push('./login')
-        }
-        
-
 
         var i = 0
 

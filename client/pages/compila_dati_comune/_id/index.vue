@@ -801,13 +801,6 @@ import CostiSmaltimento from '../components/CostiSmaltimento'
     mounted ()
     {
 
-      if(this.is_logged === false)
-      {
-
-         location.replace("../../login")
-
-      }
-
       this.width = window.innerWidth
 
     },

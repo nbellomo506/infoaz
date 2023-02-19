@@ -247,7 +247,7 @@ import CostiSmaltimento from '../components/CostiSmaltimento'
 
 
     async asyncData({ $axios, params })
-      {
+    {
         try {
           $axios.defaults.withCredentials = true;
           let is_logged = await $axios.$get(`/is_logged`);

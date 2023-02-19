@@ -96,11 +96,6 @@ export default {
    mounted () {
      this.$axios.defaults.withCredentials = true;
 
-     if(this.is_logged === true)
-     {
-       this.$router.push('./home')
-     }
-
 
    },
    methods: {
