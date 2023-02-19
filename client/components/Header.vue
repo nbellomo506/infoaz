@@ -9,7 +9,6 @@
 <template>
   <main>
     <link rel="stylesheet" href="./css/index.css">
-
       <div>
           <b-container fluid class="grey p-3">
             <b-row class="ml-5">
@@ -102,14 +101,15 @@
           this.locations[page] = "../../"+page
           //alert(this.locations.page)
 
-        }else {
-
-          page = pages[i]
-          this.locations[page] = "./"+page
-          //alert(this.locations.page)
-
         }
-        i++
+          else {
+
+            page = pages[i]
+            this.locations[page] = "./"+page
+            //alert(this.locations.page)
+
+          }
+          i++
 
       }while (i < pages.length)
 
