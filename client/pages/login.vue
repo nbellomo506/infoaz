@@ -61,8 +61,15 @@ export default {
   async asyncData({ $axios, params })
     {
       try {
+
         $axios.defaults.withCredentials = true;
         let is_logged = await $axios.$get(`/is_logged`);
+
+        if (is_logged)
+        {
+          window.location.replace("./home")
+        }
+
         return { is_logged };
 
       } catch (e) {
@@ -96,17 +103,10 @@ export default {
 
       if(this.is_logged == true)
       {
-        this.goTo("./home")
+        location.replace("./home")
       }
    },
    methods: {
-
-
-
-     async goTo(location)
-     {
-        window.location.replace(location)
-     },
 
      async login() {
 

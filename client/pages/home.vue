@@ -104,11 +104,9 @@ import Field from '../components/Field'
               <b-container class="mb-3 mt-5">
                 <b-row>
                   <b-col xl="12">
-                    <h1>Attenzione</h1>
-                    <p>
-                      <a href="./login">Accedi</a>
-                      per visualizzare il contenuto
-                    </p>
+                    <div class="d-flex justify-content-center mb-3">
+                      <b-spinner label="Attendere..."></b-spinner>
+                    </div>
                   </b-col>
                 </b-row>
               </b-container>
@@ -390,41 +388,7 @@ import Field from '../components/Field'
   import xls from 'xlsx'
 
   export default {
-    mounted () {
 
-      if(!this.is_logged)
-      {
-        window.location.replace('./login')
-      }
-
-      var i = 0
-
-      if (this.dati_comuni)
-      {
-        if (this.dati_comuni.length > 0)
-        {
-          this.is_ready = true
-          if(this.is_logged && this.is_company_set)
-          {
-            while(i < this.dati_comuni.length)
-            {
-              if(this.dati_comuni[i].completed == false)
-              {
-                this.is_ready = false
-                i = this.dati_comuni.length
-              }
-              i++
-            }
-          }
-        }else {
-          this.is_ready = false
-
-        }
-      }
-
-
-
-    },
 
       async asyncData({ $axios, params })
         {
@@ -435,8 +399,16 @@ import Field from '../components/Field'
             let is_company_set = await $axios.$get(`/is_company_set`);
             let role = await $axios.$get(`/role`);
 
+            if(!is_logged)
+            {
+
+               location.replace("./login")
+
+            }
+
             if(is_logged)
             {
+
               var utente = await $axios.$get(`/get_user_data`);
 
                 if(is_company_set)
@@ -444,6 +416,7 @@ import Field from '../components/Field'
                   var dati_comuni = await $axios.$get(`/get_dati_comuni`);
                   var azienda = await $axios.$get(`/get_company_data`);
                 }
+
             }
 
             return { dati_comuni ,azienda,is_logged,utente,is_company_set,role};
@@ -455,6 +428,42 @@ import Field from '../components/Field'
         }
       },
 
+      mounted () {
+
+
+        if(!this.is_logged)
+        {
+          window.location.replace('./login')
+        }
+
+        var i = 0
+
+        if (this.dati_comuni)
+        {
+          if (this.dati_comuni.length > 0)
+          {
+            this.is_ready = true
+            if(this.is_logged && this.is_company_set)
+            {
+              while(i < this.dati_comuni.length)
+              {
+                if(this.dati_comuni[i].completed == false)
+                {
+                  this.is_ready = false
+                  i = this.dati_comuni.length
+                }
+                i++
+              }
+            }
+          }else {
+            this.is_ready = false
+
+          }
+        }
+
+
+
+      },
 
 
     data() {

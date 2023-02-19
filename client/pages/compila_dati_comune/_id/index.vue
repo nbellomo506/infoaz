@@ -557,11 +557,9 @@ import CostiSmaltimento from '../components/CostiSmaltimento'
             <b-container class="mb-3 mt-5">
               <b-row>
                 <b-col xl="12">
-                  <h1>Attenzione</h1>
-                  <p>
-                    <a href="../../login">Accedi</a>
-                    per visualizzare il contenuto
-                  </p>
+                  <div class="d-flex justify-content-center mb-3">
+                    <b-spinner label="Attendere..."></b-spinner>
+                  </div>
                 </b-col>
               </b-row>
             </b-container>
@@ -647,9 +645,7 @@ import CostiSmaltimento from '../components/CostiSmaltimento'
   </template>
 
   <script>
-  import axios from 'axios'
-  import 'bootstrap/dist/css/bootstrap.css'
-  import 'bootstrap-vue/dist/bootstrap-vue.css'
+  import axios from '@nuxtjs/axios'
 
   export default {
 
@@ -801,9 +797,14 @@ import CostiSmaltimento from '../components/CostiSmaltimento'
           }
 
     },
+
     mounted () {
 
       this.width = window.innerWidth
+      if(!this.is_logged)
+      {
+        location.replace('../../login')
+      }
     },
 
     methods:
