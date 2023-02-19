@@ -376,7 +376,6 @@ import Field from '../components/Field'
           <td>Importo IVA Inclusa</td>
         </tr>
       </table>
-
     </main>
   </template>
 
@@ -411,7 +410,6 @@ import Field from '../components/Field'
                 }
 
             }
-
 
             return { dati_comuni ,azienda,is_logged,utente,is_company_set,role};
 
