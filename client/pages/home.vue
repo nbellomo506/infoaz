@@ -423,7 +423,7 @@ import Field from '../components/Field'
           } catch (e) {
 
               console.log(e)
-              return { dati_comuni: [] ,azienda:[]};
+              return { dati_comuni: [] ,azienda:[],is_logged:false,is_company_set:false};
         }
       },
 
@@ -463,6 +463,8 @@ import Field from '../components/Field'
     data() {
       return {
 
+        is_logged:false,
+        is_company_set:false,
         role:'Normal',
         is_ready:false,
         dati_comuni:[]
