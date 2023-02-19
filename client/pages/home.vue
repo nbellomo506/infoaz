@@ -399,7 +399,7 @@ import Field from '../components/Field'
             let is_company_set = await $axios.$get(`/is_company_set`);
             let role = await $axios.$get(`/role`);
 
-            if(!is_logged)
+            if(is_logged === false)
             {
 
                window.location.replace("./login")
@@ -430,11 +430,6 @@ import Field from '../components/Field'
 
       mounted () {
 
-
-        if(!this.is_logged)
-        {
-          window.location.replace('./login')
-        }
 
         var i = 0
 

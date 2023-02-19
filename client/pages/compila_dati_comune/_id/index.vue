@@ -655,9 +655,17 @@ import CostiSmaltimento from '../components/CostiSmaltimento'
           $axios.defaults.withCredentials = true;
 
           let is_logged = await $axios.$get(`/is_logged`);
+          if(is_logged === false)
+          {
+
+             window.location.replace("../../login")
+
+          }
+          console.log(is_logged)
+
           let is_company_set = await $axios.$get(`/is_company_set`);
 
-          if(is_logged == true && is_company_set == true)
+          if(is_logged === true && is_company_set === true)
           {
               var dati_comune = await $axios.$post(`/get_dati_comune`,{id: params.id});
               var current_section = dati_comune['current_section'];
@@ -801,10 +809,7 @@ import CostiSmaltimento from '../components/CostiSmaltimento'
     mounted () {
 
       this.width = window.innerWidth
-      if(!this.is_logged)
-      {
-        window.location.replace('../../login')
-      }
+
     },
 
     methods:

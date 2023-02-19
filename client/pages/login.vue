@@ -68,7 +68,7 @@ export default {
 
         if (is_logged === true)
         {
-          window.location.replace("home")
+          window.location.replace("./home")
         }
         console.log(is_logged)
 
@@ -104,10 +104,6 @@ export default {
 
       this.$axios.defaults.withCredentials = true;
 
-      if(this.is_logged == true)
-      {
-        location.replace("./home")
-      }
    },
    methods: {
 
