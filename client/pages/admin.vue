@@ -252,7 +252,6 @@ import CostiSmaltimento from '../components/CostiSmaltimento'
           $axios.defaults.withCredentials = true;
           let is_logged = await $axios.$get(`/is_logged`);
           let role = await $axios.$get(`/role`);
-            console.log(is_logged)
             if(is_logged == true && role == "Admin")
             {
               var utenti = await $axios.$get(`/get_utenti`);

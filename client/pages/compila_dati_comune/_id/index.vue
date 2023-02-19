@@ -800,16 +800,14 @@ import CostiSmaltimento from '../components/CostiSmaltimento'
 
     mounted ()
     {
-      console.log(this.is_logged)
 
-      /*
       if(this.is_logged === false)
       {
 
          location.replace("../../login")
 
       }
-      */
+
       this.width = window.innerWidth
 
     },
@@ -820,7 +818,6 @@ import CostiSmaltimento from '../components/CostiSmaltimento'
         {
           var section = this.sections[this.current_section - 1].text
           section = section
-          console.log(section)
           this.$axios.post('/askHelp', {
 
             message: this.help_message,
@@ -1164,7 +1161,6 @@ import CostiSmaltimento from '../components/CostiSmaltimento'
 
           .then(response => {
 
-              console.log(response);
               if(response.status >= 200 && response.status <= 208)
               {
                 this.save.msg="Salvataggio avvenuto con successo!"
@@ -1175,7 +1171,6 @@ import CostiSmaltimento from '../components/CostiSmaltimento'
 
           .catch(error => {
 
-              console.log(error);
               this.save.msg=error
               this.save.color="danger"
               //this.$bvModal.show('bv-modal-save-msg')
