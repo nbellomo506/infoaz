@@ -400,12 +400,13 @@ import Field from '../components/Field'
             let is_company_set = await $axios.$get(`/is_company_set`);
             let role = await $axios.$get(`/role`);
 
+            console.log(is_logged)
             if(is_logged === true)
             {
 
               var utente = await $axios.$get(`/get_user_data`);
 
-                if(is_company_set)
+                if(is_company_set === true)
                 {
                   var dati_comuni = await $axios.$get(`/get_dati_comuni`);
                   var azienda = await $axios.$get(`/get_company_data`);
