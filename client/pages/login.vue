@@ -67,9 +67,11 @@ export default {
 
         if (is_logged)
         {
-          location.replace("./home")
+          window.location.replace("./home")
           console.log("logged, login")
         }
+        console.log(is_logged)
+
 
         return { is_logged };
 
