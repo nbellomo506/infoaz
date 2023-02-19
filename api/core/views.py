@@ -702,6 +702,9 @@ def is_logged(request):
             return JsonResponse(True,safe=False)
         else:
             return JsonResponse(False,safe=False)
+    else:
+        return JsonResponse(False,safe=False)
+
 
 def role(request):
     role='Normal'

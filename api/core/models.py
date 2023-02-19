@@ -133,7 +133,7 @@ class User(AbstractUser, PermissionsMixin):
 def password_reset_token_created(sender, instance, reset_password_token, *args, **kwargs):
 
     #email_plaintext_message = "{}?token={}".format('http://localhost:3000/new_password' , reset_password_token.key)
-    email_plaintext_message = "{}?token={}".format('http://www.bintobit.it/new_password' , reset_password_token.key)
+    email_plaintext_message = "{}?token={}".format('https://www.bintobit.it/new_password' , reset_password_token.key)
     send_mail(
         # title:
         "Richiesta recupero password {title}".format(title="Infowaste Modulo Aziende"),
