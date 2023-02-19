@@ -9,6 +9,9 @@ import CostiSmaltimento from '../components/CostiSmaltimento'
   <template>
     <main>
       <Header/>
+      {{is_logged}}
+      {{is_company_set}}
+      {{dati_comune}}
         <b-nav  v-if="dati_comune !== false && is_company_set === true && is_logged === true" class="mt-3" tabs align="center">
           <b-nav-item class="text-danger" @click="goToSection(section.num)" style="cursor:pointer" v-for="section in sections" :key="section.num" :active="section.num === current_section">
               <font :class="{ 'text-secondary':section.num === 4,'text-success': section.completed === 1 && section.num != 4 , 'text-danger': section.completed === 0 && section.num != 4 }">
@@ -1192,8 +1195,6 @@ import CostiSmaltimento from '../components/CostiSmaltimento'
                   help_message:"",
                   width:0,
                   page_id:0,
-                  is_logged:false,
-                  is_company_set:false,
                   save:
                   {
                     msg:'',

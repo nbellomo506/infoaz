@@ -104,15 +104,14 @@ import Field from '../components/Field'
               <b-container class="mb-3 mt-5">
                 <b-row>
                   <b-col xl="12">
-                    <div class="d-flex justify-content-center mb-3">
-                      <b-spinner label="Attendere..."></b-spinner>
-                    </div>
+
                   </b-col>
                 </b-row>
               </b-container>
             </b-col>
           </b-row>
         </b-container>
+
 
         <b-container v-if="is_logged === true && is_company_set === false" class="mb-3">
           <b-row>
@@ -412,6 +411,7 @@ import Field from '../components/Field'
                 }
 
             }
+
 
             return { dati_comuni ,azienda,is_logged,utente,is_company_set,role};
 
