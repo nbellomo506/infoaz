@@ -55,6 +55,7 @@ import Header from '../components/Header'
 
 
 <script>
+  import axios from '@nuxtjs/axios'
 
 export default {
 
@@ -68,7 +69,6 @@ export default {
         if (is_logged)
         {
           window.location.replace("./home")
-          console.log("logged, login")
         }
         console.log(is_logged)
 
