@@ -96,13 +96,9 @@ export default {
    },
    mounted () {
 
-     this.$axios.$get(`/is_logged`)
-       .then((response) => {
-         this.is_logged = response
-       })
-
      if(this.is_logged === true)
      {
+       console.log(this.is_logged)
         location.replace("./home")
      }
 

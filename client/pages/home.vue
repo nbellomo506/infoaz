@@ -423,13 +423,10 @@ import Field from '../components/Field'
 
       mounted () {
 
-        this.$axios.$get(`/is_logged`)
-          .then((response) => {
-            this.is_logged = response
-          })
 
         if(this.is_logged === false)
         {
+           console.log(this.is_logged)
            location.replace("./login")
         }
 

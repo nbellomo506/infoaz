@@ -655,7 +655,6 @@ import CostiSmaltimento from '../components/CostiSmaltimento'
           $axios.defaults.withCredentials = true;
 
           let is_logged = await $axios.$get(`/is_logged`);
-          console.log(is_logged)
           let is_company_set = await $axios.$get(`/is_company_set`);
 
           if(is_logged === true && is_company_set === true)
@@ -801,13 +800,9 @@ import CostiSmaltimento from '../components/CostiSmaltimento'
 
     mounted () {
 
-      this.$axios.$get(`/is_logged`)
-        .then((response) => {
-          this.is_logged = response
-        })
-
       if(this.is_logged === false)
       {
+        console.log(this.is_logged)
 
          location.replace("../../login")
 
