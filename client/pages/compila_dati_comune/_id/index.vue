@@ -655,8 +655,9 @@ import CostiSmaltimento from '../components/CostiSmaltimento'
           $axios.defaults.withCredentials = true;
 
           let is_logged = await $axios.$get(`/is_logged`);
+
           console.log(is_logged)
-          
+
           if(is_logged === false)
           {
 
