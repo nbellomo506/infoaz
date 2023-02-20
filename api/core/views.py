@@ -380,6 +380,8 @@ def get_dati_comune(request):
 
         else:
             return JsonResponse(False,content_type="application/json",safe=False)
+    else:
+        return JsonResponse(False,content_type="application/json",safe=False)
 
 def upload_comune_files(request):
 
