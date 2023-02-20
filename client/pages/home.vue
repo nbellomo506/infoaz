@@ -387,7 +387,6 @@ import Field from '../components/Field'
 
   export default {
 
-
       async asyncData({ $axios, params })
         {
           try {
