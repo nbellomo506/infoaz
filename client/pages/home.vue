@@ -1,6 +1,5 @@
 ﻿
 import Header from '../components/Header'
-import Field from '../components/Field'
 
 
 
@@ -394,13 +393,12 @@ import Field from '../components/Field'
             $axios.defaults.withCredentials = true;
 
             let is_logged = await $axios.$get(`/is_logged`);
-            let is_company_set = await $axios.$get(`/is_company_set`);
-            let role = await $axios.$get(`/role`);
 
             if(is_logged === true)
             {
 
               var utente = await $axios.$get(`/get_user_data`);
+              let is_company_set = await $axios.$get(`/is_company_set`);
 
                 if(is_company_set === true)
                 {
@@ -409,6 +407,15 @@ import Field from '../components/Field'
                 }
 
             }
+
+            if(is_logged === false)
+            {
+                window.location.replace("./login")
+            }
+
+            let role = await $axios.$get(`/role`);
+
+
 
             return { is_logged,is_company_set,role,utente,dati_comuni,azienda};
 

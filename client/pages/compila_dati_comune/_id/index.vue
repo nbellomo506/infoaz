@@ -806,12 +806,7 @@ import FieldTitle from '../components/FieldTitle'
     },
 
 
-    mounted ()
-    {
 
-      this.$axios.defaults.withCredentials = true;
-
-    },
 
     methods:
     {
@@ -1255,6 +1250,13 @@ import FieldTitle from '../components/FieldTitle'
                   },
                   dim:6,
                 }
+
+            },
+
+            mounted ()
+            {
+
+              this.$axios.defaults.withCredentials = true;
 
             }
 
