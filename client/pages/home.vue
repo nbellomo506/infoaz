@@ -393,12 +393,12 @@ import Header from '../components/Header'
             $axios.defaults.withCredentials = true;
 
             let is_logged = await $axios.$get(`/is_logged`);
+            let is_company_set = await $axios.$get(`/is_company_set`);
 
             if(is_logged === true)
             {
 
               var utente = await $axios.$get(`/get_user_data`);
-              let is_company_set = await $axios.$get(`/is_company_set`);
 
                 if(is_company_set === true)
                 {
@@ -410,7 +410,11 @@ import Header from '../components/Header'
 
             if(is_logged === false)
             {
+              if (typeof window !== 'undefined')
+              {
+                // 👉️ can use window here
                 window.location.replace("./login")
+              }
             }
 
             let role = await $axios.$get(`/role`);

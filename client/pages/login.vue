@@ -66,10 +66,13 @@ export default {
         $axios.defaults.withCredentials = true;
         let is_logged = await $axios.$get(`/is_logged`);
 
-        if (is_logged)
+        if (is_logged === false)
         {
-          window.location.replace("./home")
-
+          if (typeof window !== 'undefined')
+          {
+            // 👉️ can use window here
+            window.location.replace("./home")
+          }
         }
 
         return { is_logged };
