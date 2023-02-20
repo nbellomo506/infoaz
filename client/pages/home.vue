@@ -130,6 +130,7 @@ import Field from '../components/Field'
             </b-col>
           </b-row>
         </b-container>
+        {{dati_comune}}
       <table v-for="(dati_comune,index) in dati_comuni" :id="`tab${index}`" border="1" hidden>
         <tr>
           <td>
@@ -406,12 +407,13 @@ import Field from '../components/Field'
                 if(is_company_set === true)
                 {
                   var dati_comuni = await $axios.$get(`/get_dati_comuni`);
+                  var dati_comune = await $axios.$post(`/get_dati_comune`,{id: 55});
                   var azienda = await $axios.$get(`/get_company_data`);
                 }
 
             }
 
-            return { dati_comuni ,azienda,is_logged,utente,is_company_set,role};
+            return { dati_comuni,dati_comune,azienda,is_logged,utente,is_company_set,role};
 
           } catch (e) {
 
