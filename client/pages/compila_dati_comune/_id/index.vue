@@ -656,6 +656,7 @@ import CostiSmaltimento from '../components/CostiSmaltimento'
 
     async asyncData({ $axios, params })
     {
+      console.log(axios)
         try {
           $axios.defaults.withCredentials = true;
 
@@ -798,7 +799,7 @@ import CostiSmaltimento from '../components/CostiSmaltimento'
           }
 
 
-          return {current_section,azienda,is_logged,is_company_set,dati_comune,costi_smaltimento};
+          return {current_section,sections,azienda,is_logged,is_company_set,dati_comune,costi_smaltimento};
         } catch (e) {
           console.log(e)
           return {dati_comune: false,azienda:[],costi_smaltimento:[],is_logged:false,is_company_set:false};
