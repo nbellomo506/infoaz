@@ -813,7 +813,7 @@ import FieldTitle from '../components/FieldTitle'
 
     methods:
     {
-        askHelp()
+        async askHelp()
         {
           var section = this.sections[this.current_section - 1].text
           section = section
@@ -826,7 +826,7 @@ import FieldTitle from '../components/FieldTitle'
 
         },
 
-        goToSection(num)
+        async goToSection(num)
         {
            if (num >= 1 &&  num <= this.sections.length)
            {
@@ -836,7 +836,7 @@ import FieldTitle from '../components/FieldTitle'
 
         },
 
-        uploadFiles(dati_comune)
+        async uploadFiles(dati_comune)
         {
 
             var formData = new FormData();
@@ -892,7 +892,7 @@ import FieldTitle from '../components/FieldTitle'
 
         },
 
-        aggiungiExtra()
+        async aggiungiExtra()
         {
 
             if(this.add.imp_smalt == "")
@@ -933,7 +933,7 @@ import FieldTitle from '../components/FieldTitle'
 
         },
 
-        modificaExtra(extra)
+        async modificaExtra(extra)
         {
 
           this.$axios.post('/update_costi_smaltimento',{
@@ -954,7 +954,7 @@ import FieldTitle from '../components/FieldTitle'
 
         },
 
-        eliminaExtra(id)
+        async eliminaExtra(id)
         {
           this.$axios.post('/del_costi_smaltimento',
            {
@@ -966,12 +966,12 @@ import FieldTitle from '../components/FieldTitle'
 
         },
 
-        calcoloImporto()
+        async calcoloImporto()
         {
             this.add.importo = this.add.tons * this.add.prezzo_unitario
         },
 
-        saveDatiComune(dati_comune,files)
+        async saveDatiComune(dati_comune,files)
         {
           var is_completed = 1
 
