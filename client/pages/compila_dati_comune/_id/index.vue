@@ -2,7 +2,6 @@
 import Header from '../components/Header'
 import PageTitle from '../components/PageTitle'
 import FieldTitle from '../components/FieldTitle'
-import CostiSmaltimento from '../components/CostiSmaltimento'
 
 
 
@@ -808,7 +807,20 @@ import CostiSmaltimento from '../components/CostiSmaltimento'
     mounted ()
     {
 
+      this.$axios.$get(`/is_logged`)
+        .then((response) => {
+          this.is_logged = response
+        })
 
+        this.$axios.$get(`/role`)
+          .then((response) => {
+            this.role = response
+          })
+
+          this.$axios.$get(`/is_company_set`)
+            .then((response) => {
+              this.is_company_set = response
+            })
       //this.width = window.innerWidth
 
     },

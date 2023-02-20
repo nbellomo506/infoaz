@@ -95,6 +95,10 @@ export default {
    },
    mounted () {
      this.$axios.defaults.withCredentials = true;
+     this.$axios.$get(`/is_logged`)
+       .then((response) => {
+         this.is_logged = response
+       })
 
 
    },
