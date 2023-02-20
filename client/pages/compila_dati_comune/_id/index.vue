@@ -9,8 +9,9 @@ import CostiSmaltimento from '../components/CostiSmaltimento'
   <template>
     <main>
       <Header/>
-      {{dati_comune}}
-      {{current_section}}
+      {{dati_comune}}<br>
+      {{current_section}}<br>
+      {{azienda}}<br>
         <b-nav  v-if="dati_comune !== false && is_company_set === true && is_logged === true" class="mt-3" tabs align="center">
           <b-nav-item class="text-danger" @click="goToSection(section.num)" style="cursor:pointer" v-for="section in sections" :key="section.num" :active="section.num === current_section">
               <font :class="{ 'text-secondary':section.num === 4,'text-success': section.completed === 1 && section.num != 4 , 'text-danger': section.completed === 0 && section.num != 4 }">
@@ -663,11 +664,13 @@ import CostiSmaltimento from '../components/CostiSmaltimento'
 
           if(is_logged === true && is_company_set === true)
           {
-              var dati_comune = await $axios.$post(`/get_dati_comune`,{id: params.id});
+              //var dati_comune = await $axios.$post(`/get_dati_comune`,{id: params.id});
+              var dati_comune = false;
               var current_section = 2;
               var azienda = await $axios.$get(`/get_company_data`);
 
-              /*if ( dati_comune !== false )
+              /*
+              if ( dati_comune !== false )
               {
                   var sections =
                   [
@@ -791,7 +794,8 @@ import CostiSmaltimento from '../components/CostiSmaltimento'
                   }
 
                   var costi_smaltimento = await $axios.$post(`/get_costi_smaltimento` ,{id: params.id});
-              }*/
+                  }
+              */
           }
 
           return {current_section,azienda,is_logged,is_company_set,dati_comune};
