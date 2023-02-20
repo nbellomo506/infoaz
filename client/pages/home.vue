@@ -434,6 +434,14 @@ import Header from '../components/Header'
 
         this.$axios.defaults.withCredentials = true;
 
+        if (this.is_logged === false)
+        {
+          if (typeof window !== 'undefined')
+          {
+            // 👉️ can use window here
+            window.location.replace("./login")
+          }
+        }
 
         var i = 0
 
@@ -468,8 +476,6 @@ import Header from '../components/Header'
     data() {
       return {
 
-        is_logged:false,
-        is_company_set:false,
         role:'Normal',
         is_ready:false,
         dati_comuni:[]

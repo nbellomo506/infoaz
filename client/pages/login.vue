@@ -91,7 +91,6 @@ export default {
    name: 'Login',
    data() {
       return {
-         is_logged:false,
          email: '',
          password: '',
          msg:
@@ -105,6 +104,15 @@ export default {
    mounted () {
 
      this.$axios.defaults.withCredentials = true;
+
+     if (this.is_logged === true)
+     {
+       if (typeof window !== 'undefined')
+       {
+         // 👉️ can use window here
+         window.location.replace("./home")
+       }
+     }
 
    },
    methods: {

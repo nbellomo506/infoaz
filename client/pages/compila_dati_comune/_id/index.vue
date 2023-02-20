@@ -8,9 +8,6 @@ import FieldTitle from '../components/FieldTitle'
   <template>
     <main>
       <Header/>
-      {{dati_comune}}<br>
-      {{current_section}}<br>
-      {{azienda}}<br>
         <b-nav  v-if="dati_comune !== false && is_company_set === true && is_logged === true" class="mt-3" tabs align="center">
           <b-nav-item class="text-danger" @click="goToSection(section.num)" style="cursor:pointer" v-for="section in sections" :key="section.num" :active="section.num === current_section">
               <font :class="{ 'text-secondary':section.num === 4,'text-success': section.completed === 1 && section.num != 4 , 'text-danger': section.completed === 0 && section.num != 4 }">
