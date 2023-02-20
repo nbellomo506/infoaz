@@ -811,7 +811,7 @@ import CostiSmaltimento from '../components/CostiSmaltimento'
     {
 
 
-      this.width = window.innerWidth
+      //this.width = window.innerWidth
 
     },
 
