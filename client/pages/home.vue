@@ -423,20 +423,7 @@ import Field from '../components/Field'
       mounted () {
 
         this.$axios.defaults.withCredentials = true;
-        this.$axios.$get(`/is_logged`)
-          .then((response) => {
-            this.is_logged = response
-          })
 
-          this.$axios.$get(`/role`)
-            .then((response) => {
-              this.role = response
-            })
-
-            this.$axios.$get(`/is_company_set`)
-              .then((response) => {
-                this.is_company_set = response
-              })
 
         var i = 0
 
