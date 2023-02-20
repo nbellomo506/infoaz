@@ -807,7 +807,7 @@ import FieldTitle from '../components/FieldTitle'
     mounted ()
     {
 
-      //this.width = window.innerWidth
+      this.$axios.defaults.withCredentials = true;
 
     },
 
