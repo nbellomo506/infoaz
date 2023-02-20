@@ -661,15 +661,14 @@ import CostiSmaltimento from '../components/CostiSmaltimento'
 
           let is_logged = await $axios.$get(`/is_logged`);
           let is_company_set = await $axios.$get(`/is_company_set`);
-
+          /*
           if(is_logged === true && is_company_set === true)
           {
-              //var dati_comune = await $axios.$post(`/get_dati_comune`,{id: params.id});
-              var dati_comune = false;
+              var dati_comune = await $axios.$post(`/get_dati_comune`,{id: params.id});
               var current_section = 2;
               var azienda = await $axios.$get(`/get_company_data`);
 
-              /*
+
               if ( dati_comune !== false )
               {
                   var sections =
@@ -795,10 +794,11 @@ import CostiSmaltimento from '../components/CostiSmaltimento'
 
                   var costi_smaltimento = await $axios.$post(`/get_costi_smaltimento` ,{id: params.id});
                   }
-              */
-          }
 
-          return {current_section,azienda,is_logged,is_company_set,dati_comune};
+          }
+          */
+
+          return {is_logged,is_company_set};
         } catch (e) {
           console.log(e)
           return {dati_comune: false,azienda:[],costi_smaltimento:[],is_logged:false,is_company_set:false};
