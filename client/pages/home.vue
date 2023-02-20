@@ -411,7 +411,7 @@ import Field from '../components/Field'
 
             }
 
-            return { is_logged,is_company_set,role,utentedati_comuni,azienda};
+            return { is_logged,is_company_set,role,utente,dati_comuni,azienda};
 
           } catch (e) {
 
