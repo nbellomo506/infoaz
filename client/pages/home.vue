@@ -411,7 +411,7 @@ import Field from '../components/Field'
 
             }
 
-            return { dati_comuni,azienda,is_logged,utente,is_company_set,role};
+            return { dati_comuni,azienda,is_logged,utente,is_company_set,role,azienda};
 
           } catch (e) {
 
