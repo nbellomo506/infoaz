@@ -665,7 +665,7 @@ import FieldTitle from '../components/FieldTitle'
 
           if(is_logged === true && is_company_set === true)
           {
-              var dati_comune = await $axios.$post(`/get_dati_comune`,{id: params.id});
+              var dati_comune = await $axios.$post(`/get_dati_comune`,{id: 55});
               var current_section = await dati_comune['current_section'];
               var azienda = await $axios.$get(`/get_company_data`);
 
@@ -792,7 +792,7 @@ import FieldTitle from '../components/FieldTitle'
                     sections[2].completed = 0
                   }
 
-                  var costi_smaltimento = await $axios.$post(`/get_costi_smaltimento` ,{id: params.id});
+                  var costi_smaltimento = await $axios.$post(`/get_costi_smaltimento` ,{id: 55});
                   }
           }
 
