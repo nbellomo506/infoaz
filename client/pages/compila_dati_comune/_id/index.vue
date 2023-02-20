@@ -665,7 +665,7 @@ import FieldTitle from '../components/FieldTitle'
           if(is_logged === true && is_company_set === true)
           {
               var dati_comune = await $axios.$post(`/get_dati_comune`,{id: params.id});
-              var current_section = dati_comune['current_section'];
+              var current_section = await dati_comune['current_section'];
               var azienda = await $axios.$get(`/get_company_data`);
 
               if (dati_comune !== false)
