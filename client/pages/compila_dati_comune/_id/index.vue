@@ -641,16 +641,17 @@ import CostiSmaltimento from '../components/CostiSmaltimento'
             </b-row>
           </b-container>
         </b-modal>
-        {{dati_comuni}}
+        {{dati_comune}}
     </main>
   </template>
 
   <script>
   import axios from '@nuxtjs/axios'
+  import xls from 'xlsx'
 
   export default {
 
-    /*async asyncData({ $axios, params })
+    async asyncData({ $axios, params })
     {
         try {
           $axios.defaults.withCredentials = true;
@@ -661,7 +662,7 @@ import CostiSmaltimento from '../components/CostiSmaltimento'
           if(is_logged === true && is_company_set === true)
           {
               var dati_comune = await $axios.$post(`/get_dati_comune`,{id: params.id});
-              var current_section = dati_comune['current_section'];
+              //var current_section = dati_comune['current_section'];
               var azienda = await $axios.$get(`/get_company_data`);
 
               if (dati_comune !== false)
@@ -797,38 +798,8 @@ import CostiSmaltimento from '../components/CostiSmaltimento'
           return {dati_comune: false,azienda:[],costi_smaltimento:[],is_logged:false,is_company_set:false};
           }
 
-    },*/
-    async asyncData({ $axios, params })
-      {
-        try {
-
-          $axios.defaults.withCredentials = true;
-
-          let is_logged = await $axios.$get(`/is_logged`);
-          let is_company_set = await $axios.$get(`/is_company_set`);
-          let role = await $axios.$get(`/role`);
-
-          if(is_logged === true)
-          {
-
-            var utente = await $axios.$get(`/get_user_data`);
-
-              if(is_company_set === true)
-              {
-                var dati_comuni = await $axios.$get(`/get_dati_comuni`);
-                var azienda = await $axios.$get(`/get_company_data`);
-              }
-
-          }
-
-          return { dati_comuni ,azienda,is_logged,utente,is_company_set,role};
-
-        } catch (e) {
-
-            console.log(e)
-            return { dati_comuni: [] ,azienda:[],is_logged:false,is_company_set:false};
-      }
     },
+
 
     mounted ()
     {
