@@ -375,6 +375,7 @@ import Header from '../components/Header'
           <td>Importo IVA Inclusa</td>
         </tr>
       </table>
+      {{is_logged}}
     </main>
   </template>
 
@@ -386,7 +387,7 @@ import Header from '../components/Header'
 
   export default {
 
-      async asyncData({ $axios, params })
+      /*async asyncData({ $axios, params })
         {
           try {
 
@@ -419,11 +420,49 @@ import Header from '../components/Header'
               console.log(e)
               return { dati_comuni: [] ,azienda:[],is_logged:false,is_company_set:false};
         }
-      },
+      },*/
 
       mounted () {
 
-        this.$axios.defaults.withCredentials = true;
+        this.$axios.defaults.withCredentials = true
+
+        this.$axios.$get(`/is_logged`)
+        .then((response) => {
+          this.is_logged=response
+        })
+
+        this.$axios.$get(`/is_company_set`)
+        .then((response) => {
+          this.is_company_set=response
+        })
+
+
+        if(this.is_logged === true)
+        {
+
+          this.$axios.$get(`/get_user_data`)
+          .then((response) => {
+            this.utente=response
+          })
+
+            if(this.is_company_set === true)
+            {
+              this.$axios.$get(`/get_dati_comuni`)
+              .then((response) => {
+                this.dati_comuni = response
+              })
+              
+              this.$axios.$get(`/get_company_data`)
+              .then((response) => {
+                this.azienda = response
+              })
+            }
+        }
+
+        this.$axios.$get(`/role`)
+        .then((response) => {
+          this.role = response
+        })
 
         /*if (this.is_logged === false)
         {
@@ -458,18 +497,19 @@ import Header from '../components/Header'
 
           }
         }
-
-
-
       },
 
 
     data() {
       return {
 
-        role:'Normal',
+        dati_comuni:[],
+        azienda:[],
+        utente:[],
         is_ready:false,
-        dati_comuni:[]
+        role:'Normal',
+        is_logged:true,
+        is_company_set:true
 
       }
     },

@@ -59,7 +59,7 @@ import axios from '@nuxtjs/axios'
 
 export default {
 
-  async asyncData({ $axios, params})
+  /*async asyncData({ $axios, params})
     {
       try {
 
@@ -76,7 +76,7 @@ export default {
     }
 
 
-  },
+  },*/
 
 
 
@@ -93,18 +93,10 @@ export default {
          }
       }
    },
-   mounted () {
+   mounted ()
+   {
 
      this.$axios.defaults.withCredentials = true;
-
-     /*if (this.is_logged === true)
-     {
-       if (typeof window !== 'undefined')
-       {
-         // 👉️ can use window here
-         window.location.replace("./home")
-       }
-     }*/
 
    },
    methods: {
