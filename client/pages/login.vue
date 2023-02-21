@@ -93,10 +93,24 @@ export default {
          }
       }
    },
-   mounted ()
-   {
+   mounted () {
 
      this.$axios.defaults.withCredentials = true;
+
+     this.$axios.$get(`/is_logged`)
+     .then((response) => {
+       this.is_logged=response
+       if (this.is_logged === true)
+       {
+         if (typeof window !== 'undefined')
+         {
+           // 👉️ can use window here
+           window.location.replace("./home")
+         }
+       }
+     })
+
+
 
    },
    methods: {
