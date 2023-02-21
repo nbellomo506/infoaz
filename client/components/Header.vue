@@ -78,6 +78,14 @@
       this.$axios.$get(`/is_logged`)
         .then((response) => {
           this.is_logged = response
+          if (this.is_logged === false && this.$route.name !== 'login')
+          {
+            if (typeof window !== 'undefined')
+            {
+              // 👉️ can use window here
+              window.location.replace("./login")
+            }
+          }
         })
 
         this.$axios.$get(`/role`)
