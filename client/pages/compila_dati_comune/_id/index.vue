@@ -16,7 +16,7 @@ import FieldTitle from '../components/FieldTitle'
           </b-nav-item>
         </b-nav>
 
-        <div class="container-fluid p-0 pb-5 mb-5 m-0 b-0" v-if="dati_comune !== false && is_company_set === true && is_logged === true">
+        <div class="container-fluid p-0 pb-5 mb-5 m-0 b-0" v-if="dati_comune !== false && is_company_set === true && is_logged === true && loaded === true">
           <b-container fluid class=" mt-0 b-0">
           <b-row>
             <b-col class="pt-5 bg-light" xl="2" hidden>
@@ -550,15 +550,22 @@ import FieldTitle from '../components/FieldTitle'
 
       </div>
 
-      <b-container v-if="is_logged === false" class="mb-3">
+      <b-container v-if="loaded === false" class="mb-3">
         <b-row>
           <b-col offset-xl="1" xl="10">
             <b-container class="mb-3 mt-5">
               <b-row>
                 <b-col xl="12">
-
-                  Manutenzione
-
+                  <div class="d-flex justify-content-center mb-3">
+                    Attendere...
+                  </div>
+                </b-col>
+              </b-row>
+              <b-row>
+                <b-col xl="12">
+                  <div class="d-flex justify-content-center mb-3">
+                    <b-spinner label="Loading..."></b-spinner>
+                  </div>
                 </b-col>
               </b-row>
             </b-container>
@@ -566,7 +573,7 @@ import FieldTitle from '../components/FieldTitle'
         </b-row>
       </b-container>
 
-      <b-container v-if="is_logged === true && is_company_set === false" class="mb-3">
+      <b-container v-if="is_logged === true && is_company_set === false && loaded === true" class="mb-3">
         <b-row>
           <b-col offset-xl="1" xl="10">
             <b-container class="mb-3 mt-5">
@@ -585,7 +592,7 @@ import FieldTitle from '../components/FieldTitle'
       </b-container>
 
 
-      <b-container v-if="dati_comune === false && is_logged === true && is_company_set === true" class="mb-3">
+      <b-container v-if="dati_comune === false && is_logged === true && is_company_set === true && loaded === true" class="mb-3">
         <b-row>
           <b-col offset-xl="1" xl="10">
             <b-container class="mb-3 mt-5">
@@ -602,7 +609,7 @@ import FieldTitle from '../components/FieldTitle'
         </b-row>
       </b-container>
 
-      <div v-if="dati_comune !== false && is_logged === true && is_company_set === true" class="bg-light fixed-bottom p-2">
+      <div v-if="dati_comune !== false && is_logged === true && is_company_set === true && loaded === true" class="bg-light fixed-bottom p-2">
         <b-container class="container">
           <b-row class="row">
             <b-col class="xl-1 offset-xl-5">
@@ -640,7 +647,6 @@ import FieldTitle from '../components/FieldTitle'
             </b-row>
           </b-container>
         </b-modal>
-
     </main>
   </template>
 
@@ -651,204 +657,168 @@ import FieldTitle from '../components/FieldTitle'
   export default {
 
     async asyncData({ $axios, params })
-    {/*
-        try {
-          $axios.defaults.withCredentials = true;
-
-          let is_logged = await $axios.$get(`/is_logged`);
-          let is_company_set = await $axios.$get(`/is_company_set`);
-          console.log(is_logged)
-          console.log(is_company_set)
-
-          if(is_logged === true && is_company_set === true)
-          {
-              var dati_comune = await $axios.$post(`/get_dati_comune`,{id: params.id});
-              var current_section = await dati_comune['current_section'];
-              var azienda = await $axios.$get(`/get_company_data`);
-
-              if (dati_comune !== false)
-              {
-                  var sections =
-                  [
-                    {num:1 , text:"Dati Generali",completed:0},
-                    {num:2 , text:"Dati tecnici dell'appalto",completed:0},
-                    {num:3 , text:"Documenti riferiti all'appalto",completed:0},
-                    {num:4 , text:"Costi Smaltimento / Trattamento",completed:0}
-                  ]
-
-                  for (var i = 0; i < Object.keys(sections).length; i++)
-                  {
-                    sections[i].completed = 1
-                  }
-
-                  if(azienda.pef_mis_o_ric === "CALCOLATO")
-                  {
-                    if( dati_comune.ris_ula_o_ore === "" ||
-                        dati_comune.tot_app <= 0 ||
-                        dati_comune.app_servizi <= 0 ||
-                        dati_comune.app_rifiuti_diff <= 0 ||
-                        dati_comune.app_rifiuti_indiff <= 0 ||
-                        dati_comune.app_igiene <= 0 )
-                      {
-                        sections[0].completed = 0
-
-                      }
-                  }
-
-                  if(dati_comune.altri_gestori_flag == true)
-                  {
-                    if(dati_comune.altri_gestori == "")
-                    {
-                      sections[0].completed = 0
-                    }
-                  }else {
-                    dati_comune.altri_gestori=""
-
-                  }
-
-                  if(dati_comune.serv_exra_arera_flag == true)
-                  {
-                    if(dati_comune.serv_exra_arera == "")
-                    {
-                      sections[0].completed = 0
-                    }
-                  }else {
-                    dati_comune.serv_exra_arera=""
-
-                  }
-
-                  if(dati_comune.lav_in_corso_flag == true)
-                  {
-                    if(dati_comune.lav_in_corso == "")
-                    {
-                      sections[0].completed = 0
-                    }
-                  }else {
-                    dati_comune.lav_in_corso=""
-
-                  }
-
-                  if(dati_comune.var_gest_flag == true)
-                  {
-                    if(dati_comune.var_gest == "")
-                    {
-                      sections[0].completed = 0
-
-                    }
-                  }else {
-                    dati_comune.var_gest=""
-
-                  }
-
-                  if(dati_comune.miglior_qual_flag == true)
-                  {
-                    if(dati_comune.miglior_qual == "")
-                    {
-                      sections[0].completed = 0
-                    }
-                  }else {
-                    dati_comune.miglior_qual=""
-
-                  }
-
-                  if(dati_comune.costi_tqrif_flag == true)
-                  {
-                    if(dati_comune.costi_tqrif == 0)
-                    {
-                      sections[0].completed = 0
-                    }
-                  }else {
-                    dati_comune.costi_tqrif=0
-
-                  }
-
-                  if (dati_comune.ton_anno_1 == 0  || dati_comune.ton_anno_2 == 0 || dati_comune.ton_anno_3 == 0)
-                  {
-                    sections[1].completed = 0
-                  }
-
-                  if (dati_comune.xcent_raccolta_anno_1 == 0 || dati_comune.xcent_raccolta_anno_2 == 0 || dati_comune.xcent_raccolta_anno_3 == 0)
-                  {
-                    sections[1].completed = 0
-                  }
-
-
-                  if(dati_comune.xcent_media_imp == 0 ||
-                  dati_comune.xcent_media_imp_org == 0 ||
-                  dati_comune.xcent_media_imp_cart == 0 ||
-                  dati_comune.xcent_media_imp_plastica == 0 ||
-                  dati_comune.xcent_media_imp_metallo == 0 ||
-                  dati_comune.xcent_media_imp_vetro == 0 )
-                  {
-                    sections[1].completed = 0
-                  }
-
-
-                  if(dati_comune.cont_commessa_anno1 == '' || dati_comune.cont_commessa_anno2 == '' || dati_comune.contratto_appalto == '' || dati_comune.ultimo_pef == '')
-                  {
-                    sections[2].completed = 0
-                  }
-
-                  var costi_smaltimento = await $axios.$post(`/get_costi_smaltimento` ,{id: params.id});
-                  }
-          }
-
-
-          return {current_section,sections,azienda,is_logged,is_company_set,dati_comune,costi_smaltimento};
-        } catch (e) {
-          console.log(e)
-          return {dati_comune: false,azienda:[],costi_smaltimento:[],is_logged:false,is_company_set:false};
-          }
-            */
-
-        let id = params.id
-        return {id};
+    {
+        let id = params.id;
+        return {id}
     },
 
     mounted ()
     {
-
       this.$axios.defaults.withCredentials = true
 
-      this.$axios.$get(`/is_logged`)
-      .then((response) => {
-        this.is_logged=response
-      })
+      try {
+        this.$axios.$get(`/is_logged`)
+        .then((response) => {
+          this.is_logged = response
+        })
 
-      this.$axios.$get(`/is_company_set`)
-      .then((response) => {
-        this.is_company_set=response
-      })
+        this.$axios.$get(`/is_company_set`)
+        .then((response) => {
+          this.is_company_set = response
+        })
 
-      this.$axios.$get(`/role`)
-      .then((response) => {
-        this.role = response
-      })
+        this.$axios.$get(`/role`)
+        .then((response) => {
+          this.role = response
+        })
 
-      this.$axios.$post(`/get_dati_comune`,{id: this.id})
-      .then((response) => {
-        this.dati_comune = response
-        this.current_section = this.dati_comune['current_section']
+        this.$axios.$post(`/get_dati_comune`,{id: this.id})
+        .then((response) => {
+          this.dati_comune = response
+          if(this.dati_comune.altri_gestori_flag == true)
+          {
+            if(this.dati_comune.altri_gestori == "")
+            {
+              this.sections[0].completed = 0
+            }
+          }else {
+            this.dati_comune.altri_gestori=""
 
-      })
+          }
 
-      this.$axios.$get(`/get_company_data`)
-      .then((response) => {
-        this.azienda = response
-      })
+          if(this.dati_comune.serv_exra_arera_flag == true)
+          {
+            if(this.dati_comune.serv_exra_arera == "")
+            {
+              this.sections[0].completed = 0
+            }
+          }else {
+            this.dati_comune.serv_exra_arera=""
 
-      this.$axios.$post(`/get_costi_smaltimento` ,{id: this.id})
-      .then((response) => {
-        this.costi_smaltimento = response
-      })
+          }
 
-      this.sections =
-      [
-        {num:1 , text:"Dati Generali",completed:0},
-        {num:2 , text:"Dati tecnici dell'appalto",completed:0},
-        {num:3 , text:"Documenti riferiti all'appalto",completed:0},
-        {num:4 , text:"Costi Smaltimento / Trattamento",completed:0}
-      ]
+          if(this.dati_comune.lav_in_corso_flag == true)
+          {
+            if(this.dati_comune.lav_in_corso == "")
+            {
+              this.sections[0].completed = 0
+            }
+          }else {
+            this.dati_comune.lav_in_corso=""
+
+          }
+
+          if(this.dati_comune.var_gest_flag == true)
+          {
+            if(this.dati_comune.var_gest == "")
+            {
+              this.sections[0].completed = 0
+
+            }
+          }else {
+            this.dati_comune.var_gest=""
+
+          }
+
+          if(this.dati_comune.miglior_qual_flag == true)
+          {
+            if(this.dati_comune.miglior_qual == "")
+            {
+              this.sections[0].completed = 0
+            }
+          }else {
+            this.dati_comune.miglior_qual=""
+
+          }
+
+          if(this.dati_comune.costi_tqrif_flag == true)
+          {
+            if(this.dati_comune.costi_tqrif == 0)
+            {
+              this.sections[0].completed = 0
+            }
+          }else {
+            this.dati_comune.costi_tqrif=0
+
+          }
+
+          if (this.dati_comune.ton_anno_1 === 0  || this.dati_comune.ton_anno_2 === 0 || this.dati_comune.ton_anno_3 === 0)
+          {
+            this.sections[1].completed = 0
+            console.log("incompleto")
+
+          }
+
+          if (this.dati_comune.xcent_raccolta_anno_1 == 0 || this.dati_comune.xcent_raccolta_anno_2 == 0 || this.dati_comune.xcent_raccolta_anno_3 == 0)
+          {
+
+            this.sections[1].completed = 0
+          }
+
+
+          if(this.dati_comune.xcent_media_imp == 0 ||
+          this.dati_comune.xcent_media_imp_org == 0 ||
+          this.dati_comune.xcent_media_imp_cart == 0 ||
+          this.dati_comune.xcent_media_imp_plastica == 0 ||
+          this.dati_comune.xcent_media_imp_metallo == 0 ||
+          this.dati_comune.xcent_media_imp_vetro == 0 )
+          {
+
+            this.sections[1].completed = 0
+          }
+
+
+          if(this.dati_comune.cont_commessa_anno1 == '' || this.dati_comune.cont_commessa_anno2 == '' || this.dati_comune.contratto_appalto == '' || this.dati_comune.ultimo_pef == '')
+          {
+            this.sections[2].completed = 0
+          }
+
+          this.current_section = this.dati_comune['current_section']
+
+        })
+
+        this.$axios.$get(`/get_company_data`)
+        .then((response) => {
+          this.azienda = response
+          if(this.azienda.pef_mis_o_ric === "CALCOLATO")
+          {
+            if( this.dati_comune.ris_ula_o_ore === "" ||
+                this.dati_comune.tot_app <= 0 ||
+                this.dati_comune.app_servizi <= 0 ||
+                this.dati_comune.app_rifiuti_diff <= 0 ||
+                this.dati_comune.app_rifiuti_indiff <= 0 ||
+                this.dati_comune.app_igiene <= 0 )
+              {
+                this.sections[0].completed = 0
+              }
+          }
+        })
+
+        this.$axios.$post(`/get_costi_smaltimento` ,{id: this.id})
+        .then((response) => {
+          this.costi_smaltimento = response
+        })
+
+
+
+
+        this.loaded = true
+
+      } catch (e) {
+        console.log(e)
+      }
+
+
 
     },
 
@@ -1228,11 +1198,19 @@ import FieldTitle from '../components/FieldTitle'
     {
 
         return {
+                  loaded:false,
                   is_logged:false,
                   is_company_set:false,
                   role:'Normal',
                   dati_comune:[],
-                  sections:[],
+                  azienda:[],
+                  sections:
+                  [
+                    {num:1 , text:"Dati Generali",completed:1},
+                    {num:2 , text:"Dati tecnici dell'appalto",completed:1},
+                    {num:3 , text:"Documenti riferiti all'appalto",completed:1},
+                    {num:4 , text:"Costi Smaltimento / Trattamento",completed:1}
+                  ],
                   costi_smaltimento:[],
                   current_section:0,
                   id:0,
