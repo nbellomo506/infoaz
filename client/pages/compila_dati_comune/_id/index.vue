@@ -574,7 +574,7 @@ import FieldTitle from '../components/FieldTitle'
                 <b-col xl="12">
                   <h1>Attenzione</h1>
                   <p>
-                    Ciao {{utente.nome}} , la tua richiesta di accesso è stata inviata ma i gestori non ti hanno ancora associato l'azienda.<br>
+                    Ciao , la tua richiesta di accesso è stata inviata ma i gestori non ti hanno ancora associato l'azienda.<br>
                     Pertanto non hai accesso ai dati inseriti dalla tua azienda
                   </p>
                 </b-col>
