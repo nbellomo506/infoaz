@@ -66,14 +66,6 @@ export default {
         $axios.defaults.withCredentials = true;
         let is_logged = await $axios.$get(`/is_logged`);
 
-        if (is_logged === false)
-        {
-          if (typeof window !== 'undefined')
-          {
-            // 👉️ can use window here
-            window.location.replace("./home")
-          }
-        }
 
         return { is_logged };
 
@@ -105,14 +97,14 @@ export default {
 
      this.$axios.defaults.withCredentials = true;
 
-     if (this.is_logged === true)
+     /*if (this.is_logged === true)
      {
        if (typeof window !== 'undefined')
        {
          // 👉️ can use window here
          window.location.replace("./home")
        }
-     }
+     }*/
 
    },
    methods: {

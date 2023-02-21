@@ -43,7 +43,7 @@
                 <b-dropdown-item :to="locations.home" v-if="this.$route.name !== 'home'">Home</b-dropdown-item>
                 <b-dropdown-item :to="locations.anagrafica" v-if="this.$route.name !== 'anagrafica' && (is_logged === true ) ">Anagrafica</b-dropdown-item>
                 <b-dropdown-item :to="locations.admin" variant="infowaste" v-if="this.$route.name !== 'admin' && is_logged === true && role==='Admin'">Admin</b-dropdown-item>
-                <b-dropdown-item :to="locations.login" class="bg-danger"  @click="findPath('login')">
+                <b-dropdown-item class="bg-danger" @click="logout()">
                   <b-container class="p-0 m-0 b-0">
                     <b-row>
                       <b-col cols="8">
@@ -86,6 +86,17 @@
               window.location.replace("./login")
             }
           }
+
+          if (this.is_logged === true && this.$route.name === 'login')
+          {
+            if (typeof window !== 'undefined')
+            {
+              // 👉️ can use window here
+              window.location.replace("./home")
+            }
+          }
+
+
         })
 
         this.$axios.$get(`/role`)
@@ -144,19 +155,19 @@
     methods:
     {
 
-      findPath(page)
+      logout()
       {
+          try {
 
-        if(page == 'login')
-        {
-          this.$axios.post('/logout')
-          window.location.replace(this.locations.login)
+            this.$axios.post('/logout')
 
+          } catch (e) {
 
-        }
+            console.log(e)
 
-
-
+          }
+          //window.location.replace(this.locations.login)
+          window.location.reload()
       }
 
     }

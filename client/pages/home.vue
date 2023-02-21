@@ -408,15 +408,6 @@ import Header from '../components/Header'
 
             }
 
-            if(is_logged === false)
-            {
-              if (typeof window !== 'undefined')
-              {
-                // 👉️ can use window here
-                window.location.replace("./login")
-              }
-            }
-
             let role = await $axios.$get(`/role`);
 
 
@@ -434,14 +425,14 @@ import Header from '../components/Header'
 
         this.$axios.defaults.withCredentials = true;
 
-        if (this.is_logged === false)
+        /*if (this.is_logged === false)
         {
           if (typeof window !== 'undefined')
           {
             // 👉️ can use window here
             window.location.replace("./login")
           }
-        }
+        }*/
 
         var i = 0
 
