@@ -246,39 +246,47 @@ import CostiSmaltimento from '../components/CostiSmaltimento'
   export default {
 
 
-    async asyncData({ $axios, params })
+    mounted()
     {
-        try {
-          $axios.defaults.withCredentials = true;
-          let is_logged = await $axios.$get(`/is_logged`);
-          let role = await $axios.$get(`/role`);
-          
-            if(is_logged == true && role == "Admin")
-            {
-              var utenti = await $axios.$get(`/get_utenti`);
+      try {
+        this.$axios.$get(`/is_logged`)
+        .then((response) => {
+          this.is_logged = response
+        })
 
-                  for (var i = 0; i < utenti.length; i++)
+        this.$axios.$get(`/role`)
+        .then((response) => {
+          this.role = response
+        })
+
+
+        this.$axios.$get(`/get_utenti`)
+        .then((response) => {
+        this.utenti = response
+
+                  for (var i = 0; i < this.utenti.length; i++)
                   {
                       var data = []
                       var orario = []
 
-                        for (var j = 0; utenti[i].request_date[j] != 'T'; j++)
+                        for (var j = 0; this.utenti[i].request_date[j] != 'T'; j++)
                         {
-                          data[j] = utenti[i].request_date[j]
+                          data[j] = this.utenti[i].request_date[j]
                         }
 
                         j++
                         var k = 0
 
-                          while (j < utenti[i].request_date.length )
+                          while (j < this.utenti[i].request_date.length )
                           {
-                              if (utenti[i].request_date[j] == '+' || utenti[i].request_date[j] == '.' || utenti[i].request_date[j] == 'Z')
+                              if (this.utenti[i].request_date[j] == '+' || this.utenti[i].request_date[j] == '.' || this.utenti[i].request_date[j] == 'Z')
                               {
-                                j = utenti[i].request_date.length
+
+                                j = this.utenti[i].request_date.length
                               }
                                   else
                                   {
-                                    orario[k] = utenti[i].request_date[j]
+                                    orario[k] = this.utenti[i].request_date[j]
                                   }
                               j++
                               k++
@@ -290,41 +298,35 @@ import CostiSmaltimento from '../components/CostiSmaltimento'
                       orario = orario.join('')
                       orario.toString()
 
-                      utenti[i].data = data
-                      utenti[i].orario = orario
+                      this.utenti[i].data = data
+                      this.utenti[i].orario = orario
+                    }
 
-                  }
-
-              var utenti_non_azienda = []
-              var utenti_azienda = []
-
-              for (var i = 0; i < utenti.length; i++)
-              {
-                if (utenti[i].azienda !== null && utenti[i].is_assigned === true)
-                {
-                  utenti_azienda.push(utenti[i])
-                }
-                  else
+                    for (var i = 0; i < this.utenti.length; i++)
+                    {
+                      if (this.utenti[i].azienda !== null && this.utenti[i].is_assigned === true)
                       {
-                        utenti_non_azienda.push(utenti[i])
+                        this.utenti_azienda.push(this.utenti[i])
                       }
-              }
+                        else
+                            {
+                              this.utenti_non_azienda.push(this.utenti[i])
+                            }
+                    }
+                
+          })
 
-              var aziende = await $axios.$get(`/get_aziende`);
 
-            }
+          this.$axios.$get(`/get_aziende`)
+          .then((response) => {
+            this.aziende = response
+          })
 
-          return {is_logged,role,aziende,utenti,utenti_azienda,utenti_non_azienda};
-
-        } catch (e) {
-
-            console.log(e)
-            return {is_logged:false,aziende:[],utenti:[]};
+      } catch (e) {
+          console.log(e)
       }
 
-
     },
-
 
     methods:
     {
@@ -392,9 +394,14 @@ import CostiSmaltimento from '../components/CostiSmaltimento'
     },
 
 
-    data() {
+    data()
+    {
 
         return {
+                    utenti:[],
+                    utenti_azienda:[],
+                    utenti_non_azienda:[],
+                    aziende:[],
                     new_azienda:
                     {
                       ragione_sociale:'',
