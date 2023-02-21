@@ -375,7 +375,6 @@ import Header from '../components/Header'
           <td>Importo IVA Inclusa</td>
         </tr>
       </table>
-      {{is_logged}}
     </main>
   </template>
 
@@ -451,7 +450,7 @@ import Header from '../components/Header'
               .then((response) => {
                 this.dati_comuni = response
               })
-              
+
               this.$axios.$get(`/get_company_data`)
               .then((response) => {
                 this.azienda = response
