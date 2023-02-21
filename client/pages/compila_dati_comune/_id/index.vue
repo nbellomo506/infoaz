@@ -651,7 +651,7 @@ import FieldTitle from '../components/FieldTitle'
   export default {
 
     async asyncData({ $axios, params })
-    {
+    {/*
         try {
           $axios.defaults.withCredentials = true;
 
@@ -799,11 +799,58 @@ import FieldTitle from '../components/FieldTitle'
           console.log(e)
           return {dati_comune: false,azienda:[],costi_smaltimento:[],is_logged:false,is_company_set:false};
           }
+            */
 
+        let id = params.id
+        return {id};
     },
 
+    mounted ()
+    {
 
+      this.$axios.defaults.withCredentials = true
 
+      this.$axios.$get(`/is_logged`)
+      .then((response) => {
+        this.is_logged=response
+      })
+
+      this.$axios.$get(`/is_company_set`)
+      .then((response) => {
+        this.is_company_set=response
+      })
+
+      this.$axios.$get(`/role`)
+      .then((response) => {
+        this.role = response
+      })
+
+      this.$axios.$post(`/get_dati_comune`,{id: this.id})
+      .then((response) => {
+        this.dati_comune = response
+        this.current_section = this.dati_comune['current_section']
+
+      })
+
+      this.$axios.$get(`/get_company_data`)
+      .then((response) => {
+        this.azienda = response
+      })
+
+      this.$axios.$post(`/get_costi_smaltimento` ,{id: this.id})
+      .then((response) => {
+        this.costi_smaltimento = response
+      })
+
+      this.sections =
+      [
+        {num:1 , text:"Dati Generali",completed:0},
+        {num:2 , text:"Dati tecnici dell'appalto",completed:0},
+        {num:3 , text:"Documenti riferiti all'appalto",completed:0},
+        {num:4 , text:"Costi Smaltimento / Trattamento",completed:0}
+      ]
+
+    },
 
     methods:
     {
@@ -1181,6 +1228,16 @@ import FieldTitle from '../components/FieldTitle'
     {
 
         return {
+                  is_logged:false,
+                  is_company_set:false,
+                  role:'Normal',
+                  dati_comune:[],
+                  sections:[],
+                  costi_smaltimento:[],
+                  current_section:0,
+                  id:0,
+
+
                   files:
                   {
                     cont_commessa_anno1:[],
@@ -1250,12 +1307,6 @@ import FieldTitle from '../components/FieldTitle'
 
             },
 
-            mounted ()
-            {
-
-              this.$axios.defaults.withCredentials = true;
-
-            }
 
 
   };

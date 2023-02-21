@@ -8,6 +8,8 @@ import Header from '../components/Header'
 <template>
   <main>
     <Header/>
+
+
       <b-container v-if="is_logged === true && is_company_set === true"  class="mt-5 mb-5">
         <b-row>
           <b-col offset-xl="1" xl="10">
@@ -435,32 +437,24 @@ import Header from '../components/Header'
           this.is_company_set=response
         })
 
-
-        if(this.is_logged === true)
-        {
-
-          this.$axios.$get(`/get_user_data`)
-          .then((response) => {
-            this.utente=response
-          })
-
-            if(this.is_company_set === true)
-            {
-              this.$axios.$get(`/get_dati_comuni`)
-              .then((response) => {
-                this.dati_comuni = response
-              })
-
-              this.$axios.$get(`/get_company_data`)
-              .then((response) => {
-                this.azienda = response
-              })
-            }
-        }
-
         this.$axios.$get(`/role`)
         .then((response) => {
           this.role = response
+        })
+
+        this.$axios.$get(`/get_user_data`)
+        .then((response) => {
+          this.utente=response
+        })
+
+        this.$axios.$get(`/get_dati_comuni`)
+        .then((response) => {
+          this.dati_comuni = response
+        })
+
+        this.$axios.$get(`/get_company_data`)
+        .then((response) => {
+          this.azienda = response
         })
 
         /*if (this.is_logged === false)
@@ -507,8 +501,8 @@ import Header from '../components/Header'
         utente:[],
         is_ready:false,
         role:'Normal',
-        is_logged:true,
-        is_company_set:true
+        is_logged:false,
+        is_company_set:false
 
       }
     },
