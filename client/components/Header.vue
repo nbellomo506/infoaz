@@ -75,15 +75,42 @@
 
       this.$axios.defaults.withCredentials = true;
 
+      var pages = ["home","anagrafica","admin","login"]
+      var i = 0
+      var page = ""
+      do
+      {
+        if (this.$route.name == 'compila_dati_comune-id')
+        {
+          page = pages[i]
+          this.locations[page] = "../../"+page
+          //alert(this.locations.page)
+
+        }
+          else {
+
+            page = pages[i]
+            this.locations[page] = "./"+page
+            //alert(this.locations.page)
+
+          }
+          i++
+
+      }while (i < pages.length)
+
       this.$axios.$get(`/is_logged`)
         .then((response) => {
           this.is_logged = response
-          if (this.is_logged === false && this.$route.name !== 'login')
+          if (this.is_logged === false && ( this.$route.name === 'home'
+            || this.$route.name === 'anagrafica' || this.$route.name === 'compila_dati_comune-id'
+            || this.$route.name === 'admin')
+          )
           {
             if (typeof window !== 'undefined')
             {
               // 👉️ can use window here
-              window.location.replace("./login")
+              console.log(this.locations.login)
+              window.location.replace(this.locations.login)
             }
           }
 
@@ -108,29 +135,6 @@
             .then((response) => {
               this.is_company_set = response
             })
-
-      var pages = ["home","anagrafica","admin","login"]
-      var i = 0
-      var page = ""
-      do
-      {
-        if (this.$route.name == 'compila_dati_comune-id')
-        {
-          page = pages[i]
-          this.locations[page] = "../../"+page
-          //alert(this.locations.page)
-
-        }
-          else {
-
-            page = pages[i]
-            this.locations[page] = "./"+page
-            //alert(this.locations.page)
-
-          }
-          i++
-
-      }while (i < pages.length)
 
     },
 
