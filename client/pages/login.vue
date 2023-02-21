@@ -5,6 +5,7 @@ import Header from '../components/Header'
 <template>
   <main>
     <Header/>
+    {{is_logged}}
     <b-container mt="5" >
         <b-row class="mr-1 ml-1 mt-5">
           <b-col xl="6" v-if="is_logged === false" offset-xl="3" class="justify-content-center shadow p-3 mt-5  bg-white rounded">
@@ -83,6 +84,7 @@ export default {
    name: 'Login',
    data() {
       return {
+         is_logged:false,
          email: '',
          password: '',
          msg:
