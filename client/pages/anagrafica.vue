@@ -186,7 +186,26 @@ import TownSelect from '../components/TownSelect'
             </b-row>
           </b-container>
 
-          <b-container v-if="is_logged === false && is_company_set === false" class="mb-3">
+          <b-container v-if="loaded === false" class="mb-3">
+            <b-row>
+              <b-col offset-xl="1" xl="10">
+                <b-container class="mb-3 mt-5">
+                  <b-row>
+                    <b-col xl="12">
+                      <div class="d-flex justify-content-center mb-3">
+                        <h1>Attendere...</h1>
+                      </div>
+                      <div class="d-flex justify-content-center mb-3">
+                        <b-spinner label="Loading..."></b-spinner>
+                      </div>
+                    </b-col>
+                  </b-row>
+                </b-container>
+              </b-col>
+            </b-row>
+          </b-container>
+
+          <b-container v-show="is_logged === false && is_company_set === false && loaded === true" class="mb-3">
             <b-row>
               <b-col offset-xl="1" xl="10">
                 <b-container class="mb-3 mt-5">
@@ -204,7 +223,7 @@ import TownSelect from '../components/TownSelect'
             </b-row>
           </b-container>
 
-          <b-container v-if="is_logged === true && is_company_set === false" class="mb-3">
+          <b-container v-show="is_logged === true && is_company_set === false && loaded === true" class="mb-3">
             <b-row>
               <b-col offset-xl="1" xl="10">
                 <b-container class="mb-3 mt-5">
@@ -214,7 +233,6 @@ import TownSelect from '../components/TownSelect'
                       <p>
                         Ciao {{utente.nome}} , la tua richiesta di accesso è stata inviata ma i gestori non ti hanno ancora associato l'azienda.<br>
                         Pertanto non hai accesso ai dati inseriti dalla tua azienda
-
                       </p>
                     </b-col>
                   </b-row>
@@ -231,42 +249,6 @@ import TownSelect from '../components/TownSelect'
   import axios from 'axios'
 
   export default {
-
-    async asyncData({ $axios, params })
-      {
-
-        try
-        {
-          $axios.defaults.withCredentials = true;
-
-
-
-          let is_logged = await $axios.$get(`/is_logged`);
-          let is_company_set = await $axios.$get(`/is_company_set`);
-          let role = await $axios.$get(`/role`);
-          let regioni_req = await $axios.$get(`/comuni_italiani/elenco/regioni/`);
-          let province_req = await $axios.$get(`/comuni_italiani/elenco/province/regione/`+16);
-          let comuni_azienda = await $axios.$get(`/get_dati_comuni`);
-          let azienda = await $axios.$get(`/get_company_data`);
-
-            if(is_logged)
-            {
-              var utente = await $axios.$get(`/get_user_data`);
-
-            }
-
-
-          return { is_logged,utente,is_company_set,role,regioni_req,province_req,comuni_azienda,azienda};
-        }
-              catch (e)
-              {
-                console.log(e);
-                return {is_logged:false, regioni_req: [],province_req: [],comuni_req: [],comuni_azienda:[],azienda:[]};
-
-
-              }
-        },
-
 
     methods:
     {
@@ -393,16 +375,73 @@ import TownSelect from '../components/TownSelect'
 
     },
 
+    mounted()
+    {
 
+      try {
 
+        this.loaded=false
+
+        this.$axios.$get(`/is_logged`)
+        .then((response) => {
+          this.is_logged = response
+          if (this.is_logged === true)
+          {
+            this.utente = this.$axios.$get(`/get_user_data`);
+          }
+
+        })
+
+        this.$axios.$get(`/role`)
+          .then((response) => {
+            this.role = response
+          })
+
+        this.$axios.$get(`/is_company_set`)
+          .then((response) => {
+            this.is_company_set = response
+          })
+
+        this.$axios.$get(`/comuni_italiani/elenco/regioni/`)
+        .then((response) => {
+          this.regioni_req = response
+        })
+
+        this.$axios.$get(`/comuni_italiani/elenco/province/regione/`+16)
+        .then((response) => {
+          this.province_req = response
+        })
+
+        this.$axios.$get(`/get_dati_comuni`)
+        .then((response) => {
+          this.comuni_azienda= response
+        })
+
+        this.$axios.$get(`/get_company_data`)
+        .then((response) => {
+          this.azienda = response
+        })
+
+        this.loaded = true
+
+      } catch (e) {
+
+        console.log(e)
+
+      }
+
+    },
 
     data() {
       return {
         regioni_req: [] ,province_req: [] , comuni_req: [] ,
         comuni_azienda: [] ,
+        azienda:[],
+        utente:[],
         is_logged:false,
         is_company_set:false,
         role:'Normal',
+        loaded:false,
         upload:
         {
           cespiti:[],
