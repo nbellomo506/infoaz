@@ -2,6 +2,8 @@
 import Header from '../components/Header'
 import PageTitle from '../components/PageTitle'
 import FieldTitle from '../components/FieldTitle'
+import Loading from '../components/Loading'
+import Footer from '../components/Footer'
 
 
 
@@ -16,7 +18,7 @@ import FieldTitle from '../components/FieldTitle'
           </b-nav-item>
         </b-nav>
 
-        <div class="container-fluid p-0 pb-5 mb-5 m-0 b-0" v-if="dati_comune !== false && is_company_set === true && is_logged === true && loaded === true">
+        <div class="container-fluid p-0 pb-0 mb-5 m-0 b-0" v-if="dati_comune !== false && is_company_set === true && is_logged === true && loaded === true">
           <b-container fluid class=" mt-0 b-0">
           <b-row>
             <b-col class="pt-5 bg-light" xl="2" hidden>
@@ -547,30 +549,11 @@ import FieldTitle from '../components/FieldTitle'
             </b-row>
           </b-col>
         </b-row>
+      <Footer/>
+    </div>
 
-      </div>
-
-      <b-container v-if="loaded === false" class="mb-3">
-        <b-row>
-          <b-col offset-xl="1" xl="10">
-            <b-container class="mb-3 mt-5">
-              <b-row>
-                <b-col xl="12">
-                  <div class="d-flex justify-content-center mb-3">
-                    Attendere...
-                  </div>
-                </b-col>
-              </b-row>
-              <b-row>
-                <b-col xl="12">
-                  <div class="d-flex justify-content-center mb-3">
-                    <b-spinner label="Loading..."></b-spinner>
-                  </div>
-                </b-col>
-              </b-row>
-            </b-container>
-          </b-col>
-        </b-row>
+      <b-container v-if="loaded === false">
+        <Loading/>
       </b-container>
 
       <b-container v-if="is_logged === true && is_company_set === false && loaded === true" class="mb-3">
@@ -609,11 +592,11 @@ import FieldTitle from '../components/FieldTitle'
         </b-row>
       </b-container>
 
-      <div v-if="dati_comune !== false && is_logged === true && is_company_set === true && loaded === true" class="bg-light fixed-bottom p-2">
+      <div v-if="dati_comune !== false && is_logged === true && is_company_set === true && loaded === true" class="bg-light border fixed-bottom p-2">
         <b-container class="container">
           <b-row class="row">
-            <b-col class="xl-1 offset-xl-5">
-              <b-button v-b-modal="'help-tab'" block variant="link">
+            <b-col class=" text-center xl-1 offset-xl-5">
+              <b-button v-b-modal="'help-tab'" block variant="warning">
                   Help
               </b-button>
             </b-col>
@@ -1198,9 +1181,9 @@ import FieldTitle from '../components/FieldTitle'
     {
 
         return {
+                  is_logged:undefined,
+                  is_company_set:undefined,
                   loaded:false,
-                  is_logged:false,
-                  is_company_set:false,
                   role:'Normal',
                   dati_comune:[],
                   azienda:[],

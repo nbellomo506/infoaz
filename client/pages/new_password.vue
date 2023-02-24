@@ -1,5 +1,6 @@
 
 import Header from '../components/Header'
+import Footer from '../components/Footer'
 
 
 <template>
@@ -33,6 +34,8 @@ import Header from '../components/Header'
           </b-col>
         </b-row>
       </b-container>
+
+      <Footer/>
 
       <b-modal id="pass-reset-ok" hide-footer>
         <div class="d-block text-center">

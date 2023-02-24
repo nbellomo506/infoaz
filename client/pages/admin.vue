@@ -2,7 +2,8 @@ h
 import Header from '../components/Header'
 import PageTitle from '../components/PageTitle'
 import FieldTitle from '../components/FieldTitle'
-import CostiSmaltimento from '../components/CostiSmaltimento'
+import Loading from '../components/Loading'
+import Footer from '../components/Footer'
 
 
 
@@ -10,7 +11,7 @@ import CostiSmaltimento from '../components/CostiSmaltimento'
   <main>
     <Header/>
       <div class="p-0 m-0 b-0">
-        <b-container class="pb-5" v-if="is_logged === true && role === 'Admin'">
+        <b-container class="pb-5" v-if="is_logged === true && role === 'Admin' && loaded===true">
           <b-row>
             <b-col class="border rounded mt-5 pt-3 pb-3" xl="11">
               <PageTitle name="Pannello Admin"/>
@@ -215,8 +216,13 @@ import CostiSmaltimento from '../components/CostiSmaltimento'
               </b-col>
             </b-row>
           </b-container>
+          <Footer/>
 
-          <b-container v-if="is_logged === false || role==='Normal'" class="mb-3">
+          <b-container v-if="loaded === false">
+            <Loading/>
+          </b-container>
+
+          <b-container v-if="loaded === true && (is_logged === false || role==='Normal') " class="mb-3">
             <b-row>
               <b-col offset-xl="1" xl="10">
                 <b-container class="mb-3 mt-5">
@@ -313,7 +319,7 @@ import CostiSmaltimento from '../components/CostiSmaltimento'
                               this.utenti_non_azienda.push(this.utenti[i])
                             }
                     }
-                
+
           })
 
 
@@ -321,7 +327,7 @@ import CostiSmaltimento from '../components/CostiSmaltimento'
           .then((response) => {
             this.aziende = response
           })
-
+          this.loaded=true
       } catch (e) {
           console.log(e)
       }
@@ -413,8 +419,10 @@ import CostiSmaltimento from '../components/CostiSmaltimento'
                       { text: 'CALCOLATO', value: 'CALCOLATO' },
                       { text: 'MISURATO', value: 'MISURATO' }
                     ],
-                    is_logged:false,
-                    role:false
+                    is_logged:undefined,
+                    role:undefined,
+                    loaded:false,
+
                 }
 
             }

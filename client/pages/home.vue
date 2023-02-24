@@ -1,8 +1,7 @@
 ﻿
 import Header from '../components/Header'
-
-
-
+import Loading from '../components/Loading'
+import Footer from '../components/Footer'
 
 
 <template>
@@ -10,7 +9,7 @@ import Header from '../components/Header'
     <Header/>
 
 
-      <b-container v-if="is_logged === true && is_company_set === true"  class="mt-5 mb-5">
+      <b-container v-if="is_logged === true && is_company_set === true && loaded===true"  class="mt-5">
         <b-row>
           <b-col offset-xl="1" xl="10">
             <b-container class="mb-3">
@@ -98,21 +97,11 @@ import Header from '../components/Header'
             </b-col>
           </b-row>
         </b-container>
+        <Footer/>
 
-        <b-container v-if="is_logged === false" class="mb-3">
-          <b-row>
-            <b-col offset-xl="1" xl="10">
-              <b-container class="mb-3 mt-5">
-                <b-row>
-                  <b-col xl="12">
-
-                  </b-col>
-                </b-row>
-              </b-container>
-            </b-col>
-          </b-row>
+        <b-container v-if="loaded === false">
+          <Loading/>
         </b-container>
-
 
         <b-container v-if="is_logged === true && is_company_set === false" class="mb-3">
           <b-row>
@@ -490,6 +479,7 @@ import Header from '../components/Header'
 
           }
         }
+        this.loaded = true
       },
 
 
@@ -501,8 +491,9 @@ import Header from '../components/Header'
         utente:[],
         is_ready:false,
         role:'Normal',
-        is_logged:false,
-        is_company_set:false
+        is_logged:undefined,
+        is_company_set:undefined,
+        loaded:false
 
       }
     },

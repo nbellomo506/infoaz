@@ -1,13 +1,14 @@
 ﻿
 import Header from '../components/Header'
+import Footer from '../components/Footer'
 
 
 <template>
   <main>
     <Header/>
-    <b-container mt="5" >
+    <b-container mt="5" v-if="loaded === true">
         <b-row class="mr-1 ml-1 mt-5">
-          <b-col xl="6" v-if="is_logged === false" offset-xl="3" class="justify-content-center shadow p-3 mt-5  bg-white rounded">
+          <b-col xl="6" v-if="is_logged === false " offset-xl="3" class="justify-content-center shadow p-3 mt-5  bg-white rounded">
 
             <b-form class="ml-1 mr-1" >
               <b-form-group  id="email-group" label="Email:" label-for="input-1">
@@ -48,7 +49,8 @@ import Header from '../components/Header'
             </b-form>
           </b-col>
         </b-row>
-      </b-container>
+    </b-container>
+    <Footer/>
 
   </main>
 </template>
@@ -83,7 +85,7 @@ export default {
    name: 'Login',
    data() {
       return {
-         is_logged:false,
+         is_logged:undefined,
          email: '',
          password: '',
          msg:
@@ -91,7 +93,9 @@ export default {
            email:'',
            password:'',
            login:''
-         }
+         },
+         loaded:false,
+
       }
    },
    mounted () {
@@ -110,6 +114,7 @@ export default {
          }
        }
      })
+     this.loaded=true
 
 
 

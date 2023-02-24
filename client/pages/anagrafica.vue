@@ -1,14 +1,15 @@
 
 import Header from '../components/Header'
 import PageTitle from '../components/PageTitle'
-import TownSelect from '../components/TownSelect'
+import Loading from '../components/Loading'
+import Footer from '../components/Footer'
 
 
 
 <template>
   <main>
     <Header/>
-      <b-container class="mt-5" v-if="is_logged === true && is_company_set === true" >
+      <b-container class="mt-5" v-if="is_logged === true && is_company_set === true && loaded===true" >
         <b-row>
           <b-col v-bind:class="{'disabled-container' : azienda.report_is_sent || azienda.report_attempts <= 0 }" bg-variant="info" offset-xl="1" xl="10">
             <PageTitle name="Dati Azienda:"/>
@@ -185,24 +186,11 @@ import TownSelect from '../components/TownSelect'
               </b-col>
             </b-row>
           </b-container>
+          <Footer/>
 
-          <b-container v-if="loaded === false" class="mb-3">
-            <b-row>
-              <b-col offset-xl="1" xl="10">
-                <b-container class="mb-3 mt-5">
-                  <b-row>
-                    <b-col xl="12">
-                      <div class="d-flex justify-content-center mb-3">
-                        <h1>Attendere...</h1>
-                      </div>
-                      <div class="d-flex justify-content-center mb-3">
-                        <b-spinner label="Loading..."></b-spinner>
-                      </div>
-                    </b-col>
-                  </b-row>
-                </b-container>
-              </b-col>
-            </b-row>
+
+          <b-container v-if="loaded === false" >
+            <Loading/>
           </b-container>
 
           <b-container v-show="is_logged === false && is_company_set === false && loaded === true" class="mb-3">
@@ -438,8 +426,8 @@ import TownSelect from '../components/TownSelect'
         comuni_azienda: [] ,
         azienda:[],
         utente:[],
-        is_logged:false,
-        is_company_set:false,
+        is_logged:undefined,
+        is_company_set:undefined,
         role:'Normal',
         loaded:false,
         upload:

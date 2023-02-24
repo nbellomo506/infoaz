@@ -42,6 +42,7 @@
                 <b-dropdown-item :to="locations.home" v-if="this.$route.name !== 'home'">Home</b-dropdown-item>
                 <b-dropdown-item :to="locations.anagrafica" v-if="this.$route.name !== 'anagrafica' && (is_logged === true ) ">Anagrafica</b-dropdown-item>
                 <b-dropdown-item :to="locations.admin" variant="infowaste" v-if="this.$route.name !== 'admin' && is_logged === true && role==='Admin'">Admin</b-dropdown-item>
+                <b-dropdown-item :to="locations.credits" variant="infowaste" v-if="this.$route.name !== 'credits' && is_logged === true">Credits</b-dropdown-item>
                 <b-dropdown-item class="bg-danger" @click="logout()">
                   <b-container class="p-0 m-0 b-0">
                     <b-row>
@@ -74,7 +75,7 @@
 
       this.$axios.defaults.withCredentials = true;
 
-      var pages = ["home","anagrafica","admin","login"]
+      var pages = ["home","anagrafica","admin","login","credits"]
       var i = 0
       var page = ""
       do
@@ -122,7 +123,6 @@
             }
           }
 
-
         })
 
         this.$axios.$get(`/role`)
@@ -149,7 +149,8 @@
           home:'home',
           anagrafica:'anagrafica',
           admin:'admin',
-          login:'login'
+          login:'login',
+          credits:'credits'
         }
 
       }

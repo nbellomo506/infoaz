@@ -1,11 +1,12 @@
 
 import Header from '../components/Header'
+import Footer from '../components/Footer'
 
 
 <template>
   <main>
     <Header/>
-    <b-container mt="5" >
+      <b-container mt="5" >
         <b-row class="mr-1 ml-1 mt-5">
           <b-col xl="6" offset-xl="3" class="justify-content-center shadow p-3 mt-5  bg-white rounded">
 
@@ -29,6 +30,7 @@ import Header from '../components/Header'
           </b-col>
         </b-row>
       </b-container>
+      <Footer/>
 
       <b-modal id="invio-email-ok" hide-footer>
         <div class="d-block text-center">

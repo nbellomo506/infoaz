@@ -1,5 +1,6 @@
 
 import Header from '../components/Header'
+import Footer from '../components/Footer'
 
 <template>
   <main>
@@ -127,6 +128,7 @@ import Header from '../components/Header'
             </b-row>
           </b-container>
 
+          <Footer/>
 
           <b-modal id="registrazione-ok" hide-footer>
             <div class="d-block text-center">
