@@ -8,7 +8,6 @@
 </style>
 <template>
   <main>
-    <link rel="stylesheet" href="./css/index.css">
       <div>
           <b-container fluid class="grey p-3">
             <b-row class="ml-5">

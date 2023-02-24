@@ -1,0 +1,40 @@
+
+<template>
+  <main>
+      <div>
+          <b-container fluid class="grey p-3">
+            <b-row class="ml-5">
+              <b-col class="text-center" oofset-xl="5" cols="2" >
+                <h2>Credits</h2>
+              </b-col>
+          </b-row>
+        </b-container>
+
+      </main>
+  </template>
+
+
+  <script>
+  import axios from '@nuxtjs/axios'
+
+  export default {
+    mounted () {
+
+
+    },
+
+
+    data() {
+      return {
+
+      }
+    },
+
+    methods:
+    {
+
+
+    }
+
+  }
+</script>
