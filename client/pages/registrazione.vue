@@ -6,8 +6,22 @@ import Footer from '../components/Footer'
   <main>
     <Header/>
     <b-container mt="5" >
-        <b-row class="mr-1 ml-1 mt-5">
-          <b-col disabled="true" xl="6" offset-xl="3" class="justify-content-center shadow p-3 mt-5  bg-white rounded">
+
+      <b-row>
+        <b-col disabled="true" xl="6" offset-xl="3" class="justify-content-center p-3 pb-0 mt-5">
+          <b-button variant="infowaste" to="./login"><b-icon icon="arrow-90deg-left"></b-icon> Indietro</b-button>
+        </b-col>
+      </b-row>
+
+      <b-row>
+        <b-col disabled="true" xl="6" offset-xl="3" class="justify-content-center p-3 pb-0">
+          <h1>Registrazione</h1>
+          <hr>
+        </b-col>
+      </b-row>
+
+        <b-row class="mr-1 ml-1 mt-4">
+          <b-col disabled="true" xl="6" offset-xl="3" class="justify-content-center shadow p-3 mt-2 bg-white rounded">
               <b-container  class="p-0 m-0 b-0">
                   <b-row>
                     <b-col xl="6">

@@ -57,7 +57,7 @@ export default {
    name: 'Login',
    data() {
       return {
-         email: 'nbellomo506@gmail.com',
+         email: '',
          msg:{
            email:'',
          }

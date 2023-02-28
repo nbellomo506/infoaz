@@ -28,6 +28,14 @@
 
 
         <b-container fluid class="bg-infowaste p-3 m-0 b-0">
+          <b-row v-if="browserAlert === true">
+            <b-col class="text-center" cols="12">
+              Sito ottimizzato per <a href="https://www.google.it/intl/it/chrome">Google Chrome</a>
+               e <a href="https://www.microsoft.com/it-it/edge/download">Microsoft Edge</a>
+            </b-col>
+          </b-row>
+
+
           <b-row v-if="is_logged == true">
             <b-col class="pt-1 pb-1" cols="12" offset-xl="1" xl="1" offset-lg="2" lg="2">
               <b-button class="shadow-sm" v-if="this.$route.name !== 'home'" block :to="locations.home" variant="white">
@@ -72,6 +80,18 @@
 
   export default {
     mounted () {
+
+    let userAgent = navigator.userAgent;
+       let browserName;
+
+       if(userAgent.match(/firefox|fxios/i || /safari/i || /opr\//i))
+       {
+         this.browserAlert = true
+
+       }else {
+         this.browserAlert = false
+
+       }
 
       this.$axios.defaults.withCredentials = true;
 
@@ -144,6 +164,7 @@
         is_logged:false,
         is_company_set:false,
         role:'Normal',
+        browserAlert:undefined,
         locations:
         {
           home:'home',

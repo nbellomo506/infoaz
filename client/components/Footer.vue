@@ -1,7 +1,7 @@
 
   <template>
     <main>
-      <b-container fluid class="bg-light pt-4 pb-4 b-0 mb-0 mt-max">
+      <b-container v-if="visible === true" fluid class="bg-light pt-4 pb-4 b-0 mb-0 mt-max">
         <b-row class="ml-5">
           <b-col class="text-center" offset-xl="5" cols="1">
             <a href="#" @click="gotoCredits()">Credits</a>
@@ -21,6 +21,8 @@
   import axios from '@nuxtjs/axios'
 
   export default {
+    props: ['visible'],
+
     mounted () {
 
 

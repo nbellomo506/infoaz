@@ -69,7 +69,7 @@ import Footer from '../components/Footer'
             </b-col>
           </b-row>
 
-          <b-row class="mb-5">
+          <b-row class="mb-4">
             <b-col class="mt-4 " offset-xl="1" xl="10">
               <p class="font-1">
                 <b>SUPPORTO PEF</b> è un servizio a disposizione delle imprese che operano nel settore della gestione dei rifiuti urbani per la compilazione del PEF (Piano Economico Finanziario) secondo le disposizioni di ARERA (MTR-2).<br>
@@ -87,17 +87,36 @@ import Footer from '../components/Footer'
             </b-col>
           </b-row>
           <b-row>
-            <b-col class="mb-5" bg-variant="info" offset-xl="7" xl="4">
-              <b-button v-if="azienda.report_is_sent == false && azienda.report_attempts > 0" :disabled="!is_ready || azienda.report_attempts === 0" @click=inviaReport() block>
+            <b-col class="mb-3" bg-variant="info" offset-xl="7" xl="4">
+              <b-button v-if="azienda.report_is_sent == false && azienda.report_attempts > 0" variant="infowaste" :disabled="!is_ready || azienda.report_attempts === 0" @click=inviaReport() block>
                 Invia dati
               </b-button>
-              <b-button v-if="azienda.report_is_sent == true && azienda.report_attempts > 0" @click="riprendiReport()" :disabled=" azienda.report_attempts === 0" block>
+              <b-button v-if="azienda.report_is_sent == true && azienda.report_attempts > 0" variant="infowaste" @click="riprendiReport()" :disabled=" azienda.report_attempts === 0" block>
                 Riprendi Elaborazione
               </b-button>
             </b-col>
           </b-row>
+
+          <b-row v-if="azienda.report_is_sent == false && azienda.report_attempts > 0 && is_ready === false && dati_comuni.length > 0">
+            <b-col offset-xl="7" xl="4">
+              <b-alert block show variant="danger" show>
+                <b-icon variant="danger" icon="exclamation-circle"></b-icon>
+                Potrai inviare il report quando i dati di tutti i comuni saranno completi
+              </b-alert>
+            </b-col>
+          </b-row>
+
+          <b-row v-if="azienda.report_is_sent == false && azienda.report_attempts > 0 && is_ready === false && dati_comuni.length <= 0">
+            <b-col offset-xl="7" xl="4">
+              <b-alert block show variant="danger" show>
+                <b-icon variant="danger" icon="exclamation-circle-fill"></b-icon>
+                Per inviare il report è necessario almeno un comune
+              </b-alert>
+            </b-col>
+          </b-row>
+
         </b-container>
-        <Footer/>
+        <Footer :visible="loaded"/>
 
         <b-container v-if="loaded === false">
           <Loading/>
@@ -439,6 +458,30 @@ import Footer from '../components/Footer'
         this.$axios.$get(`/get_dati_comuni`)
         .then((response) => {
           this.dati_comuni = response
+          var i = 0
+
+          if (this.dati_comuni !== false)
+          {
+            if (this.dati_comuni.length > 0)
+            {
+              this.is_ready = true
+                while(i < this.dati_comuni.length)
+                {
+                  console.log(this.dati_comuni[i].completed)
+                  if(this.dati_comuni[i].completed == false)
+                  {
+                    this.is_ready = false
+                    i = this.dati_comuni.length
+                  }
+                  i++
+                }
+
+            }else {
+              this.is_ready = false
+
+            }
+          }
+
         })
 
         this.$axios.$get(`/get_company_data`)
@@ -446,40 +489,9 @@ import Footer from '../components/Footer'
           this.azienda = response
         })
 
-        /*if (this.is_logged === false)
-        {
-          if (typeof window !== 'undefined')
-          {
-            // 👉️ can use window here
-            window.location.replace("./login")
-          }
-        }*/
 
-        var i = 0
-
-        if (this.dati_comuni)
-        {
-          if (this.dati_comuni.length > 0)
-          {
-            this.is_ready = true
-            if(this.is_logged && this.is_company_set)
-            {
-              while(i < this.dati_comuni.length)
-              {
-                if(this.dati_comuni[i].completed == false)
-                {
-                  this.is_ready = false
-                  i = this.dati_comuni.length
-                }
-                i++
-              }
-            }
-          }else {
-            this.is_ready = false
-
-          }
-        }
         this.loaded = true
+
       },
 
 

@@ -216,7 +216,7 @@ import Footer from '../components/Footer'
               </b-col>
             </b-row>
           </b-container>
-          <Footer/>
+          <Footer :visible="loaded"/>
 
           <b-container v-if="loaded === false">
             <Loading/>

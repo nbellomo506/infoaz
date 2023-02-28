@@ -1,6 +1,6 @@
 
 :root {
-  --theme: #044A92;
+  --theme: rgb(4,74,146);
   --white: #ffffff;
   --black: #212529;
 }
@@ -10,6 +10,10 @@
   font-family: 'Calibri'
 }
 
+.infowaste
+{
+  color: var(--theme);
+}
 
 .dropdown-item:active
 {
@@ -31,6 +35,12 @@
 {
   background-color:var(--theme);
   color:var(--white)
+}
+
+.bg-infowaste-light
+{
+  background-color: rgba(4,74,146,0.5);
+  color:var(--black)
 }
 
 .btn-white

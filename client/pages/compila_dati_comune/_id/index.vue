@@ -424,7 +424,7 @@ import Footer from '../components/Footer'
             <p>
               Per inserire una nuova riga dopo la sua compilazione premere il tasto <b>AGGIUNGI</b> e quindi il tasto <b>SALVA</b>.
             </p>
-            <b-row class="mt-5">
+            <b-row>
               <b-col class="text-center" xl="1">
                 Anno
               </b-col>
@@ -549,7 +549,7 @@ import Footer from '../components/Footer'
             </b-row>
           </b-col>
         </b-row>
-      <Footer/>
+      <Footer :visible="loaded"/>
     </div>
 
       <b-container v-if="loaded === false">
