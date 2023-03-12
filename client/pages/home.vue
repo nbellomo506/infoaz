@@ -100,7 +100,7 @@ import Footer from '../components/Footer'
           <b-row v-if="azienda.report_is_sent == false && azienda.report_attempts > 0 && is_ready === false && dati_comuni.length > 0">
             <b-col offset-xl="7" xl="4">
               <b-alert block show variant="danger" show>
-                <b-icon variant="danger" icon="exclamation-circle"></b-icon>
+                <b-icon variant="danger" icon="exclamation-circle-fill"></b-icon>
                 Potrai inviare il report quando i dati di tutti i comuni saranno completi
               </b-alert>
             </b-col>

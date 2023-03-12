@@ -60,6 +60,12 @@
   border-radius: 20px
 }
 
+.bg-grey{
+
+  background-color: #c0c1c2
+
+}
+
 .btn-infowaste:hover
 {
   color: var(--white);

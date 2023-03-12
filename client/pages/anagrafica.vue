@@ -228,9 +228,9 @@ import Footer from '../components/Footer'
               </b-col>
             </b-row>
           </b-container>
-        </main>
-      </template>
-    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  </main>
+</template>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 
 
   <script>
@@ -298,33 +298,6 @@ import Footer from '../components/Footer'
 
                 this.$axios.post('/add_comune_azienda', {
                   comune: comune,
-                  /*pef_mis_o_ric: "",
-                  ris_ula_o_ore: "",
-                  tot_app: 0,
-                  app_servizi: 0,
-                  app_rifiuti_diff: 0,
-                  app_rifiuti_indiff: 0,
-                  app_igiene: 0,
-                  altri_gestori_flag: false,
-                  altri_gestori: "",
-                  appalto_attuale_data: "1970-01-01",
-                  impresa_op_com_data: "1970-01-01",
-                  valore_can: 0,
-                  adeg_contr_flag: false,
-                  ricavi_conai_flag: true,
-                  impresa_cts_flag: false,
-                  impresa_ctr_flag: true,
-                  spazz_e_ig_flag: false,
-                  serv_exra_arera_flag: true,
-                  serv_exra_arera: "",
-                  lav_in_corso_flag: false,
-                  lav_in_corso: "",
-                  var_gest_flag: false,
-                  var_gest: "",
-                  miglior_qual_flag: false,
-                  miglior_qual: "",
-                  costi_tqrif_flag: false,
-                  costi_tqrif: 0*/
                 })
 
                 .then(function (response) {
