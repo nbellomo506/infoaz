@@ -10,11 +10,11 @@ import Footer from '../components/Footer'
   <template>
     <main>
       <Header/>
-        <b-nav  v-if="dati_comune !== false && is_company_set === true && is_logged === true" class="mt-3" tabs align="center">
+        <b-nav v-if="dati_comune !== false && is_company_set === true && is_logged === true" class="mt-3" tabs align="center">
           <b-nav-item class="text-danger" @click="goToSection(section.num)" style="cursor:pointer" v-for="section in sections" :key="section.num" :active="section.num === current_section">
-              <font :class="{ 'text-secondary':section.num === 4,'text-success': section.completed === 1 && section.num != 4 , 'text-danger': section.completed === 0 && section.num != 4 }">
-                {{section.text}}
-              </font>
+            <font :class="{ 'text-secondary':section.num === 4,'text-success': section.completed === 1 && section.num != 4 , 'text-danger': section.completed === 0 && section.num != 4 }">
+              {{section.text}}
+            </font>
           </b-nav-item>
         </b-nav>
 
@@ -285,7 +285,7 @@ import Footer from '../components/Footer'
                       <input class="form-control" v-model="dati_comune.xcent_media_imp_cart" type="number">
                     </b-col>
 
-                    <b-col class="borders bg-light mt-3" xl="6">
+                    <b-col class="borders bg-grey rounded mt-3" xl="6">
                       <b-container class="m-0 p-0 b-0">
                         <b-row class="m-0 p-0 b-0">
                           <b-col offset-xl="4" xl="4">
@@ -441,7 +441,7 @@ import Footer from '../components/Footer'
                 Quantitativi conferiti [ton]
               </b-col>
               <b-col class="text-center" xl="2">
-              Prezzo unitario con IVA
+              Prezzo unitario con IVA [€\ton]
               </b-col>
               <b-col class="text-center" xl="2">
               Importo IVA Inclusa
