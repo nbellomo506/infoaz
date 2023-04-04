@@ -53,7 +53,7 @@ import Footer from '../components/Footer'
 
                   <b-row class="p-2">
                     <b-col offset-xl="1" xl="4">
-                      <p>Cespiti (<b-link href="/files/cespiti.xlsx">Scarica Modello</b-link>)
+                      <p>Cespiti (<b-link href="/files/Ammortamenti_Cespiti.xlsx">Scarica Modello</b-link>)
                       </p>
                     </b-col>
                     <b-col cols="11" xl="5">
