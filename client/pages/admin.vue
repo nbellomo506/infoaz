@@ -163,7 +163,8 @@ import Footer from '../components/Footer'
                   </b-row>
                   <b-row class="pt-3 pb-2 border" :key="azienda.partita_iva" v-for="azienda in aziende">
                     <b-col xl="3">
-                      {{azienda.ragione_sociale}}
+                      {{azienda.ragione_sociale}}<br>
+                      {{azienda.partita_iva}}
                     </b-col>
                     <b-col xl="4">
                       <b-form-radio-group v-model="azienda.pef_mis_o_ric" :options="pef_opts"></b-form-radio-group>
