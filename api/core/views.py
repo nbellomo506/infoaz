@@ -99,7 +99,7 @@ def new_user(request):
             #email_plaintext_message = "{}?token={}".format('http://217.61.57.221/new_password' , reset_password_token.key)
             send_mail(
                 # title:
-                "Richiesta Attivazione al Serivzio",
+                "Richiesta Attivazione al Servizio AZIENDE",
                 # message:
                 email_plaintext_message,
                 # from:
