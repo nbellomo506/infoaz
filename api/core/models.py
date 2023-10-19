@@ -132,7 +132,7 @@ class User(AbstractUser, PermissionsMixin):
 @receiver(reset_password_token_created)
 def password_reset_token_created(sender, instance, reset_password_token, *args, **kwargs):
 
-    email_plaintext_message = "{}?token={}".format('https://www.bintobit.it/new_password' , reset_password_token.key)
+    email_plaintext_message = "{}?token={}".format('https://aziende.bintobit.com/new_password' , reset_password_token.key)
     send_mail(
         # title:
         "Richiesta recupero password {title}".format(title="Infowaste Modulo Aziende"),
@@ -155,9 +155,7 @@ class DatiComune(models.Model):
 
     comune = models.ForeignKey(comuni_italiani.Comune, default='', on_delete = models.SET_DEFAULT)
     azienda =  models.ForeignKey(Azienda, default='', on_delete = models.CASCADE)
-
     current_section = models.IntegerField(default=1)
-
 
     scelte_pef = (
         [('CALCOLATO', 'CALCOLATO'),
