@@ -757,7 +757,13 @@ def get_user_data(request):
                 qs = User.objects.get(pk = request.session['user_id'])
                 serializer = UserSerializer(qs)
                 return JsonResponse(serializer.data,content_type="application/json",safe=False)
-
+            else:
+                return JsonResponse(False,content_type="application/json",safe=False)
+        else:
+            return JsonResponse(False,content_type="application/json",safe=False)
+    else:
+        return JsonResponse(False,content_type="application/json",safe=False)
+        
 def login(request):
 
     body_unicode = request.body.decode('utf-8')
