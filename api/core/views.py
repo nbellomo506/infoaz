@@ -354,9 +354,10 @@ def get_dati_comuni(request):
                 return JsonResponse(serializer.data,content_type="application/json",safe=False)
             else:
                 return JsonResponse("No Company",content_type="application/json",safe=False)
-
         else:
             return JsonResponse("Not Logged",content_type="application/json",safe=False)
+    else:
+        return JsonResponse("Not Logged",content_type="application/json",safe=False)
 
 def get_dati_comune(request):
 
@@ -707,7 +708,6 @@ def is_logged(request):
     else:
         return JsonResponse(False,safe=False)
 
-
 def role(request):
     role='Normal'
 
@@ -824,7 +824,6 @@ def logout(request):
         del request.session['is_active']
 
     return HttpResponse("Arrivederci")
-
 
 
 class CurrentLoggedInUser(ModelViewSet):
