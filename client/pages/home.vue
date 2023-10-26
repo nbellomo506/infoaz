@@ -2,12 +2,14 @@
 import Header from '../components/Header'
 import Loading from '../components/Loading'
 import Footer from '../components/Footer'
+import InputOutputNavTab from '../components/InputOutputNavTab'
 
 
 <template>
   <main>
-    <Header/>
 
+    <Header/>
+    <InputOutputNavTab/>
 
       <b-container v-if="is_logged === true && is_company_set === true && loaded===true"  class="mt-5">
         <b-row>
@@ -15,7 +17,7 @@ import Footer from '../components/Footer'
             <b-container class="mb-3">
               <b-row>
                 <b-col xl="6">
-                  <h1>Benvenut* {{utente.nome}}</h1>
+                  <h1>Benvenuto {{utente.nome}}</h1>
                   <h3 v-if="azienda.report_is_sent === false && azienda.report_attempts > 0">Compilazione in corso</h3>
                   <h3 v-if="azienda.report_is_sent === true && azienda.report_attempts > 0">Report Inviato</h3>
                   <h3 class="text-danger" v-if="azienda.report_attempts <= 0">Report non modificabile</h3>
@@ -39,8 +41,6 @@ import Footer from '../components/Footer'
                 </b-col>
               </b-row>
             </b-container>
-
-
 
               <b-list-group vertical  v-bind:class="{'disabled-container' : azienda.report_attempts <= 0 }">
                 <b-container  class="p-4 pl-1 rounded bg-light" >
@@ -523,7 +523,6 @@ import Footer from '../components/Footer'
 
           if(this.dati_comuni.length >= 1)
           {
-
 
             var XLSX = require("xlsx");
             var workbook = XLSX.utils.book_new();
