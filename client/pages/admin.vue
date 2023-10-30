@@ -68,16 +68,22 @@ import Footer from '../components/Footer'
                     <b-col xl="3">
                       <b-container class="b-0 m-0 p-0">
                         <b-row>
-                          <b-col xl="6">
+                          <b-col class="p-1" xl="4">
                             <select class="w-100 custom-select" v-model="utente.azienda" :key="utente.email" >
                               <option :selected="utente.azienda === azienda.id" v-for="azienda in aziende" :key="azienda.id" :value="azienda.id">
                                   {{ azienda.ragione_sociale }}
                               </option>
                             </select>
                           </b-col>
-                          <b-col xl="6">
+                          <b-col class="p-1" xl="4">
                             <b-button block @click="assignAzienda(utente.id,utente.azienda)" variant="success" name="button">Salva</b-button>
                           </b-col>
+                          <b-col class="p-1" xl="4">
+                            <b-button block v-b-modal.confirmDeleteUser @click="setUsertoDelete(utente.id)" variant="danger" name="button">Elimina</b-button>
+                          </b-col>
+                          <b-modal id="confirmDeleteUser" title="Conferma" cancel-title="Annulla" cancel-variant="secondary" ok-variant="danger" @ok="deleteUser()" ok-title="Si">
+                              Sei sicuro di voler cancellare l'utente e tutti i dati ad esso correlati?
+                          </b-modal>
                         </b-row>
                       </b-container>
                     </b-col>
@@ -134,15 +140,18 @@ import Footer from '../components/Footer'
                     <b-col xl="3">
                       <b-container class="b-0 m-0 p-0">
                         <b-row>
-                          <b-col xl="6">
+                          <b-col class="p-1" xl="4">
                             <select class="w-100 custom-select" v-model="utente.azienda" :key="utente.email" >
                               <option :selected="utente.azienda === azienda.id" v-for="azienda in aziende" :key="azienda.id" :value="azienda.id">
                                   {{azienda.ragione_sociale}}
                               </option>
                             </select>
                           </b-col>
-                          <b-col xl="6">
-                            <b-button block @click="assignAzienda(utente.id,utente.azienda)" variant="success" name="button">Salva</b-button>
+                          <b-col class="p-1" xl="4">
+                            <b-button block @click="assignAzienda(utente.id,utente.azienda)" variant="success" name="button">Cambia</b-button>
+                          </b-col>
+                          <b-col class="p-1" xl="4">
+                            <b-button block @click="dissociateUser(utente.id,utente.azienda)" variant="danger" name="button">Dissocia</b-button>
                           </b-col>
                         </b-row>
                       </b-container>
@@ -173,10 +182,13 @@ import Footer from '../components/Footer'
                       <b-button block @click="savePEF(azienda)" variant="success" name="button">Salva</b-button>
                     </b-col>
                     <b-col v-if="azienda.ragione_sociale !== 'infowaste'" xl="2">
-                      <b-button block @click="del_azienda(azienda)" variant="danger" name="button">
+                      <b-button block v-b-modal.confermaEliminaAzienda @click="setAziendaDaEliminare(azienda.id)" variant="danger" name="button">
                         <b-icon class="h4 p-0 b-0 m-0" variant="white" icon="trash"></b-icon>
                       </b-button>
                     </b-col>
+                    <b-modal id="confermaEliminaAzienda" title="Conferma" cancel-title="Annulla" cancel-variant="secondary" ok-variant="danger" @ok="del_azienda()" ok-title="Si">
+                        Sei sicuro di voler cancellare l'azienda e tutti i dati ad essa correlati?
+                    </b-modal>
                   </b-row>
                   <b-row class="mt-5">
                     <b-col xl="12">
@@ -338,7 +350,7 @@ import Footer from '../components/Footer'
     methods:
     {
 
-        async orderUsers(by,assigned)
+        orderUsers(by,assigned)
         {
 
             if (assigned)
@@ -351,16 +363,39 @@ import Footer from '../components/Footer'
 
         },
 
-        async assignAzienda(user_id,azienda_id)
+        assignAzienda(user_id,azienda_id)
         {
           this.$axios.post('/assign_azienda', {
             user_id:user_id,
             azienda_id:azienda_id
           })
-          location.reload()
+          .then((response) => {
+            window.location.reload()
+          })
         },
 
-        async add_azienda(azienda)
+        deleteUser()
+        {
+          this.$axios.post('/deleteRequest', {
+            user_id:this.userToDelete,
+          })
+          .then((response) => {
+            window.location.reload()
+          })
+        },
+
+        dissociateUser(user_id,azienda_id)
+        {
+          this.$axios.post('/dissociateUser', {
+            user_id:user_id,
+            azienda_id:azienda_id
+          })
+          .then((response) => {
+            window.location.reload()
+          })
+        },
+
+        add_azienda(azienda)
         {
           if (azienda.ragione_sociale && azienda.partita_iva && azienda.pef_mis_o_ric)
           {
@@ -372,30 +407,43 @@ import Footer from '../components/Footer'
               pef_mis_o_ric:azienda.pef_mis_o_ric,
 
             })
-
-              location.reload()
+            .then((response) => {
+              window.location.reload()
+            })
           }
         },
 
-        async del_azienda(azienda)
+        del_azienda(azienda)
         {
           this.$axios.post('/del_azienda', {
 
-            id:azienda.id
+            id:this.aziendaDaEliminare
 
           })
-          location.reload()
-
+          .then((response) => {
+            window.location.reload()
+          })
         },
 
-        async savePEF(azienda)
+        setAziendaDaEliminare(azienda_id)
+        {
+          this.aziendaDaEliminare = azienda_id
+        },
+
+        setUsertoDelete(user)
+        {
+          this.userToDelete = user
+        },
+
+        savePEF(azienda)
         {
           this.$axios.post('/savePEF', {
             azienda:azienda.id,
             pef:azienda.pef_mis_o_ric
           })
-
-          location.reload()
+          .then((response) => {
+            window.location.reload()
+          })
         }
 
     },
@@ -409,6 +457,8 @@ import Footer from '../components/Footer'
                     utenti_azienda:[],
                     utenti_non_azienda:[],
                     aziende:[],
+                    aziendaDaEliminare:undefined,
+                    userToDelete:undefined,
                     new_azienda:
                     {
                       ragione_sociale:'',

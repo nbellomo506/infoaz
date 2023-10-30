@@ -179,10 +179,6 @@ import Footer from '../components/Footer'
                       </b-col>
                     </b-row>
                   </b-container>
-
-
-
-
               </b-col>
             </b-row>
           </b-container>

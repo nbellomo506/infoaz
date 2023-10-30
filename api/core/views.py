@@ -47,8 +47,6 @@ from .models import CostoSmaltimento
 from .serializers import CostoSmaltimentoSerializer
 
 from comuni_italiani.models import Comune
-import xlwt
-
 
 basedir = settings.MEDIA_ROOT
 #basedir = "C:/Users/Administrator/OneDrive/infowaste-aziende/"
@@ -131,6 +129,45 @@ def assign_azienda(request):
                 return JsonResponse("OK",content_type="application/json",safe=False)
         else:
             return JsonResponse("Not Allowed",content_type="application/json",safe=False)
+
+def dissociateUser(request):
+
+    body_unicode = request.body.decode('utf-8')
+    body = json.loads(body_unicode)
+
+    user = body['user_id']
+    azienda = body['azienda_id']
+
+    if 'logged' in request.session is not None:
+        if request.session['logged'] == True:
+            if request.session['is_admin'] == True and request.session['is_staff'] == True and request.session['is_active'] == True:
+                obj = User.objects.get(pk = user)
+                obj.azienda_id = None
+                obj.is_assigned = False
+                obj.save()
+                return JsonResponse("OK",content_type="application/json",safe=False)
+        else:
+            return JsonResponse("Not Allowed",content_type="application/json",safe=False)
+    else:
+        return JsonResponse("Not Logged",content_type="application/json",safe=False)
+
+def deleteUser(request):
+
+    body_unicode = request.body.decode('utf-8')
+    body = json.loads(body_unicode)
+
+    user = body['user_id']
+
+    if 'logged' in request.session is not None:
+        if request.session['logged'] == True:
+            if request.session['is_admin'] == True and request.session['is_staff'] == True and request.session['is_active'] == True:
+                obj = User.objects.get(pk = user).delete()
+                return JsonResponse("OK",content_type="application/json",safe=False)
+        else:
+            return JsonResponse("Not Allowed",content_type="application/json",safe=False)
+    else:
+        return JsonResponse("Not Logged",content_type="application/json",safe=False)
+
 
 def savePEF(request):
 
@@ -763,7 +800,7 @@ def get_user_data(request):
             return JsonResponse(False,content_type="application/json",safe=False)
     else:
         return JsonResponse(False,content_type="application/json",safe=False)
-        
+
 def login(request):
 
     body_unicode = request.body.decode('utf-8')

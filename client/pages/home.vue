@@ -116,7 +116,6 @@ import InputOutputNavTab from '../components/InputOutputNavTab'
           </b-row>
 
         </b-container>
-        <Footer :visible="loaded"/>
 
         <b-container v-if="loaded === false">
           <Loading/>
@@ -139,6 +138,7 @@ import InputOutputNavTab from '../components/InputOutputNavTab'
             </b-col>
           </b-row>
         </b-container>
+        <Footer :visible="loaded"/>
       <table v-for="(dati_comune,index) in dati_comuni" :id="`tab${index}`" border="1" hidden>
         <tr>
           <td>
