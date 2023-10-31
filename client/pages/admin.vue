@@ -376,7 +376,7 @@ import Footer from '../components/Footer'
 
         deleteUser()
         {
-          this.$axios.post('/deleteRequest', {
+          this.$axios.post('/deleteUser', {
             user_id:this.userToDelete,
           })
           .then((response) => {
