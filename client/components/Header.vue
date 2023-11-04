@@ -5,7 +5,7 @@
 <template>
   <main>
       <div>
-          <b-container fluid class="bg-grey p-3">
+          <b-container fluid class="bg-light p-3">
             <b-row align-v="center" class="ml-5">
               <b-col xl="3">
                 <b-img class="ml-5" fluid src="../static/img/logo_greenext.png" width="178" height="66"> </b-img>
