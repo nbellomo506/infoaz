@@ -881,8 +881,11 @@ import Footer from '../components/Footer'
                      'Content-Type': "multipart/form-data; charset='utf-8';",
 
                    },
+              }).then((response) => {
+                  location.reload()
               })
             }
+            location.reload()
 
         },
 
@@ -919,9 +922,12 @@ import Footer from '../components/Footer'
                   importo: this.add.importo
 
                 })
+                .then((response) => {
+                  this.saveDatiComune(this.dati_comune,this.files)
+                  location.reload()
+                })
 
-                this.saveDatiComune(this.dati_comune,this.files)
-                location.reload()
+
             }
 
 
@@ -954,9 +960,11 @@ import Footer from '../components/Footer'
            {
              daticomune:this.dati_comune.id,
              id: id
+           }).then((response) => {
+             this.saveDatiComune(this.dati_comune,this.files)
+             location.reload()
            })
-          this.saveDatiComune(this.dati_comune,this.files)
-          location.reload()
+
 
         },
 
@@ -1171,7 +1179,6 @@ import Footer from '../components/Footer'
           });
 
           this.uploadFiles(files)
-          location.reload()
 
         }
     },

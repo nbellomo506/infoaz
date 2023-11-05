@@ -54,7 +54,6 @@
             </b-col>
           </b-row>
         </b-container>
-
       </main>
   </template>
 
@@ -78,6 +77,16 @@
        }
 
       this.$axios.defaults.withCredentials = true;
+
+      if (this.$route.name == "compila_dati_comune-id")
+      {
+
+        for (let location in this.locations)
+        {
+          this.locations[location] = "./../../" + this.locations[location]
+        }
+
+      }
 
 
       this.$axios.$get(`/is_logged`)
