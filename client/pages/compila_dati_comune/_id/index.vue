@@ -884,8 +884,10 @@ import Footer from '../components/Footer'
               }).then((response) => {
                   location.reload()
               })
+            }else {
+              location.reload()
+
             }
-            location.reload()
 
         },
 
