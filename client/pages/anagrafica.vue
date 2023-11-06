@@ -268,9 +268,16 @@ import Footer from '../components/Footer'
                      'Content-Type': "multipart/form-data; charset='utf-8';",
 
                    },
-              })
+              }).then((response) => {
+
+                location.reload()
+
+
+                })
+            }else {
+
+              location.reload()
             }
-            location.reload()
 
         },
 
