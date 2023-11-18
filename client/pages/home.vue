@@ -121,10 +121,10 @@ import InputOutputNavTab from '../components/InputOutputNavTab'
           <Loading/>
         </b-container>
 
-        <b-container v-if="is_logged === true && is_company_set === false" class="mb-3">
+        <b-container v-if="is_logged === true && is_company_set === false" class="mb-5 pb-5">
           <b-row>
             <b-col offset-xl="1" xl="10">
-              <b-container class="mb-3 mt-5">
+              <b-container class="mb-3 mt-5 mb-5 pb-5">
                 <b-row>
                   <b-col xl="12">
                     <h1>Attenzione</h1>

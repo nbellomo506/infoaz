@@ -23,7 +23,7 @@ class RegisterUserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = get_user_model()
-        fields = ('nome','cognome','titolo','ragione_sociale','p_iva','telefono','email','email2','password')
+        fields = ('nome','cognome','titolo','ragione_sociale','p_iva','telefono','email','email2','password','verification_code','verified')
         extra_kwargs = {
             'nome': {'required': True},
             'cognome': {'required': True},
@@ -51,7 +51,7 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = get_user_model()
-        fields = ('id','nome','cognome','azienda','titolo','ragione_sociale','p_iva','telefono','email','email2','password','request_date','is_assigned')
+        fields = ('id','nome','cognome','azienda','titolo','ragione_sociale','p_iva','telefono','email','email2','password','request_date','is_assigned','verified')
 
 
         extra_kwargs = {

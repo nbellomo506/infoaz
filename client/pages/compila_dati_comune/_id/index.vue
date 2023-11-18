@@ -38,7 +38,7 @@ import Footer from '../components/Footer'
                 <div v-bind:class="{'disabled-container' : azienda.report_is_sent || azienda.report_attempts <= 0 }" class="p-0 b-0 m-0" v-if="current_section === 1">
                   <h3>{{sections[current_section-1].text}}</h3>
                   <p>
-                    I campi in rosso sono obbligatori.<br>
+                    I campi in rosso sono obbligatori e, ove non diversamente specificato, sono riferiti all’annualità 2022.<br>
                     Compilare la pagina in ogni sua parte e premere il pulsante <b>SALVA</b> prima di passare alla pagina successiva.<br>
                     Il pulsante <b>HELP</b> è in basso.
                   </p>
@@ -147,7 +147,7 @@ import Footer from '../components/Footer'
 
                   <b-row>
                     <b-col :class="container_specs" xl="12">
-                      <FieldTitle    name="" description="Sono inclusi nel contratto e a carico dell'impresa anche i servizi di spazzamento e igiene ambientale?" />
+                      <FieldTitle  name="" description="Sono inclusi nel contratto e a carico dell'impresa anche i servizi di spazzamento e igiene ambientale?" />
                       <b-form-radio-group v-model="dati_comune.spazz_e_ig_flag" :options="opts.tipo1"></b-form-radio-group>
 
                     </b-col>
@@ -223,7 +223,7 @@ import Footer from '../components/Footer'
                   <b-container class="m-0 p-0 b-0">
                     <h3>Dati tecnici dell'appalto</h3>
                     <p>
-                      I campi in rosso sono obbligatori.<br>
+                      I campi in rosso sono obbligatori e, ove non diversamente specificato, sono riferiti all’annualità 2022..<br>
                       Compilare la pagina in ogni sua parte e premere il pulsante <b>SALVA</b> prima di passare alla pagina successiva.<br>
                       Il pulsante <b>HELP</b> è in basso.
                     </p>
@@ -234,15 +234,15 @@ import Footer from '../components/Footer'
                     </b-row>
                     <b-row>
                       <b-col xl="4" >
-                        <FieldTitle letter="a" req="yes" name="" description="2020" />
+                        <FieldTitle letter="a" req="yes" name="" description="2021" />
                         <input class="form-control" v-model="dati_comune.ton_anno_1" type="number">
                       </b-col>
                       <b-col xl="4">
-                        <FieldTitle letter="b" req="yes" name="" description="2021" />
+                        <FieldTitle letter="b" req="yes" name="" description="2022" />
                         <input class="form-control" v-model="dati_comune.ton_anno_2" type="number">
                       </b-col>
                       <b-col xl="4">
-                        <FieldTitle letter="c" req="yes" name="" description="2022" />
+                        <FieldTitle letter="c" req="yes" name="" description="2023" />
                         <input class="form-control" v-model="dati_comune.ton_anno_3" type="number">
                       </b-col>
                     </b-row>
@@ -255,22 +255,22 @@ import Footer from '../components/Footer'
                     </b-row>
                     <b-row>
                       <b-col xl="4" >
-                        <FieldTitle letter="a" req="yes" name="" description="2020" />
+                        <FieldTitle letter="a" req="yes" name="" description="2021" />
                         <input class="form-control" v-model="dati_comune.xcent_raccolta_anno_1" type="number">
                       </b-col>
                       <b-col xl="4">
-                        <FieldTitle letter="b" req="yes" name="" description="2021" />
+                        <FieldTitle letter="b" req="yes" name="" description="2022" />
                         <input class="form-control" v-model="dati_comune.xcent_raccolta_anno_2" type="number">
                       </b-col>
                       <b-col xl="4">
-                        <FieldTitle letter="c" req="yes" name="" description="2022" />
+                        <FieldTitle letter="c" req="yes" name="" description="2023" />
                         <input class="form-control" v-model="dati_comune.xcent_raccolta_anno_3" type="number">
                       </b-col>
                     </b-row>
                   </b-container>
                     <b-row>
                       <b-col :class="container_specs" xl="12">
-                        <FieldTitle   name="tons" req="yes" description="Percentuale media delle impurità riscontrate nell'ultima annualità nelle frazioni differenziate" />
+                        <FieldTitle   name="tons" req="yes" description="Percentuale media delle impurità riscontrate nell’annualità 2022 nelle frazioni differenziate." />
                         <input  class="form-control" v-model="dati_comune.xcent_media_imp" type="number">
                       </b-col>
                     </b-row>
@@ -315,13 +315,13 @@ import Footer from '../components/Footer'
                   <b-container class="m-0 p-0 b-0">
                     <h3>Documenti riferiti all'appalto</h3>
                     <p>
-                      I campi in rosso sono obbligatori.<br>
+                      I campi in rosso sono obbligatori e, ove non diversamente specificato, sono riferiti all’annualità 2022..<br>
                       Compilare la pagina in ogni sua parte e premere il pulsante <b>SALVA</b> prima di passare alla pagina successiva.<br>
                       Il pulsante <b>HELP</b> è in basso.
                     </p>
                     <b-row>
                       <b-col cols="12" :class="container_specs">
-                        <FieldTitle   req="yes" description="Contabilità di commessa anno 2020 (in excel)" />
+                        <FieldTitle   req="yes" description="Contabilità di commessa anno 2022 (in excel)" />
                         <b-container>
                           <b-row>
                             <b-col cols="10" xl="10">
@@ -341,33 +341,8 @@ import Footer from '../components/Footer'
                           </b-row>
                         </b-container>
                       </b-col>
-
                       <b-col cols="12" :class="container_specs">
-                        <FieldTitle req="yes" description="Contabilità di commessa anno 2021 (in excel)" />
-                        <b-container>
-                          <b-row>
-                            <b-col cols="10" xl="10">
-                              <b-form-file
-                                v-model="files.cont_commessa_anno2"
-                                placeholder="File Excel"
-                                drop-placeholder="Rilascia qui...">
-                              </b-form-file>
-                              <font v-if="dati_comune.cont_commessa_anno2 != '[object File]' ">
-                                {{dati_comune.cont_commessa_anno2}}
-                              </font>
-                            </b-col>
-                            <b-col cols="2" xl="2">
-                              <b-icon v-if="dati_comune.cont_commessa_anno2  !== '' || files.cont_commessa_anno2.length !== 0" class="h4 p-0 b-0 m-0 mt-1" variant="success" icon="check-circle-fill"></b-icon>
-                              <b-icon v-if="dati_comune.cont_commessa_anno2  === '' && files.cont_commessa_anno2.length === 0"  class="h4 p-0 b-0 m-0 mt-1" variant="danger" icon="x-circle-fill"></b-icon>
-                            </b-col>
-                          </b-row>
-                        </b-container>
-                      </b-col>
-                    </b-row>
-
-                    <b-row>
-                      <b-col cols="12" :class="container_specs">
-                        <FieldTitle  req="yes" description="Contratto d'appalto vigente" />
+                        <FieldTitle  req="yes" description="Contratto d'appalto vigente (in pdf)" />
                         <b-container>
                           <b-row>
                             <b-col cols="10" xl="10">
@@ -387,8 +362,34 @@ import Footer from '../components/Footer'
                           </b-row>
                         </b-container>
                       </b-col>
+
+                    </b-row>
+
+                    <b-row>
+
                       <b-col cols="12" :class="container_specs">
-                        <FieldTitle req="yes" description="Ultimo PEF validato dall'ETC (Delibera + Relazione con allegati in file .zip)" />
+                        <FieldTitle req="yes" description="PEF 2022 validato dall'ETC (Delibera + Relazione con allegati in file .zip)" />
+                        <b-container>
+                          <b-row>
+                            <b-col cols="10" xl="10">
+                              <b-form-file
+                                v-model="files.cont_commessa_anno2"
+                                placeholder="File Zip"
+                                drop-placeholder="Rilascia qui...">
+                              </b-form-file>
+                              <font v-if="dati_comune.cont_commessa_anno2 != '[object File]' ">
+                                {{dati_comune.cont_commessa_anno2}}
+                              </font>
+                            </b-col>
+                            <b-col cols="2" xl="2">
+                              <b-icon v-if="dati_comune.cont_commessa_anno2  !== '' || files.cont_commessa_anno2.length !== 0" class="h4 p-0 b-0 m-0 mt-1" variant="success" icon="check-circle-fill"></b-icon>
+                              <b-icon v-if="dati_comune.cont_commessa_anno2  === '' && files.cont_commessa_anno2.length === 0"  class="h4 p-0 b-0 m-0 mt-1" variant="danger" icon="x-circle-fill"></b-icon>
+                            </b-col>
+                          </b-row>
+                        </b-container>
+                      </b-col>
+                      <b-col cols="12" :class="container_specs">
+                        <FieldTitle req="yes" description="PEF 2023 validato dall'ETC (Delibera + Relazione con allegati in file .zip)" />
                         <b-container>
                           <b-row>
                             <b-col cols="10" xl="10">
@@ -450,8 +451,8 @@ import Footer from '../components/Footer'
             <b-row class="bg-light rounded p-3">
               <b-col class="p-0 pl-1" xl="1">
                 <select class="form-control" v-model="add.anno">
-                  <option value="2020">2020</option>
-                  <option value="2021">2021</option>
+                  <option value="2022">2022</option>
+                  <option value="2023">2023</option>
                 </select>
               </b-col>
 
@@ -497,8 +498,8 @@ import Footer from '../components/Footer'
             <b-row class="border rounded p-3"  v-for="(extra,index) in costi_smaltimento" v-bind:class = "(index % 2==0)?'bg-white':'bg-light'" :key="extra.id">
               <b-col class="p-0 pl-1" xl="1">
                 <select class="form-control" v-model="extra.anno">
-                  <option value="2020">2020</option>
-                  <option value="2021">2021</option>
+                  <option value="2022">2022</option>
+                  <option value="2023">2023</option>
                 </select>
               </b-col>
 
@@ -1168,15 +1169,15 @@ import Footer from '../components/Footer'
               {
                 this.save.msg="Salvataggio avvenuto con successo!"
                 this.save.color="success"
-                //this.$bvModal.show('bv-modal-save-msg')
+                this.$bvModal.show('bv-modal-save-msg')
               }
           })
 
           .catch(error => {
 
               this.save.msg=error
-              this.save.color="danger"
-              //this.$bvModal.show('bv-modal-save-msg')
+              this.save.color="Errore nel salvataggio dati, se il problema persiste , contatta l'assistenza"
+              this.$bvModal.show('bv-modal-save-msg')
 
           });
 
@@ -1231,7 +1232,7 @@ import Footer from '../components/Footer'
                       imp_smalt:"",
                       tipo_rifiuto:"",
                       tipo_costo:"CTS",
-                      anno:"2020",
+                      anno:"2022",
                       tons:0,
                       prezzo_unitario:0,
                       importo:0,

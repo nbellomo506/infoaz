@@ -44,7 +44,7 @@ import Footer from '../components/Footer'
                   <b-row class="pb-4">
                     <b-col>
                       <p class="font-1">
-                        In questa sezione vanno caricati i file dei <b>bilanci depositati</b> riferiti alle annualità 2020 e 2021.<br>
+                        In questa sezione è richiesto il file del <b>bilancio depositato</b> riferito all'anno 2022.<br>
 
                         Per quanto attiene i <b>CESPITI</b> l’utente deve scaricare e compilare il file excel che si intende riferito alla totalità dei beni impiegati nella conduzione degli appalti in tutti i Comuni, precisando per ogni bene le percentuali di impiego riferite a ciascun Comune (colonna S e successive).
                       </p>
@@ -74,7 +74,7 @@ import Footer from '../components/Footer'
                   <b-row class="p-2">
                     <b-col offset-xl="1" xl="4">
                       <p>
-                        Bilancio Depositato 2020
+                        Bilancio Depositato 2022
                       </p>
                     </b-col>
                     <b-col cols="11" xl="5">
@@ -88,25 +88,6 @@ import Footer from '../components/Footer'
                     <b-col cols="1" xl="1" class="pt-2 p-0">
                       <b-icon v-if="azienda.bilancio_depositato_anno1 !== '' || upload.bilancio_depositato_anno1.length != 0" class="h4 p-0 b-0 m-0" variant="success" icon="check-circle-fill"></b-icon>
                       <b-icon v-if="azienda.bilancio_depositato_anno1 === '' && upload.bilancio_depositato_anno1.length === 0" class="h4 p-0 b-0 m-0" variant="danger" icon="x-circle-fill"></b-icon>
-                    </b-col>
-                  </b-row>
-                  <b-row class="p-2">
-                    <b-col offset-xl="1" xl="4">
-                      <p>
-                        Bilancio Depositato 2021
-                      </p>
-                    </b-col>
-                    <b-col cols="11" xl="5">
-                      <p>
-                        <b-form-file v-model="upload.bilancio_depositato_anno2" placeholder="File" drop-placeholder="Rilascia qui"></b-form-file>
-                        <font v-if="azienda.bilancio_depositato_anno2 != '' ">
-                          {{azienda.bilancio_depositato_anno2}}
-                        </font>
-                      </p>
-                    </b-col>
-                    <b-col cols="1" xl="1" class="pt-2 p-0">
-                      <b-icon v-if="azienda.bilancio_depositato_anno2 !== '' || upload.bilancio_depositato_anno2.length != 0" class="h4 p-0 b-0 m-0" variant="success" icon="check-circle-fill"></b-icon>
-                      <b-icon v-if="azienda.bilancio_depositato_anno2 === '' && upload.bilancio_depositato_anno2.length === 0" class="h4 p-0 b-0 m-0" variant="danger" icon="x-circle-fill"></b-icon>
                     </b-col>
                   </b-row>
 
@@ -269,13 +250,9 @@ import Footer from '../components/Footer'
 
                    },
               }).then((response) => {
-
                 location.reload()
-
-
                 })
             }else {
-
               location.reload()
             }
 

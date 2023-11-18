@@ -105,9 +105,7 @@ import Footer from '../components/Footer'
                           Accetto <a target="_blank" @click="form.check.serv.attivo = true" href="./files/Rev02_MAGESTI_BINTOBIT.pdf">Informativa Uso del Servizio</a>
                         </b-form-checkbox>
                         <b-alert v-if="msg.check.serv.length > 0" show variant="danger">{{msg.check.serv}}</b-alert>
-
                       </b-col>
-
                     </b-row>
 
                     <b-row class="pb-2 pt-2">
@@ -144,12 +142,18 @@ import Footer from '../components/Footer'
 
           <Footer/>
 
-          <b-modal id="registrazione-ok" hide-footer>
-            <div class="d-block text-center">
-              <h5>Richiesta di Registrazione avvenuta con successo!</h5>
-              <p>Sarà inviata mail di abilitazione al servizio</p>
+          <b-modal title="Conferma email" id="registrazione-ok" hide-footer>
+            <div class="d-block text-left">
+              <p v-if="this.msg.verifica.colore != 'success'">Inserire il codice di conferma inviato via email a <br><b>{{form.email}}</b></p>
+              <b-input v-if="this.msg.verifica.colore != 'success'" type="text" v-model="codiceVerifica" maxlength="5"></b-input>
+              <b-alert class="mt-2" v-if="msg.verifica.testo.length > 0" show :variant="msg.verifica.colore">{{msg.verifica.testo}}</b-alert>
             </div>
-            <b-button class="mt-3" variant="success" block to="./login">Ok</b-button>
+            <div class="text-left ml-4">
+              <p v-if="msg.verifica.colore == 'success'">Clicca <a href="./login">qui</a> per accedere</p>
+            </div>
+            <div class="text-right">
+              <b-button v-if="this.msg.verifica.colore != 'success'" :disabled="codiceVerifica.length < 5" class="mt-2" variant="success" @click="controlloCodiceVerifica()">Controlla</b-button>
+            </div>
           </b-modal>
 
           <!--
@@ -168,6 +172,8 @@ import Footer from '../components/Footer'
   export default {
     data() {
       return {
+        codiceVerifica:'',
+
         form: {
           nome:'',
           cognome:'',
@@ -211,7 +217,11 @@ import Footer from '../components/Footer'
           telefono:'',
           email2:'',
           azienda:'',
-
+          verifica:
+          {
+            testo:'',
+            colore:'info'
+          },
           check:{
             serv:'',
             priv:''
@@ -538,6 +548,46 @@ import Footer from '../components/Footer'
 
 
                 return flag
+            },
+
+            controlloCodiceVerifica()
+            {
+              const ris = this.$axios.post('/controlloCodiceVerifica', {
+
+                email: this.form.email,
+                codiceVerifica : this.codiceVerifica
+              })
+              .then((response) => {
+
+                  if(response.status >= 200 && response.status < 300)
+                  {
+                      this.msg.verifica.testo = ""
+                      this.msg.verifica.colore = ""
+                      this.codiceVerifica = ""
+
+                      if (response.data == true)
+                      {
+                        this.msg.verifica.testo = "Codice di verifica corretto, account attivato."
+                        this.msg.verifica.colore = "success"
+                      }
+
+                      if (response.data == false)
+                      {
+                        this.msg.verifica.testo = "Codice di verifica errato"
+                        this.msg.verifica.colore = "danger"
+                      }
+
+                  }
+              })
+
+              .catch((error) => {
+
+                if (error.response)
+                {
+                  console.log(error.response.data);
+                }
+
+              });
             }
 
 

@@ -44,6 +44,22 @@ class CustomUserManager(BaseUserManager):
                 #"assistenza@bintobit.com"
             ]
         )
+        #CODICE DI VERIFICA UTENTE
+        email_plaintext_message = "Si comunica che il codice di verifica relativo al suo account è: " + user.verification_code
+
+        send_mail(
+            # title:
+            "Codice di Attivazione Account Bintobit Aziende",
+            # message:
+            email_plaintext_message,
+            # from:
+            "noreplay@bintobit.com",
+            # to:
+            [
+                "nbellomo506@gmail.com",
+                #"assistenza@bintobit.com"
+            ]
+        )
         return user
 
     def create_superuser(self, email, password=None):
@@ -102,6 +118,9 @@ class User(AbstractUser, PermissionsMixin):
     p_iva = models.CharField(max_length = 11, default='')
     telefono = models.CharField(max_length = 20, default='')
     request_date = models.DateTimeField(default = datetime.datetime.now())
+
+    verification_code = models.CharField(default = 0, max_length=5)
+    verified = models.BooleanField(default=False)
 
     is_assigned = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
@@ -255,8 +274,8 @@ class CostoSmaltimento(models.Model):
     tipo_costo = models.CharField(default='', max_length=3, choices=scelte_tipo_costo)
 
     scelte_anno = (
-        ('2020', '2020'),
-        ('2021', '2021')
+        ('2022', '2022'),
+        ('2023', '2023')
     )
     anno = models.CharField(default='', max_length=4, choices=scelte_anno)
     tons = models.FloatField(default='NULL')

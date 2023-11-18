@@ -8,7 +8,7 @@ from .views import UserViewSet,get_user_data,new_user
 from .views import AziendaViewSet,savePEF,add_azienda,upload_company_files,del_azienda,update_report,deleteUser,dissociateUser
 from .views import DatiComuneViewSet,get_dati_comune,del_comune_azienda,save_dati_comune,upload_comune_files,askHelp
 from .views import CostoSmaltimentoViewSet,get_costi_smaltimento,add_costi_smaltimento,update_costi_smaltimento,del_costi_smaltimento
-from .views import ChangePasswordView
+from .views import ChangePasswordView,controlloCodiceVerifica
 
 
 router = DefaultRouter()
@@ -25,6 +25,7 @@ urlpatterns = [
         path('login', login),
         path('logout', logout),
         path('new_user', new_user),
+        path("controlloCodiceVerifica", controlloCodiceVerifica),
         path('askHelp', askHelp),
         path('get_utenti', get_utenti),
         path('add_comune_azienda', add_comune_azienda),

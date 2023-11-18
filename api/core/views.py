@@ -2,6 +2,7 @@
 import requests
 import json
 import os.path
+import random
 
 from rest_framework import status
 from rest_framework import generics
@@ -59,26 +60,27 @@ class RegisterUserView(CreateAPIView):
     serializer_class = RegisterUserSerializer
 
 def new_user(request):
+    body_unicode = request.body.decode('utf-8')
+    body = json.loads(body_unicode)
 
-    try:
-        body_unicode = request.body.decode('utf-8')
-        body = json.loads(body_unicode)
+    nome = body['nome']
+    cognome = body['cognome']
+    titolo = body['titolo']
+    ragione_sociale = body['ragione_sociale']
+    p_iva = body['p_iva']
+    telefono = body['telefono']
+    email = body['email']
+    email2 = body['email2']
+    password = body['password']
 
-        nome = body['nome']
-        cognome = body['cognome']
-        titolo = body['titolo']
-        ragione_sociale = body['ragione_sociale']
-        p_iva = body['p_iva']
-        telefono = body['telefono']
-        email = body['email']
-        email2 = body['email2']
-        password = body['password']
 
-        obj = None
-        obj = User.objects.filter(email = email)
+    user_obj = User.objects.filter(email = email)
+    if len(user_obj) == 1:
+        user_obj = user_obj[0]
+        if user_obj.verified is False:
 
-        if not obj:
-            print("libero")
+            User.objects.filter(email=user_obj.email,verified = False).delete()
+
             user = User.objects.create(
                                          nome = nome,
                                          cognome = cognome,
@@ -88,28 +90,99 @@ def new_user(request):
                                          telefono = telefono,
                                          email = email,
                                          email2 = email2,
+                                         verification_code = ''.join(random.choice('0123456789ABCDEF') for i in range(5))
                                        )
 
             user.set_password(password)
             user.save()
 
-            email_plaintext_message = "Si comunica che " + user.nome + " " + user.cognome + " ha inviato una richiesta di attivazione al servizio."
-            #email_plaintext_message = "{}?token={}".format('http://217.61.57.221/new_password' , reset_password_token.key)
+
+            email_plaintext_message = "Si comunica che il codice di verifica relativo al suo account è: " + user.verification_code
+
             send_mail(
                 # title:
-                "Richiesta Attivazione al Servizio AZIENDE",
+                "Codice di Attivazione Account Bintobit Faidate",
                 # message:
                 email_plaintext_message,
                 # from:
                 "noreplay@bintobit.com",
                 # to:
-                recipients
+                [
+                    user.email
+                    #"assistenza@bintobit.com"
+                ]
             )
-            return HttpResponse("OK")
+            return JsonResponse(True,safe=False)
+
+        if user_obj.verified is True:
+            return JsonResponse(False,safe=False)
+
+    if not user_obj:
+            user = User.objects.create(
+                                         nome = nome,
+                                         cognome = cognome,
+                                         titolo = titolo,
+                                         ragione_sociale = ragione_sociale,
+                                         p_iva = p_iva,
+                                         telefono = telefono,
+                                         email = email,
+                                         email2 = email2,
+                                         verification_code = ''.join(random.choice('0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ') for i in range(5))
+                                       )
+
+            user.set_password(password)
+            user.save()
+
+            email_plaintext_message = "Si comunica che il codice di verifica relativo al suo account è: " + user.verification_code
+
+            send_mail(
+                # title:
+                "Codice di Attivazione Account Bintobit Faidate",
+                # message:
+                email_plaintext_message,
+                # from:
+                "noreplay@bintobit.com",
+                # to:
+                [
+                    user.email
+                    #"assistenza@bintobit.com"
+                ]
+            )
+            return JsonResponse(True,safe=False)
+
+def controlloCodiceVerifica(request):
+    body_unicode = request.body.decode('utf-8')
+    body = json.loads(body_unicode)
+
+    email = body['email']
+    codiceVerifica = body['codiceVerifica']
+
+    user = User.objects.get(email = email)
+    if user is not None:
+        if user.verification_code == codiceVerifica:
+            user.verified = True
+            user.save()
+            email_plaintext_message = "Si comunica che " + user.nome + " " + user.cognome + " ha inviato una richiesta di attivazione al servizio."
+
+            send_mail(
+                # title:
+                "Richiesta Attivazione al Servizio CALCOLO PEF AZIENDE",
+                # message:
+                email_plaintext_message,
+                # from:
+                "noreplay@bintobit.com",
+                # to:
+                [
+                    user.email
+                    #"assistenza@bintobit.com"
+                ]
+            )
+            return JsonResponse(True,safe=False)
+
         else:
-            return HttpResponse("Un utente con questa email è gia registrato")
-    except:
-        return HttpResponse("Qualcosa è andato storto")
+            return JsonResponse(False,safe=False)
+    else:
+        return JsonResponse(False,safe=False)
 
 def assign_azienda(request):
 
@@ -760,7 +833,7 @@ def is_company_set(request):
 
     if 'logged' in request.session is not None :
         if request.session['logged'] == True:
-            qs = User.objects.get(pk = request.session['user_id'])
+            qs = User.objects.get(pk = request.session['user_id'],verified=True)
             serializer = UserSerializer(qs)
             request.session['azienda'] = serializer.data['azienda']
             request.session['is_assigned'] = serializer.data['is_assigned']
@@ -806,8 +879,6 @@ def login(request):
     body_unicode = request.body.decode('utf-8')
     body = json.loads(body_unicode)
 
-
-
     email = body['email']
     password = body['password']
 
@@ -816,24 +887,28 @@ def login(request):
     user = authenticate(email=email, password=password)
 
     if user is not None:
+        if user.verified is True:
+            #login(request,user)
+            user = get_user_model().objects.filter(email=email).first()
 
-        #login(request,user)
-        user = get_user_model().objects.filter(email=email).first()
+            if user.azienda is not None:
+                request.session['azienda'] = user.azienda.id
 
-        if user.azienda is not None:
-            request.session['azienda'] = user.azienda.id
+            request.session['logged'] = True
+            request.session['user_id'] = user.id
+            request.session.modified = True
+            request.session['email'] = user.email
+            request.session['verified'] = user.verified
+            request.session['nome'] = user.nome
+            request.session['cognome'] = user.cognome
+            request.session['is_assigned'] = user.is_assigned
+            request.session['is_admin'] = user.is_admin
+            request.session['is_staff'] = user.is_staff
+            request.session['is_active'] = user.is_active
+            message="SI"
 
-        request.session['logged'] = True
-        request.session['nome'] = user.nome
-        request.session['cognome'] = user.cognome
-        request.session['user_id'] = user.id
-        request.session['is_assigned'] = user.is_assigned
-        request.session['is_admin'] = user.is_admin
-        request.session['is_staff'] = user.is_staff
-        request.session['is_active'] = user.is_active
-
-        message="SI"
-
+        else:
+            message="NO"
     else:
         message="NO"
     return HttpResponse(message)
@@ -856,6 +931,9 @@ def logout(request):
 
     if 'cognome' in request.session is not None:
         del request.session['cognome']
+
+    if 'verified' in request.session is not None:
+        del request.session['verified']
 
     if 'is_admin' in request.session is not None:
         del request.session['is_admin']
