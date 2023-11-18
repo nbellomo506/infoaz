@@ -102,7 +102,7 @@ import Footer from '../components/Footer'
                           v-model="form.check.serv.value"
                           value="1"
                           unchecked-value="0">
-                          Accetto <a target="_blank" @click="form.check.serv.attivo = true" href="./files/Rev01_CONDIZIONI_USO_DEL%20SERVIZIO.pdf">Informativa Uso del Servizio</a>
+                          Accetto <a target="_blank" @click="form.check.serv.attivo = true" href="./files/Rev02_MAGESTI_BINTOBIT.pdf">Informativa Uso del Servizio</a>
                         </b-form-checkbox>
                         <b-alert v-if="msg.check.serv.length > 0" show variant="danger">{{msg.check.serv}}</b-alert>
 
