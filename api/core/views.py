@@ -173,8 +173,7 @@ def controlloCodiceVerifica(request):
                 "noreplay@bintobit.com",
                 # to:
                 [
-                    user.email
-                    #"assistenza@bintobit.com"
+                    "assistenza@bintobit.com"
                 ]
             )
             return JsonResponse(True,safe=False)
