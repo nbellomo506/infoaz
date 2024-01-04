@@ -6,6 +6,7 @@ from .models import User
 from .models import Azienda  # add this
 from .models import DatiComune  # add this
 from .models import CostoSmaltimento  # add this
+from .models import EfficienzaQualitaDifferenziata  # add this
 
 class UserAdmin(BaseUserAdmin):
     #visualizzazione dati utente
@@ -36,3 +37,4 @@ admin.site.register(User, UserAdmin)
 admin.site.register(Azienda) # add this
 admin.site.register(DatiComune) # add this
 admin.site.register(CostoSmaltimento) # add this
+admin.site.register(EfficienzaQualitaDifferenziata)

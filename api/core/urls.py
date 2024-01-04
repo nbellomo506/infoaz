@@ -2,12 +2,10 @@ from django.urls import path, include
 
 from rest_framework.routers import DefaultRouter
 from .views import RegisterUserView, login,logout,add_comune_azienda,role,is_company_set,get_company_data,assign_azienda,get_aziende,get_utenti, CurrentLoggedInUser,get_dati_comuni,is_logged
-
-
 from .views import UserViewSet,get_user_data,new_user
 from .views import AziendaViewSet,savePEF,add_azienda,upload_company_files,del_azienda,update_report,deleteUser,dissociateUser
 from .views import DatiComuneViewSet,get_dati_comune,del_comune_azienda,save_dati_comune,upload_comune_files,askHelp
-from .views import CostoSmaltimentoViewSet,get_costi_smaltimento,add_costi_smaltimento,update_costi_smaltimento,del_costi_smaltimento
+from .views import CostoSmaltimentoViewSet,get_costi_smaltimento,add_costi_smaltimento,update_costi_smaltimento,del_costi_smaltimento,getEfficienzaQualitaDifferenziata,saveEfficienzaQualitaDifferenziata
 from .views import ChangePasswordView,controlloCodiceVerifica
 
 
@@ -31,6 +29,8 @@ urlpatterns = [
         path('add_comune_azienda', add_comune_azienda),
         path('del_comune_azienda', del_comune_azienda),
         path('save_dati_comune', save_dati_comune),
+        path('getEfficienzaQualitaDifferenziata', getEfficienzaQualitaDifferenziata),
+        path('saveEfficienzaQualitaDifferenziata', saveEfficienzaQualitaDifferenziata),
         path('upload_comune_files', upload_comune_files),
         path('assign_azienda', assign_azienda),
         path('deleteUser', deleteUser),

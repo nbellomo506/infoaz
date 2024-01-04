@@ -8,6 +8,8 @@ from .models import User
 from .models import Azienda
 from .models import CostoSmaltimento
 from .models import DatiComune
+from .models import EfficienzaQualitaDifferenziata
+
 from comuni_italiani.models import Comune
 from comuni_italiani.models import Provincia
 from comuni_italiani.models import Regione
@@ -126,6 +128,12 @@ class DatiComuneSerializer(serializers.ModelSerializer):
                     "ultimo_pef",
                     "completed"
                     )
+
+class EfficienzaQualitaDifferenziataSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = EfficienzaQualitaDifferenziata
+        fields = ("azienda","consorzio","pretrattamento","quantita_in_ton","prefatture_a_2")
 
 class CostoSmaltimentoSerializer(serializers.ModelSerializer):
     class Meta:

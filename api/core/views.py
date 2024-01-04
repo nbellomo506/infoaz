@@ -47,6 +47,10 @@ from .serializers import DatiComuneSerializer
 from .models import CostoSmaltimento
 from .serializers import CostoSmaltimentoSerializer
 
+from .models import EfficienzaQualitaDifferenziata
+from .serializers import EfficienzaQualitaDifferenziataSerializer
+
+
 from comuni_italiani.models import Comune
 
 basedir = settings.MEDIA_ROOT
@@ -240,7 +244,6 @@ def deleteUser(request):
     else:
         return JsonResponse("Not Logged",content_type="application/json",safe=False)
 
-
 def savePEF(request):
 
     body_unicode = request.body.decode('utf-8')
@@ -392,6 +395,13 @@ def save_dati_comune(request):
                             obj.valore_can = body['valore_can']
                             obj.adeg_contr_flag = body['adeg_contr_flag']
                             obj.ricavi_conai = body['ricavi_conai']
+                            if body['ricavi_conai'] == 'IMPRESA':
+                                list = ["RICREA / ACCIAIO","CiAl / ALLUMINIO","COMIECO / CARTA E CARTONE SELETTIVA","COMIECO / CARTA E CARTONE CONGIUNTA","BIOREPACK / BIOPLASTICA COMPOSTABILE","COREVE / VETRO","COREPLA / PLASTICA","CORIPET / PLASTICA","CONIP / PLASTICA","ALTRO"]
+                                for consorzio in list:
+                                    try:
+                                        EfficienzaQualitaDifferenziata.objects.create(azienda = az, consorzio=consorzio)
+                                    except Exception as e:
+                                        print(e)
                             obj.impresa_cts_flag = body['impresa_cts_flag']
                             obj.impresa_ctr_flag = body['impresa_ctr_flag']
                             obj.spazz_e_ig_flag = body['spazz_e_ig_flag']
@@ -431,6 +441,70 @@ def save_dati_comune(request):
                             error = "Qualcosa è andato storto"
 
                             return HttpResponse("OK")
+
+def getEfficienzaQualitaDifferenziata(request):
+
+    if 'logged' in request.session is not None and 'azienda' in request.session is not None:
+        if request.session['logged'] == True:
+            if 'email' in request.session is not None:
+                qs = EfficienzaQualitaDifferenziata.objects.filter(azienda = Azienda.objects.get(pk = request.session['azienda']))
+                serializer = EfficienzaQualitaDifferenziataSerializer(qs,many=True)
+                return JsonResponse(serializer.data,content_type="application/json",safe=False)
+            else:
+                return JsonResponse(False,safe=False)
+        else:
+            return JsonResponse(False,safe=False)
+    else:
+        return JsonResponse(False,safe=False)
+
+def saveEfficienzaQualitaDifferenziata(request):
+
+    if 'logged' in request.session is not None and 'azienda' in request.session is not None:
+        azienda = request.session['azienda']
+        az = Azienda.objects.get(pk = azienda)
+        comune = request.POST['comune']
+        comune = Comune.objects.get(id = comune)
+        comune = str(comune)
+        if request.session['logged'] == True:
+            if 'email' in request.session is not None:
+                folderName = "EFFICIENZA E QUALITA' DIFFERENZIATA a-2"
+                data = request.POST
+                # Iterate through each key and its values
+                for key, values in data.lists():
+                    if key != 'comune':
+                        obj = EfficienzaQualitaDifferenziata.objects.get(consorzio = key,azienda = azienda)
+                        obj.quantita_in_ton = values[0]
+                        if values[1] == "false":
+                            obj.pretrattamento = False
+                        else:
+                            obj.pretrattamento = True
+                        obj.save()
+                try:
+                    os.mkdir(os.path.join(basedir + '/' + az.ragione_sociale + '/'+ comune + '/' + folderName))
+                except Exception as e:
+                    print(e)
+                for file in request.FILES:
+                    folderfile = file.replace("/","-")
+                    consorzio = file
+                    file = request.FILES[file]
+                    obj = EfficienzaQualitaDifferenziata.objects.get(consorzio = consorzio,azienda = azienda)
+                    obj.prefatture_a_2 = file
+                    obj.save()
+                    try:
+                        os.mkdir(os.path.join(basedir + '/' + az.ragione_sociale + '/' + comune + '/' +  folderName + '/' + folderfile))
+                    except Exception as e:
+                        print(e)
+                    with open(basedir + '/' + az.ragione_sociale + '/' + comune + '/' + folderName + '/' + folderfile + '/' + file.name,'wb+') as destination:
+                        for chunk in file.chunks():
+                            destination.write(chunk)
+
+                return JsonResponse(True,safe=False)
+            else:
+                return JsonResponse(False,safe=False)
+        else:
+            return JsonResponse(False,safe=False)
+    else:
+        return JsonResponse(False,safe=False)
 
 def del_comune_azienda(request):
 

@@ -271,76 +271,72 @@ import Footer from '../components/Footer'
         this.$axios.$get(`/is_logged`)
         .then((response) => {
           this.is_logged = response
-        })
+          this.$axios.$get(`/role`)
+          .then((response) => {
+            this.role = response
+            this.$axios.$get(`/get_utenti`)
+            .then((response) => {
+            this.utenti = response
 
-        this.$axios.$get(`/role`)
-        .then((response) => {
-          this.role = response
-        })
+                      for (var i = 0; i < this.utenti.length; i++)
+                      {
+                          var data = []
+                          var orario = []
 
+                            for (var j = 0; this.utenti[i].request_date[j] != 'T'; j++)
+                            {
+                              data[j] = this.utenti[i].request_date[j]
+                            }
 
-        this.$axios.$get(`/get_utenti`)
-        .then((response) => {
-        this.utenti = response
+                            j++
+                            var k = 0
 
-                  for (var i = 0; i < this.utenti.length; i++)
-                  {
-                      var data = []
-                      var orario = []
+                              while (j < this.utenti[i].request_date.length )
+                              {
+                                  if (this.utenti[i].request_date[j] == '+' || this.utenti[i].request_date[j] == '.' || this.utenti[i].request_date[j] == 'Z')
+                                  {
 
-                        for (var j = 0; this.utenti[i].request_date[j] != 'T'; j++)
-                        {
-                          data[j] = this.utenti[i].request_date[j]
+                                    j = this.utenti[i].request_date.length
+                                  }
+                                      else
+                                      {
+                                        orario[k] = this.utenti[i].request_date[j]
+                                      }
+                                  j++
+                                  k++
+                              }
+
+                          data = data.join('')
+                          data.toString()
+
+                          orario = orario.join('')
+                          orario.toString()
+
+                          this.utenti[i].data = data
+                          this.utenti[i].orario = orario
                         }
 
-                        j++
-                        var k = 0
-
-                          while (j < this.utenti[i].request_date.length )
+                        for (var i = 0; i < this.utenti.length; i++)
+                        {
+                          if (this.utenti[i].azienda !== null && this.utenti[i].is_assigned === true)
                           {
-                              if (this.utenti[i].request_date[j] == '+' || this.utenti[i].request_date[j] == '.' || this.utenti[i].request_date[j] == 'Z')
-                              {
-
-                                j = this.utenti[i].request_date.length
-                              }
-                                  else
-                                  {
-                                    orario[k] = this.utenti[i].request_date[j]
-                                  }
-                              j++
-                              k++
+                            this.utenti_azienda.push(this.utenti[i])
                           }
+                            else
+                                {
+                                  this.utenti_non_azienda.push(this.utenti[i])
+                                }
+                        }
+                        this.$axios.$get(`/get_aziende`)
+                        .then((response) => {
+                          this.aziende = response
+                          this.loaded=true
 
-                      data = data.join('')
-                      data.toString()
-
-                      orario = orario.join('')
-                      orario.toString()
-
-                      this.utenti[i].data = data
-                      this.utenti[i].orario = orario
-                    }
-
-                    for (var i = 0; i < this.utenti.length; i++)
-                    {
-                      if (this.utenti[i].azienda !== null && this.utenti[i].is_assigned === true)
-                      {
-                        this.utenti_azienda.push(this.utenti[i])
-                      }
-                        else
-                            {
-                              this.utenti_non_azienda.push(this.utenti[i])
-                            }
-                    }
-
+                })
+              })
+            })
           })
 
-
-          this.$axios.$get(`/get_aziende`)
-          .then((response) => {
-            this.aziende = response
-          })
-          this.loaded=true
       } catch (e) {
           console.log(e)
       }

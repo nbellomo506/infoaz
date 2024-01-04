@@ -10,7 +10,6 @@ import InputOutputNavTab from '../components/InputOutputNavTab'
 
     <Header/>
     <InputOutputNavTab/>
-
       <b-container v-if="is_logged === true && is_company_set === true && loaded===true"  class="mt-5">
         <b-row>
           <b-col offset-xl="1" xl="10">
@@ -138,7 +137,7 @@ import InputOutputNavTab from '../components/InputOutputNavTab'
             </b-col>
           </b-row>
         </b-container>
-        <Footer :visible="loaded"/>
+        <Footer v-if="loaded" :visible="true"/>
       <table v-for="(dati_comune,index) in dati_comuni" :id="`tab${index}`" border="1" hidden>
         <tr>
           <td>
@@ -396,102 +395,59 @@ import InputOutputNavTab from '../components/InputOutputNavTab'
 
   export default {
 
-      /*async asyncData({ $axios, params })
-        {
-          try {
 
-            $axios.defaults.withCredentials = true;
-
-            let is_logged = await $axios.$get(`/is_logged`);
-            let is_company_set = await $axios.$get(`/is_company_set`);
-
-            if(is_logged === true)
-            {
-
-              var utente = await $axios.$get(`/get_user_data`);
-
-                if(is_company_set === true)
-                {
-                  var dati_comuni = await $axios.$get(`/get_dati_comuni`);
-                  var azienda = await $axios.$get(`/get_company_data`);
-                }
-
-            }
-
-            let role = await $axios.$get(`/role`);
-
-
-
-            return { is_logged,is_company_set,role,utente,dati_comuni,azienda};
-
-          } catch (e) {
-
-              console.log(e)
-              return { dati_comuni: [] ,azienda:[],is_logged:false,is_company_set:false};
-        }
-      },*/
-
-      mounted () {
+    mounted () {
 
         this.$axios.defaults.withCredentials = true
 
         this.$axios.$get(`/is_logged`)
         .then((response) => {
           this.is_logged=response
-        })
+          this.$axios.$get(`/is_company_set`)
+          .then((response) => {
+            this.is_company_set=response
+            this.$axios.$get(`/role`)
+            .then((response) => {
+              this.role = response
+              this.$axios.$get(`/get_user_data`)
+              .then((response) => {
+                this.utente=response
+                this.$axios.$get(`/get_dati_comuni`)
+                .then((response) => {
+                  this.dati_comuni = response
+                  var i = 0
 
-        this.$axios.$get(`/is_company_set`)
-        .then((response) => {
-          this.is_company_set=response
-        })
-
-        this.$axios.$get(`/role`)
-        .then((response) => {
-          this.role = response
-        })
-
-        this.$axios.$get(`/get_user_data`)
-        .then((response) => {
-          this.utente=response
-        })
-
-        this.$axios.$get(`/get_dati_comuni`)
-        .then((response) => {
-          this.dati_comuni = response
-          var i = 0
-
-          if (this.dati_comuni !== false)
-          {
-            if (this.dati_comuni.length > 0)
-            {
-              this.is_ready = true
-                while(i < this.dati_comuni.length)
-                {
-                  console.log(this.dati_comuni[i].completed)
-                  if(this.dati_comuni[i].completed == false)
+                  if (this.dati_comuni !== false)
                   {
-                    this.is_ready = false
-                    i = this.dati_comuni.length
+                    if (this.dati_comuni.length > 0)
+                    {
+                      this.is_ready = true
+                        while(i < this.dati_comuni.length)
+                        {
+                          console.log(this.dati_comuni[i].completed)
+                          if(this.dati_comuni[i].completed == false)
+                          {
+                            this.is_ready = false
+                            i = this.dati_comuni.length
+                          }
+                          i++
+                        }
+
+                    }else {
+                      this.is_ready = false
+
+                    }
                   }
-                  i++
-                }
-
-            }else {
-              this.is_ready = false
-
-            }
-          }
-
+                  this.$axios.$get(`/get_company_data`)
+                  .then((response) => {
+                    this.azienda = response
+                    this.loaded = true
+                  })
+                })
+              })
+            })
+          })
         })
-
-        this.$axios.$get(`/get_company_data`)
-        .then((response) => {
-          this.azienda = response
-        })
-
-
-        this.loaded = true
-
       },
 
 
@@ -512,101 +468,87 @@ import InputOutputNavTab from '../components/InputOutputNavTab'
 
     methods:
     {
-        async riprendiReport()
-        {
-          this.$axios.post('/update_report')
-          location.reload()
-        },
+      riprendiReport()
+      {
+        this.$axios.post('/update_report')
+        location.reload()
+      },
 
-        async inviaReport()
-        {
+      async inviaReport()
+      {
+        if (this.dati_comuni.length < 1) {
+          return;
+        }
 
-          if(this.dati_comuni.length >= 1)
-          {
+        const XLSX = require("xlsx");
+        const workbook = XLSX.utils.book_new();
 
-            var XLSX = require("xlsx");
-            var workbook = XLSX.utils.book_new();
-            const nome_azienda = this.azienda.ragione_sociale
+        const processCostiSmaltimento = async (id) => {
+          const costi_smaltimento = await this.$axios.post(`/get_costi_smaltimento`, { id });
+          return costi_smaltimento.data;
+        };
 
-            workbook.Props =
-            {
-              Title:nome_azienda
-            }
-
-            var i = 0
-            while(i < this.dati_comuni.length)
-            {
-
-                var costi_smaltimento = await this.$axios.post(`/get_costi_smaltimento` ,{id: this.dati_comuni[i].id})
-                .then((costi_smaltimento) => {
-                  return costi_smaltimento.data;
-                });
-
-                var j = 0
-                if(costi_smaltimento.length >= 1)
-                {
-                    var contenuto = ""
-                      while(j < costi_smaltimento.length)
-                      {
-                        contenuto = contenuto + "<tr><td>"+ costi_smaltimento[j].anno +"</td>";
-                        contenuto = contenuto + "<td>"+ costi_smaltimento[j].imp_smalt +"</td>";
-                        contenuto = contenuto + "<td>"+ costi_smaltimento[j].tipo_rifiuto +"</td>";
-                        contenuto = contenuto + "<td>"+ costi_smaltimento[j].tipo_costo +"</td>";
-                        contenuto = contenuto + "<td>"+ costi_smaltimento[j].tons +"</td>";
-                        contenuto = contenuto + "<td>"+ costi_smaltimento[j].prezzo_unitario +"</td>";
-                        contenuto = contenuto + "<td>"+ costi_smaltimento[j].importo +"</td></tr>";
-
-                        j++
-                      }
-
-                }
-              document.getElementById('tab'+i).insertAdjacentHTML("beforeend", contenuto)
-
-              var tabella = document.getElementById('tab'+i)
-
-              var worksheet = XLSX.utils.table_to_sheet(tabella)
-              XLSX.utils.book_append_sheet(workbook, worksheet, this.dati_comuni[i].nome_comune)
-              i++
-            }
-
-            var file = XLSX.write(workbook,{booktype:"xlsx",type:"array"});
-            //var file = XLSX.writeFile(workbook,nome_azienda + ".xlsx",{booktype:"xlsx",type:"binary"});
-            file = new File([file], nome_azienda + ".xlsx")
-
-            var formData = new FormData();
-
-            formData.append("export_daticomuni", file , nome_azienda + ".xlsx");
-
-
-            this.$axios.post('/upload_company_files', formData, {
-                 headers: {
-                   'Content-Type': "multipart/form-data; charset='utf-8';",
-
-                 },
-            })
-
-            .then((response) => {
-              if(response.status >= 200 && response.status <= 208)
-              {
-                  this.$axios.post('/update_report')
-                  alert("Report Inviato")
-                  location.reload()
-              }
-            })
-            .catch((error) => {
-
-             if (error.response)
-             {
-
-                 // The request was made and the server responded with a status code
-                 // that falls out of the range of 2xx
-                 alert(error.response.data)
-                 location.reload()
-
-             }
-
-           });
+        const createWorksheetContent = (costi_smaltimento) => {
+          if (costi_smaltimento.length < 1) {
+            return "";
           }
+
+          return costi_smaltimento.map((item) => {
+            return `<tr><td>${item.anno}</td><td>${item.imp_smalt}</td><td>${item.tipo_rifiuto}</td><td>${item.tipo_costo}</td><td>${item.tons}</td><td>${item.prezzo_unitario}</td><td>${item.importo}</td></tr>`;
+          }).join("");
+        };
+
+        const addContentToTable = (i, content) => {
+          document.getElementById(`tab${i}`).insertAdjacentHTML("beforeend", content);
+        };
+
+        const generateWorkbook = (i, nome_comune, tabella) => {
+          const worksheet = XLSX.utils.table_to_sheet(tabella);
+          XLSX.utils.book_append_sheet(workbook, worksheet, nome_comune);
+        };
+
+        const handleResponse = (response) => {
+          if (response.status >= 200 && response.status <= 208) {
+            this.$axios.post('/update_report');
+            alert("Report Inviato");
+            location.reload();
+          }
+        };
+
+        const handleError = (error) => {
+          if (error.response) {
+            alert(error.response.data);
+          }
+          location.reload();
+        };
+
+        for (let i = 0; i < this.dati_comuni.length; i++) {
+          const { id, nome_comune } = this.dati_comuni[i];
+
+          const costi_smaltimento = await processCostiSmaltimento(id);
+          const contenuto = createWorksheetContent(costi_smaltimento);
+
+          addContentToTable(i, contenuto);
+
+          const tabella = document.getElementById(`tab${i}`);
+          generateWorkbook(i, nome_comune, tabella);
+
+          i++;
+        }
+
+        const file = XLSX.write(workbook, { booktype: "xlsx", type: "array" });
+        const blob = new Blob([file], { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" });
+        const formData = new FormData();
+
+        formData.append("export_daticomuni", blob, nome_azienda + ".xlsx");
+
+        this.$axios.post('/upload_company_files', formData, {
+          headers: {
+            'Content-Type': "multipart/form-data; charset='utf-8';",
+          },
+        })
+        .then(handleResponse)
+        .catch(handleError);
       }
 
     }

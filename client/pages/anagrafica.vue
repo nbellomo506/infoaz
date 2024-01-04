@@ -330,40 +330,32 @@ import Footer from '../components/Footer'
           {
             this.utente = this.$axios.$get(`/get_user_data`);
           }
-
-        })
-
-        this.$axios.$get(`/role`)
-          .then((response) => {
-            this.role = response
-          })
-
-        this.$axios.$get(`/is_company_set`)
-          .then((response) => {
-            this.is_company_set = response
-          })
-
-        this.$axios.$get(`/comuni_italiani/elenco/regioni/`)
-        .then((response) => {
-          this.regioni_req = response
-        })
-
-        this.$axios.$get(`/comuni_italiani/elenco/province/regione/`+16)
-        .then((response) => {
-          this.province_req = response
-        })
-
-        this.$axios.$get(`/get_dati_comuni`)
-        .then((response) => {
-          this.comuni_azienda= response
-        })
-
-        this.$axios.$get(`/get_company_data`)
-        .then((response) => {
-          this.azienda = response
-        })
-
-        this.loaded = true
+          this.$axios.$get(`/role`)
+            .then((response) => {
+              this.role = response
+              this.$axios.$get(`/is_company_set`)
+                .then((response) => {
+                  this.is_company_set = response
+                  this.$axios.$get(`/comuni_italiani/elenco/regioni/`)
+                  .then((response) => {
+                    this.regioni_req = response
+                    this.$axios.$get(`/comuni_italiani/elenco/province/regione/`+16)
+                    .then((response) => {
+                      this.province_req = response
+                      this.$axios.$get(`/get_dati_comuni`)
+                      .then((response) => {
+                        this.comuni_azienda= response
+                        this.$axios.$get(`/get_company_data`)
+                        .then((response) => {
+                          this.azienda = response
+                          this.loaded = true
+                        })
+                      })
+                    })
+                  })
+                })
+              })
+            })
 
       } catch (e) {
 

@@ -11,14 +11,13 @@ import Footer from '../components/Footer'
     <main>
       <Header/>
         <b-nav v-if="dati_comune !== false && is_company_set === true && is_logged === true" class="mt-3" tabs align="center">
-          <b-nav-item class="text-danger" @click="goToSection(section.num)" style="cursor:pointer" v-for="section in sections" :key="section.num" :active="section.num === current_section">
-            <font :class="{ 'text-secondary':section.num === 4,'text-success': section.completed === 1 && section.num != 4 , 'text-danger': section.completed === 0 && section.num != 4 }">
+          <b-nav-item :hidden="dati_comune.ricavi_conai != 'IMPRESA' && section.num == 5 " class="text-danger" @click="goToSection(section.num)" style="cursor:pointer" v-for="section in sections" :key="section.num" :active="section.num === current_section">
+            <font :class="section.class">
               {{section.text}}
             </font>
           </b-nav-item>
         </b-nav>
-
-        <div class="container-fluid p-0 pb-0 mb-5 m-0 b-0" v-if="dati_comune !== false && is_company_set === true && is_logged === true && loaded === true">
+      <div class="container-fluid p-0 pb-0 mb-5 m-0 b-0" v-if="dati_comune !== false && is_company_set === true && is_logged === true && loaded === true">
           <b-container fluid class=" mt-0 b-0">
           <b-row>
             <b-col class="pt-5 bg-light" xl="2" hidden>
@@ -87,7 +86,6 @@ import Footer from '../components/Footer'
                     </b-row>
                   <hr>
                 </b-container>
-
                   <b-row>
                     <b-col :class="container_specs">
                       <FieldTitle name="altri_gestori_flag" req="yes" description="Oltre al Comune e all'impresa operano altri Gestori nel medesimo Comune / Ambito Tariffario?" />
@@ -219,6 +217,57 @@ import Footer from '../components/Footer'
                     </b-col>
                   </b-row>
                 </div>
+
+                <div v-bind:class="{'disabled-container' : azienda.report_is_sent || azienda.report_attempts <= 0 }" class="p-0 b-0 m-0" v-if="current_section === 5 && dati_comune.ricavi_conai == 'IMPRESA'">
+                  <h4>MACRO-INDICATORE R1</h4>
+                  Il MTR-2 aggiornato alle annualità 2024 – 2025 richiede la valorizzazione nel PEF del Macro – Indicatore R1,
+                  un indicatore che tiene conto del risultato aggregato dell’efficienza e della qualità della raccolta
+                  differenziata.<br>
+                  Per individuare i valori che saranno oggetto di calcolo, è necessario <b> analizzare i dati esposti nelle
+                  prefatture emesse da sistemi di compliance </b> (consorzi di filiera CONAI e altri)<b> di competenza</b> dell’anno a-2.<br>
+                  I sistemi di compliance, infatti, emettono con cadenza mensile un documento che riassume i dati delle
+                  quantità raccolte, delle quantità valorizzate e del risultato economico ottenuto.<br>
+                  <b>Nel caso in cui i rifiuti di imballaggio</b> raccolti in modo differenziato <b> vengano sottoposti ad un trattamento
+                  intermedio</b> di cernita, prima di essere avviati all’impianto di selezione, sarà <b> necessario specificare anche le
+                  quantità complessive raccolte nell’anno a-2 e avviate a trattamento intermedio</b>.<br>
+                  Le prefatture riferite a ciascun consorzio di filiera/rifiuto con il quale nell’anno a-2 era in essere un rapporto
+                  contrattuale dovranno essere caricate in un file zip.
+                  <table class="table table-striped table-bordered">
+                    <thead class="thead-dark">
+                      <tr>
+                        <th v-for="field in efficienzaQualDifFFields">{{field.label}}</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr v-for="(item,index) in efficienzaQualDiffItems">
+                        <td v-for="field in efficienzaQualDifFFields">
+                          <b-form-radio-group
+                              :key="item.consorzio"
+                              v-if="field.type == 'radio'"
+                              v-model="item[field.key]"
+                              @change=""
+                              :name="item.consorzio">
+                            <b-form-radio v-for="choice in field.choices" :key="choice" :value="choice.value">
+                              {{choice.text}}
+                            </b-form-radio>
+                          </b-form-radio-group>
+                          <b-input :name="item.consorzio" v-if="field.type == 'number' && item.pretrattamento" type="number" min="0" :placeholder="field.placeholder" v-model="item[field.key]"></b-input>
+                          <b-form-file
+                            v-if="field.type == 'file'"
+                            v-model="item[field.key]"
+                            placeholder=".zip"
+                            :name="item.consorzio"
+                            drop-placeholder="Rilascia file qui..."
+                          ></b-form-file>
+                          <div v-if="field.type == 'text' || (field.type == 'file' && item[field.key] != '[object File]')">
+                            {{item[field.key]}}
+                          </div>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+
                 <div v-bind:class="{'disabled-container' : azienda.report_is_sent || azienda.report_attempts <= 0 }" class="p-0 b-0 m-0" v-if="current_section === 2">
                   <b-container class="m-0 p-0 b-0">
                     <h3>Dati tecnici dell'appalto</h3>
@@ -311,6 +360,7 @@ import Footer from '../components/Footer'
                     </b-col>
                     </b-row>
                 </div>
+
                 <div v-bind:class="{'disabled-container' : azienda.report_is_sent || azienda.report_attempts <= 0 }" class="p-0 b-0 m-0" v-if="current_section === 3">
                   <b-container class="m-0 p-0 b-0">
                     <h3>Documenti riferiti all'appalto</h3>
@@ -321,7 +371,7 @@ import Footer from '../components/Footer'
                     </p>
                     <b-row>
                       <b-col cols="12" :class="container_specs">
-                        <FieldTitle   req="yes" description="Contabilità di commessa anno 2022 (in excel)" />
+                        <FieldTitle req="yes" description="Contabilità di commessa anno 2022 (in excel)" />
                         <b-container>
                           <b-row>
                             <b-col cols="10" xl="10">
@@ -551,7 +601,7 @@ import Footer from '../components/Footer'
           </b-col>
         </b-row>
       <Footer :visible="loaded"/>
-    </div>
+      </div>
 
       <b-container v-if="loaded === false">
         <Loading/>
@@ -610,27 +660,27 @@ import Footer from '../components/Footer'
         </b-container>
       </div>
 
-        <b-modal id="help-tab" cancel-variant="danger" ok-variant="infowaste" @ok="askHelp" cancel-title="Annulla" ok-title="Invia">
-          <font class="h5">Messaggio</font><br>
-          (verrà inviata un'email ad assistenza@bintobit.com)
-          <b-form-input v-model="help_message"></b-form-input>
-        </b-modal>
+      <b-modal id="help-tab" cancel-variant="danger" ok-variant="infowaste" @ok="askHelp" cancel-title="Annulla" ok-title="Invia">
+        <font class="h5">Messaggio</font><br>
+        (verrà inviata un'email ad assistenza@bintobit.com)
+        <b-form-input v-model="help_message"></b-form-input>
+      </b-modal>
 
-        <b-modal id="bv-modal-save-msg" hide-footer>
-          <div class="text-center">
-            <h5>{{save.msg}}</h5>
-          </div>
-          <hr>
-          <b-container class="container">
-            <b-row class="row">
-              <b-col class="sm-4 offset-sm-6 xl-2 offset-xl-8">
-                <b-button class="mt-3" :variant="save.color" block @click="$bvModal.hide('bv-modal-save-msg')">
-                  Ok
-                </b-button>
-              </b-col>
-            </b-row>
-          </b-container>
-        </b-modal>
+      <b-modal id="bv-modal-save-msg" hide-footer>
+        <div class="text-center">
+          <h5>{{save.msg}}</h5>
+        </div>
+        <hr>
+        <b-container class="container">
+          <b-row class="row">
+            <b-col class="sm-4 offset-sm-6 xl-2 offset-xl-8">
+              <b-button class="mt-3" :variant="save.color" block @click="$bvModal.hide('bv-modal-save-msg')">
+                Ok
+              </b-button>
+            </b-col>
+          </b-row>
+        </b-container>
+      </b-modal>
     </main>
   </template>
 
@@ -651,156 +701,169 @@ import Footer from '../components/Footer'
       this.$axios.defaults.withCredentials = true
 
       try {
-        this.$axios.$get(`/is_logged`)
-        .then((response) => {
-          this.is_logged = response
-        })
+
 
         this.$axios.$get(`/is_company_set`)
         .then((response) => {
           this.is_company_set = response
+          this.$axios.$get(`/is_logged`)
+          .then((response) => {
+            this.is_logged = response
+            this.$axios.$get(`/role`)
+            .then((response) => {
+              this.role = response
+              this.$axios.$get(`/getEfficienzaQualitaDifferenziata`)
+              .then((response) => {
+                this.efficienzaQualDiffItems = response
+                this.$axios.$post(`/get_dati_comune`,{id: this.id})
+                .then((response) => {
+                  this.dati_comune = response
+                  if(this.dati_comune.altri_gestori_flag == true)
+                  {
+                    if(this.dati_comune.altri_gestori == "")
+                    {
+                      this.sections[0].completed = 0
+                    }
+                  }else {
+                    this.dati_comune.altri_gestori=""
+
+                  }
+
+                  if(this.dati_comune.serv_exra_arera_flag == true)
+                  {
+                    if(this.dati_comune.serv_exra_arera == "")
+                    {
+                      this.sections[0].completed = 0
+                    }
+                  }else {
+                    this.dati_comune.serv_exra_arera=""
+
+                  }
+
+                  if(this.dati_comune.lav_in_corso_flag == true)
+                  {
+                    if(this.dati_comune.lav_in_corso == "")
+                    {
+                      this.sections[0].completed = 0
+                    }
+                  }else {
+                    this.dati_comune.lav_in_corso=""
+
+                  }
+
+                  if(this.dati_comune.var_gest_flag == true)
+                  {
+                    if(this.dati_comune.var_gest == "")
+                    {
+                      this.sections[0].completed = 0
+
+                    }
+                  }else {
+                    this.dati_comune.var_gest=""
+
+                  }
+
+                  if(this.dati_comune.miglior_qual_flag == true)
+                  {
+                    if(this.dati_comune.miglior_qual == "")
+                    {
+                      this.sections[0].completed = 0
+                    }
+                  }else {
+                    this.dati_comune.miglior_qual=""
+
+                  }
+
+                  if(this.dati_comune.costi_tqrif_flag == true)
+                  {
+                    if(this.dati_comune.costi_tqrif == 0)
+                    {
+                      this.sections[0].completed = 0
+                    }
+                  }else {
+                    this.dati_comune.costi_tqrif=0
+
+                  }
+
+                  if (this.dati_comune.ton_anno_1 === 0  || this.dati_comune.ton_anno_2 === 0 || this.dati_comune.ton_anno_3 === 0)
+                  {
+                    this.sections[1].completed = 0
+                    console.log("incompleto")
+
+                  }
+
+                  if (this.dati_comune.xcent_raccolta_anno_1 == 0 || this.dati_comune.xcent_raccolta_anno_2 == 0 || this.dati_comune.xcent_raccolta_anno_3 == 0)
+                  {
+
+                    this.sections[1].completed = 0
+                  }
+
+
+                  if(this.dati_comune.xcent_media_imp == 0 ||
+                  this.dati_comune.xcent_media_imp_org == 0 ||
+                  this.dati_comune.xcent_media_imp_cart == 0 ||
+                  this.dati_comune.xcent_media_imp_plastica == 0 ||
+                  this.dati_comune.xcent_media_imp_metallo == 0 ||
+                  this.dati_comune.xcent_media_imp_vetro == 0 )
+                  {
+
+                    this.sections[1].completed = 0
+                  }
+
+
+                  if(this.dati_comune.cont_commessa_anno1 == '' || this.dati_comune.cont_commessa_anno2 == '' || this.dati_comune.contratto_appalto == '' || this.dati_comune.ultimo_pef == '')
+                  {
+                    this.sections[2].completed = 0
+                  }
+
+                  this.current_section = this.dati_comune['current_section']
+                  this.$axios.$get(`/get_company_data`)
+                  .then((response) => {
+                    this.azienda = response
+                    if(this.azienda.pef_mis_o_ric === "CALCOLATO")
+                    {
+                      if( this.dati_comune.ris_ula_o_ore === "" ||
+                          this.dati_comune.tot_app <= 0 ||
+                          this.dati_comune.app_servizi <= 0 ||
+                          this.dati_comune.app_rifiuti_diff <= 0 ||
+                          this.dati_comune.app_rifiuti_indiff <= 0 ||
+                          this.dati_comune.app_igiene <= 0 )
+                        {
+                          this.sections[0].completed = 0
+                        }
+                    }
+                    for (const section of this.sections)
+
+                      if (section.num >= 1 && section.num  <= 3)
+                      {
+                          if (section.completed)
+                            section.class = 'text-success'
+                          else
+                            section.class = 'text-danger'
+                      }
+                      else
+                      {
+                        section.class = 'text-primary'
+                      }
+
+
+                    this.$axios.$post(`/get_costi_smaltimento` ,{id: this.id})
+                    .then((response) => {
+                      this.costi_smaltimento = response
+                      this.loaded = true
+
+                    })
+                  })
+                })
+              })
+            })
+          })
         })
-
-        this.$axios.$get(`/role`)
-        .then((response) => {
-          this.role = response
-        })
-
-        this.$axios.$post(`/get_dati_comune`,{id: this.id})
-        .then((response) => {
-          this.dati_comune = response
-          if(this.dati_comune.altri_gestori_flag == true)
-          {
-            if(this.dati_comune.altri_gestori == "")
-            {
-              this.sections[0].completed = 0
-            }
-          }else {
-            this.dati_comune.altri_gestori=""
-
-          }
-
-          if(this.dati_comune.serv_exra_arera_flag == true)
-          {
-            if(this.dati_comune.serv_exra_arera == "")
-            {
-              this.sections[0].completed = 0
-            }
-          }else {
-            this.dati_comune.serv_exra_arera=""
-
-          }
-
-          if(this.dati_comune.lav_in_corso_flag == true)
-          {
-            if(this.dati_comune.lav_in_corso == "")
-            {
-              this.sections[0].completed = 0
-            }
-          }else {
-            this.dati_comune.lav_in_corso=""
-
-          }
-
-          if(this.dati_comune.var_gest_flag == true)
-          {
-            if(this.dati_comune.var_gest == "")
-            {
-              this.sections[0].completed = 0
-
-            }
-          }else {
-            this.dati_comune.var_gest=""
-
-          }
-
-          if(this.dati_comune.miglior_qual_flag == true)
-          {
-            if(this.dati_comune.miglior_qual == "")
-            {
-              this.sections[0].completed = 0
-            }
-          }else {
-            this.dati_comune.miglior_qual=""
-
-          }
-
-          if(this.dati_comune.costi_tqrif_flag == true)
-          {
-            if(this.dati_comune.costi_tqrif == 0)
-            {
-              this.sections[0].completed = 0
-            }
-          }else {
-            this.dati_comune.costi_tqrif=0
-
-          }
-
-          if (this.dati_comune.ton_anno_1 === 0  || this.dati_comune.ton_anno_2 === 0 || this.dati_comune.ton_anno_3 === 0)
-          {
-            this.sections[1].completed = 0
-            console.log("incompleto")
-
-          }
-
-          if (this.dati_comune.xcent_raccolta_anno_1 == 0 || this.dati_comune.xcent_raccolta_anno_2 == 0 || this.dati_comune.xcent_raccolta_anno_3 == 0)
-          {
-
-            this.sections[1].completed = 0
-          }
-
-
-          if(this.dati_comune.xcent_media_imp == 0 ||
-          this.dati_comune.xcent_media_imp_org == 0 ||
-          this.dati_comune.xcent_media_imp_cart == 0 ||
-          this.dati_comune.xcent_media_imp_plastica == 0 ||
-          this.dati_comune.xcent_media_imp_metallo == 0 ||
-          this.dati_comune.xcent_media_imp_vetro == 0 )
-          {
-
-            this.sections[1].completed = 0
-          }
-
-
-          if(this.dati_comune.cont_commessa_anno1 == '' || this.dati_comune.cont_commessa_anno2 == '' || this.dati_comune.contratto_appalto == '' || this.dati_comune.ultimo_pef == '')
-          {
-            this.sections[2].completed = 0
-          }
-
-          this.current_section = this.dati_comune['current_section']
-
-        })
-
-        this.$axios.$get(`/get_company_data`)
-        .then((response) => {
-          this.azienda = response
-          if(this.azienda.pef_mis_o_ric === "CALCOLATO")
-          {
-            if( this.dati_comune.ris_ula_o_ore === "" ||
-                this.dati_comune.tot_app <= 0 ||
-                this.dati_comune.app_servizi <= 0 ||
-                this.dati_comune.app_rifiuti_diff <= 0 ||
-                this.dati_comune.app_rifiuti_indiff <= 0 ||
-                this.dati_comune.app_igiene <= 0 )
-              {
-                this.sections[0].completed = 0
-              }
-          }
-        })
-
-        this.$axios.$post(`/get_costi_smaltimento` ,{id: this.id})
-        .then((response) => {
-          this.costi_smaltimento = response
-        })
-
-
-
-
-        this.loaded = true
-
       } catch (e) {
         console.log(e)
       }
+
+
 
 
 
@@ -826,7 +889,6 @@ import Footer from '../components/Footer'
            if (num >= 1 &&  num <= this.sections.length)
            {
                 this.current_section = num
-
           }
 
         },
@@ -875,7 +937,6 @@ import Footer from '../components/Footer'
               var azienda = this.dati_comune.azienda
               azienda = new File([azienda],azienda)
               formData.append("azienda", azienda ,this.dati_comune.azienda);
-
               this.$axios.post('/upload_comune_files',formData,{
 
                    headers: {
@@ -1165,12 +1226,32 @@ import Footer from '../components/Footer'
 
           .then(response => {
 
-              if(response.status >= 200 && response.status <= 208)
+              var formData = new FormData();
+              var upload = false
+              var file = false
+              //this.loading=true
+
+              for (const item of this.efficienzaQualDiffItems)
               {
-                this.save.msg="Salvataggio avvenuto con successo!"
-                this.save.color="success"
-                this.$bvModal.show('bv-modal-save-msg')
+                if (item.prefatture_a_2 == '[object File]')
+                {
+                  file = new File([item.prefatture_a_2],item.prefatture_a_2.name)
+                  formData.append(item.consorzio, file ,file.name)
+                }
+                  formData.append(item.consorzio, item.quantita_in_ton)
+                  formData.append(item.consorzio, item.pretrattamento)
               }
+              formData.append('comune',this.dati_comune.comune)
+              this.$axios.post('/saveEfficienzaQualitaDifferenziata', formData,{
+                 headers: {
+                   'Content-Type': "multipart/form-data; charset='utf-8';",
+
+                 },
+              }).then((response) => {
+                //window.location.reload()
+                this.uploadFiles(this.files)
+                })
+
           })
 
           .catch(error => {
@@ -1181,7 +1262,6 @@ import Footer from '../components/Footer'
 
           });
 
-          this.uploadFiles(files)
 
         }
     },
@@ -1189,6 +1269,8 @@ import Footer from '../components/Footer'
 
     data()
     {
+      const booleanChoices = [{"value":true,"text":"SI"},{"value":false,"text":"NO"}]
+
 
         return {
                   is_logged:undefined,
@@ -1197,9 +1279,17 @@ import Footer from '../components/Footer'
                   role:'Normal',
                   dati_comune:[],
                   azienda:[],
+                  efficienzaQualDifFFields: [
+                    { key:'consorzio',label: 'Consorzio di filiera /Rifiuto',type:'text',default:0},
+                    { key:'pretrattamento',label: 'Pretrattamento (impianto intermedio)',type:'radio',choices:booleanChoices},
+                    { key:'quantita_in_ton',label: 'Quantità in tonnellate raccolte e trasportate a pretrattamento / impianto intermedio [ton.]',type:'number',default:0},
+                    { key:'prefatture_a_2',label: 'Upload file .zip prefatture competenza a-2',type:'file',default:0}
+                  ],
+                  efficienzaQualDiffItems: undefined,
                   sections:
                   [
                     {num:1 , text:"Dati Generali",completed:1},
+                    {num:5 , text:"Efficienza e qualità differenziata a-2",completed:1},
                     {num:2 , text:"Dati tecnici dell'appalto",completed:1},
                     {num:3 , text:"Documenti riferiti all'appalto",completed:1},
                     {num:4 , text:"Costi Smaltimento / Trattamento",completed:1}
@@ -1276,7 +1366,7 @@ import Footer from '../components/Footer'
                   dim:6,
                 }
 
-            },
+    },
 
 
 

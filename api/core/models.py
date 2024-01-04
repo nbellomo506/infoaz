@@ -75,8 +75,6 @@ class CustomUserManager(BaseUserManager):
         return user
 
 
-
-
 class Azienda(models.Model):
 
     ragione_sociale = models.CharField(max_length = 255,default='')
@@ -260,6 +258,24 @@ class DatiComune(models.Model):
 
     def __str__(self):
         return f'{self.azienda},{self.comune}'
+
+
+
+class EfficienzaQualitaDifferenziata(models.Model):
+
+    azienda =  models.ForeignKey(Azienda, default = '', null=True,blank=True,on_delete=models.CASCADE)
+
+    consorzio = models.CharField(max_length=1025,blank=True)
+    pretrattamento = models.BooleanField(default = False)
+    quantita_in_ton = models.FloatField(default = 0)
+    prefatture_a_2 = models.CharField(max_length=1024,blank=True)
+
+    class Meta:
+        unique_together = (('azienda','consorzio'))
+
+    def __str__(self):
+        return f'AZIENDA : {self.azienda}, CONSORZIO : {self.consorzio}'
+
 
 class CostoSmaltimento(models.Model):
 
