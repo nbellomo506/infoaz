@@ -138,7 +138,7 @@ import InputOutputNavTab from '../components/InputOutputNavTab'
           </b-row>
         </b-container>
         <Footer v-if="loaded" :visible="true"/>
-      <table v-for="(dati_comune,index) in dati_comuni" :id="`tab${index}`" border="1" >
+      <table v-for="(dati_comune,index) in dati_comuni" :id="`tab${index}`" border="1" hidden>
         <tr>
           <td>
             <h6>{{index+1}}. Comune:</h6>
@@ -258,6 +258,10 @@ import InputOutputNavTab from '../components/InputOutputNavTab'
           <td>{{dati_comune.costi_tqrif}}</td>
         </tr>
 
+        <tr>
+          <td>ID Arera</td>
+          <td>{{dati_comune.idArera}}</td>
+        </tr>
 
         <tr align="center">
           <td colspan="2"><b>Dati tecnici dell'appalto</b></td>
@@ -305,46 +309,6 @@ import InputOutputNavTab from '../components/InputOutputNavTab'
         <tr>
           <td>2022</td>
           <td>{{dati_comune.xcent_raccolta_anno_3}}</td>
-        </tr>
-
-
-        <tr>
-          <td>Percentuali media delle impurità riscontrate nell'ultima annualità nelle frazioni differenziate</td>
-          <td>{{dati_comune.xcent_media_imp}}</td>
-        </tr>
-
-
-        <tr>
-          <td>Rifiuti organici</td>
-          <td>{{dati_comune.xcent_media_imp_org}}</td>
-        </tr>
-
-
-        <tr>
-          <td>Carta e cartone</td>
-          <td>{{dati_comune.xcent_media_imp_cart}}</td>
-        </tr>
-
-        <tr align="center">
-          <td colspan="2">Imballaggi</td>
-        </tr>
-
-        <tr>
-          <td>Plastica</td>
-          <td>{{dati_comune.xcent_media_imp_plastica}}</td>
-        </tr>
-
-
-        <tr>
-          <td>Metallo</td>
-          <td>{{dati_comune.xcent_media_imp_metallo}}</td>
-        </tr>
-
-
-
-        <tr>
-          <td>Vetro</td>
-          <td>{{dati_comune.xcent_media_imp_vetro}}</td>
         </tr>
 
         <tr align="center">
@@ -403,7 +367,9 @@ import InputOutputNavTab from '../components/InputOutputNavTab'
         </tr>
 
         <tr>
-          <td>Anno</td><td>Impianto di smaltimento</td>
+          <td></td>
+          <td>Anno</td>
+          <td>Impianto di smaltimento</td>
           <td>Codice CER/Tipo di rifiuto</td>
           <td>Tipologia costo</td>
           <td>Quantitativi conferiti [ton]</td>
@@ -526,7 +492,8 @@ import InputOutputNavTab from '../components/InputOutputNavTab'
           }
 
           return costi_smaltimento.map((item) => {
-            return `<tr><td>${item.anno}</td><td>${item.imp_smalt}</td><td>${item.tipo_rifiuto}</td><td>${item.tipo_costo}</td><td>${item.tons}</td><td>${item.prezzo_unitario}</td><td>${item.importo}</td></tr>`;
+
+            return `<tr><td>${item.gestore}</td><td>${item.anno}</td><td>${item.imp_smalt}</td><td>${item.tipo_rifiuto}</td><td>${item.tipo_costo}</td><td>${item.tons}</td><td>${item.prezzo_unitario}</td><td>${item.importo}</td></tr><td>${item.tipoImpianto}</td><td>${item.gestoreImpianto}</td><td>${item.partitaIvaGestoreImpianto}</td><td>${item.comuneSedeImpianto}</td><td>${item.impiantoDestinazione}</td><td>${item.note}</td>`;
           }).join("");
         };
 
