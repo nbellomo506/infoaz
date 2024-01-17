@@ -423,12 +423,13 @@ def save_dati_comune(request):
                             obj.xcent_raccolta_anno_1 = body['xcent_raccolta_anno_1']
                             obj.xcent_raccolta_anno_2 = body['xcent_raccolta_anno_2']
                             obj.xcent_raccolta_anno_3 = body['xcent_raccolta_anno_3']
-                            obj.xcent_media_imp = body['xcent_media_imp']
-                            obj.xcent_media_imp_org = body['xcent_media_imp_org']
-                            obj.xcent_media_imp_cart = body['xcent_media_imp_cart']
-                            obj.xcent_media_imp_plastica = body['xcent_media_imp_plastica']
-                            obj.xcent_media_imp_metallo = body['xcent_media_imp_metallo']
-                            obj.xcent_media_imp_vetro = body['xcent_media_imp_vetro']
+                            #obj.xcent_media_imp = body['xcent_media_imp']
+                            #obj.xcent_media_imp_org = body['xcent_media_imp_org']
+                            #obj.xcent_media_imp_cart = body['xcent_media_imp_cart']
+                            #obj.xcent_media_imp_plastica = body['xcent_media_imp_plastica']
+                            #obj.xcent_media_imp_metallo = body['xcent_media_imp_metallo']
+                            #obj.xcent_media_imp_vetro = body['xcent_media_imp_vetro']
+                            obj.idArera = body['idArera']
                             obj.current_section = body['current_section']
                             obj.completed = body['completed']
 
@@ -757,6 +758,7 @@ def add_costi_smaltimento(request):
     body = json.loads(body_unicode)
 
     daticomune = body['daticomune']
+    gestore = body['gestore']
     imp_smalt = body['imp_smalt']
     tipo_rifiuto = body['tipo_rifiuto']
     tipo_costo = body['tipo_costo']
@@ -765,6 +767,13 @@ def add_costi_smaltimento(request):
     prezzo_unitario = body['prezzo_unitario']
     importo =  body['importo']
 
+    tipoImpianto=body["tipoImpianto"]
+    gestoreImpianto=body["gestoreImpianto"]
+    partitaIvaGestoreImpianto=body["partitaIvaGestoreImpianto"]
+    comuneSedeImpianto=body["comuneSedeImpianto"]
+    impiantoDestinazione=body["impiantoDestinazione"]
+    note=body["note"]
+
     if 'logged' and 'azienda' in request.session is not None:
         if request.session['logged'] == True:
             if request.session['azienda'] > 0 and request.session['is_assigned'] == True:
@@ -772,7 +781,11 @@ def add_costi_smaltimento(request):
                  qs = DatiComune.objects.get(pk = daticomune ,azienda = request.session['azienda'])
                  serializer = DatiComuneSerializer(qs)
 
-                 obj = CostoSmaltimento.objects.create(daticomune = qs,imp_smalt=imp_smalt,tipo_rifiuto=tipo_rifiuto,tipo_costo=tipo_costo,anno=anno,tons=tons,prezzo_unitario=prezzo_unitario,importo=importo)
+                 obj = CostoSmaltimento.objects.create(daticomune = qs,gestore=gestore,imp_smalt=imp_smalt,tipo_rifiuto=tipo_rifiuto,
+                 tipo_costo=tipo_costo,anno=anno,tons=tons,prezzo_unitario=prezzo_unitario,importo=importo,tipoImpianto=tipoImpianto,
+                 gestoreImpianto=gestoreImpianto,partitaIvaGestoreImpianto=partitaIvaGestoreImpianto,comuneSedeImpianto=comuneSedeImpianto,
+                 impiantoDestinazione=impiantoDestinazione,note=note)
+
                  obj.save()
 
                  return JsonResponse(serializer.data,content_type="application/json",safe=False)
@@ -792,6 +805,7 @@ def update_costi_smaltimento(request):
 
     id = body['id']
     daticomune = body['daticomune']
+    gestore = body['gestore']
     imp_smalt = body['imp_smalt']
     tipo_rifiuto = body['tipo_rifiuto']
     tipo_costo = body['tipo_costo']
@@ -799,6 +813,13 @@ def update_costi_smaltimento(request):
     tons = body['tons']
     prezzo_unitario = body['prezzo_unitario']
     importo =  body['importo']
+
+    tipoImpianto=body["tipoImpianto"]
+    gestoreImpianto=body["gestoreImpianto"]
+    partitaIvaGestoreImpianto=body["partitaIvaGestoreImpianto"]
+    comuneSedeImpianto=body["comuneSedeImpianto"]
+    impiantoDestinazione=body["impiantoDestinazione"]
+    note=body["note"]
 
     if 'logged' and 'azienda' in request.session is not None:
         if request.session['logged'] == True:
@@ -809,12 +830,20 @@ def update_costi_smaltimento(request):
 
                  obj = CostoSmaltimento.objects.get(pk = id)
                  obj.imp_smalt = body['imp_smalt']
+                 obj.gestore = body['gestore']
                  obj.tipo_rifiuto = body['tipo_rifiuto']
                  obj.tipo_costo = body['tipo_costo']
                  obj.anno = body['anno']
                  obj.tons = body['tons']
                  obj.prezzo_unitario = body['prezzo_unitario']
                  obj.importo = body['importo']
+
+                 obj.tipoImpianto=body["tipoImpianto"]
+                 obj.gestoreImpianto=body["gestoreImpianto"]
+                 obj.partitaIvaGestoreImpianto=body["partitaIvaGestoreImpianto"]
+                 obj.comuneSedeImpianto=body["comuneSedeImpianto"]
+                 obj.impiantoDestinazione=body["impiantoDestinazione"]
+                 obj.note=body["note"]
                  obj.save()
 
                  return JsonResponse(serializer.data,content_type="application/json",safe=False)

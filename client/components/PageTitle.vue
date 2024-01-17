@@ -16,7 +16,7 @@
 
   <template>
     <div>
-      <b-container>
+      <b-container class="pl-0">
         <b-row>
           <b-col>
             <h1>{{name}}</h1>

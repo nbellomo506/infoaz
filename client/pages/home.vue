@@ -138,7 +138,7 @@ import InputOutputNavTab from '../components/InputOutputNavTab'
           </b-row>
         </b-container>
         <Footer v-if="loaded" :visible="true"/>
-      <table v-for="(dati_comune,index) in dati_comuni" :id="`tab${index}`" border="1" hidden>
+      <table v-for="(dati_comune,index) in dati_comuni" :id="`tab${index}`" border="1" >
         <tr>
           <td>
             <h6>{{index+1}}. Comune:</h6>
@@ -371,6 +371,33 @@ import InputOutputNavTab from '../components/InputOutputNavTab'
           <td>Ultimo PEF validato dall'ETC (Delibera + Relazione con allegati in file .zip)</td>
           <td>{{dati_comune.ultimo_pef}}</td>
         </tr>
+
+        <tr>
+          <th>Consorzio di filiera /Rifiuto</th>
+          <th>Pretrattamento (impianto intermedio)</th>
+          <th>Quantità in tonnellate raccolte e trasportate a pretrattamento / impianto intermedio [ton.]</th>
+          <th>Upload file .zip prefatture competenza a-2</th>
+        </tr>
+        <tr v-for="item in efficienzaQualDiff" class="border" >
+          <td>
+            {{item.consorzio}}
+          </td>
+          <td>
+            <div v-if="item.pretrattamento">
+              SI
+            </div>
+            <div v-else>
+              NO
+            </div>
+          </td>
+          <td>
+            {{item.quantita_in_ton}}
+          </td>
+          <td>
+            {{item.prefatture_a_2}}
+          </td>
+        </tr>
+
         <tr align="center">
           <td colspan="7"><b>Costi Smaltimento / Trattamento</b></td>
         </tr>
@@ -441,7 +468,11 @@ import InputOutputNavTab from '../components/InputOutputNavTab'
                   this.$axios.$get(`/get_company_data`)
                   .then((response) => {
                     this.azienda = response
-                    this.loaded = true
+                    this.$axios.$get(`/getEfficienzaQualitaDifferenziata`)
+                    .then((response) => {
+                      this.efficienzaQualDiff = response
+                      this.loaded = true
+                    })
                   })
                 })
               })
@@ -461,7 +492,8 @@ import InputOutputNavTab from '../components/InputOutputNavTab'
         role:'Normal',
         is_logged:undefined,
         is_company_set:undefined,
-        loaded:false
+        loaded:false,
+        efficienzaQualDiff:undefined
 
       }
     },

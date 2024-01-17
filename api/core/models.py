@@ -240,25 +240,18 @@ class DatiComune(models.Model):
     xcent_raccolta_anno_2 = models.FloatField(default = 0)
     xcent_raccolta_anno_3 = models.FloatField(default = 0)
 
-    xcent_media_imp = models.FloatField(default = 0)
-    xcent_media_imp_org = models.FloatField(default = 0)
-    xcent_media_imp_cart = models.FloatField(default = 0)
-    xcent_media_imp_plastica = models.FloatField(default = 0)
-    xcent_media_imp_metallo = models.FloatField(default = 0)
-    xcent_media_imp_vetro = models.FloatField(default = 0)
-
     cont_commessa_anno1 = models.CharField(max_length = 512,default = '',blank = True)
     cont_commessa_anno2 = models.CharField(max_length = 512,default = '',blank = True)
     contratto_appalto = models.CharField(max_length = 512,default = '',blank = True)
     ultimo_pef = models.CharField(max_length = 512,default = '',blank = True)
 
+    idArera = models.CharField(default="",max_length=128,blank=True)
 
 
     completed = models.BooleanField(default = 0)
 
     def __str__(self):
         return f'{self.azienda},{self.comune}'
-
 
 
 class EfficienzaQualitaDifferenziata(models.Model):
@@ -290,6 +283,12 @@ class CostoSmaltimento(models.Model):
     )
     tipo_costo = models.CharField(default='', max_length=3, choices=scelte_tipo_costo)
 
+    scelte_gestore = (
+        [('GESTORE', 'GESTORE'),
+        ('COMUNE', 'COMUNE')]
+    )
+    gestore = models.CharField(default='', max_length=16, choices=scelte_gestore)
+
     scelte_anno = (
         ('2022', '2022'),
         ('2023', '2023')
@@ -298,3 +297,10 @@ class CostoSmaltimento(models.Model):
     tons = models.FloatField(default='NULL')
     prezzo_unitario = models.FloatField(default='NULL')
     importo = models.FloatField(default='NULL')
+
+    tipoImpianto = models.CharField(max_length = 256,default=None,null=True)
+    gestoreImpianto = models.CharField(max_length = 256,default=None,null=True)
+    partitaIvaGestoreImpianto = models.CharField(max_length = 11,default=None,null=True)
+    comuneSedeImpianto = models.CharField(max_length = 128,default=None,null=True)
+    impiantoDestinazione = models.CharField(max_length = 512,default=None,null=True)
+    note = models.CharField(max_length = 1024,default=None,null=True)

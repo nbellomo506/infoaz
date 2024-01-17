@@ -87,7 +87,7 @@ class DatiComuneSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = DatiComune
-        fields = ("id","current_section","azienda","nome_azienda","comune","nome_regione","nome_provincia","nome_comune","ris_ula_o_ore","tot_app","app_servizi","app_rifiuti_diff","app_rifiuti_indiff","app_igiene",
+        fields = ("id","idArera","current_section","azienda","nome_azienda","comune","nome_regione","nome_provincia","nome_comune","ris_ula_o_ore","tot_app","app_servizi","app_rifiuti_diff","app_rifiuti_indiff","app_igiene",
                     "altri_gestori_flag",
                     "altri_gestori",
                     "appalto_attuale_data",
@@ -116,12 +116,6 @@ class DatiComuneSerializer(serializers.ModelSerializer):
                     "xcent_raccolta_anno_1",
                     "xcent_raccolta_anno_2",
                     "xcent_raccolta_anno_3",
-                    "xcent_media_imp",
-                    "xcent_media_imp_org",
-                    "xcent_media_imp_cart",
-                    "xcent_media_imp_plastica",
-                    "xcent_media_imp_metallo",
-                    "xcent_media_imp_vetro",
                     "cont_commessa_anno1",
                     "cont_commessa_anno2",
                     "contratto_appalto",
@@ -138,4 +132,10 @@ class EfficienzaQualitaDifferenziataSerializer(serializers.ModelSerializer):
 class CostoSmaltimentoSerializer(serializers.ModelSerializer):
     class Meta:
         model = CostoSmaltimento
-        fields = ("id", "daticomune" ,"imp_smalt", "tipo_rifiuto","tipo_costo","anno","tons","prezzo_unitario","importo")
+        fields = ("id", "daticomune" ,"imp_smalt", "tipo_rifiuto","tipo_costo","gestore","anno","tons","prezzo_unitario","importo",
+                "tipoImpianto",
+                "gestoreImpianto",
+                "partitaIvaGestoreImpianto",
+                "comuneSedeImpianto",
+                "impiantoDestinazione",
+                "note")

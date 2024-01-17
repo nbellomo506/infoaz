@@ -21,12 +21,6 @@
         </div>
 
         <b-container fluid class="bg-infowaste p-3 m-0 b-0">
-          <b-row v-if="browserAlert === true">
-            <b-col class="text-center" cols="12">
-              Sito ottimizzato per <a href="https://www.google.it/intl/it/chrome">Google Chrome</a>
-               e <a href="https://www.microsoft.com/it-it/edge/download">Microsoft Edge</a>
-            </b-col>
-          </b-row>
           <b-row>
             <b-col offset-xl="2" xl="2">
               <b-button v-if="is_logged === true" class="shadow-sm" :to="locations.home" variant="white">

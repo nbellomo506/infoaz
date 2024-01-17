@@ -213,8 +213,13 @@ import Footer from '../components/Footer'
                         <FieldTitle req="yes" letter="a" name="costi_tqrif" description="Importo dei costi previsti per il TQRIF" />
                         <input class="form-control" v-model="dati_comune.costi_tqrif"   type="number">
                       </div>
-
                     </b-col>
+
+                    <b-col :class="container_specs">
+                      <FieldTitle name="idArera" description="ID Arera" />
+                      <input class="form-control" v-model="dati_comune.idArera" type="text">
+                    </b-col>
+
                   </b-row>
                 </div>
 
@@ -317,48 +322,6 @@ import Footer from '../components/Footer'
                       </b-col>
                     </b-row>
                   </b-container>
-                    <b-row>
-                      <b-col :class="container_specs" xl="12">
-                        <FieldTitle   name="tons" req="yes" description="Percentuale media delle impurità riscontrate nell’annualità 2022 nelle frazioni differenziate." />
-                        <input  class="form-control" v-model="dati_comune.xcent_media_imp" type="number">
-                      </b-col>
-                    </b-row>
-
-                    <b-row>
-                    <b-col xl="3" class="mt-5 pl-3 pr-3">
-                      <FieldTitle letter="a" req="yes" name="" description="Rifiuti organici" />
-                      <input class="form-control" v-model="dati_comune.xcent_media_imp_org" type="number">
-                    </b-col>
-                    <b-col xl="3" class="mt-5 pl-3 pr-3">
-                      <FieldTitle letter="b" req="yes" name="" description="Carta e cartone" />
-                      <input class="form-control" v-model="dati_comune.xcent_media_imp_cart" type="number">
-                    </b-col>
-
-                    <b-col class="borders bg-grey rounded mt-3" xl="6">
-                      <b-container class="m-0 p-0 b-0">
-                        <b-row class="m-0 p-0 b-0">
-                          <b-col offset-xl="4" xl="4">
-                            <b>Imballaggi</b>
-                          </b-col>
-                        </b-row>
-
-                        <b-row class="m-0 p-0 pb-3 b-0">
-                          <b-col xl="4" class="p-0 pr-2">
-                            <FieldTitle letter="c" req="yes" name="" description="Plastica" />
-                            <input class="form-control" v-model="dati_comune.xcent_media_imp_plastica" type="number">
-                          </b-col>
-                          <b-col xl="4" class="p-0 pr-2">
-                            <FieldTitle letter="d" req="yes" name="" description="Metallo" />
-                            <input class="form-control" v-model="dati_comune.xcent_media_imp_metallo" type="percent">
-                          </b-col>
-                          <b-col xl="4" class="p-0 pr-2">
-                            <FieldTitle letter="e" req="yes" name="" description="Vetro" />
-                            <input class="form-control" v-model="dati_comune.xcent_media_imp_vetro" type="number">
-                          </b-col>
-                        </b-row>
-                      </b-container>
-                    </b-col>
-                    </b-row>
                 </div>
 
                 <div v-bind:class="{'disabled-container' : azienda.report_is_sent || azienda.report_attempts <= 0 }" class="p-0 b-0 m-0" v-if="current_section === 3">
@@ -468,136 +431,231 @@ import Footer from '../components/Footer'
           </b-row>
         </b-container>
 
-
         <b-row v-bind:class="{'disabled-container' : azienda.report_is_sent || azienda.report_attempts <= 0 }" v-if="current_section === 4" class="ml-3 mr-3 mb-5 pb-5">
-          <b-col xl="12">
+          <b-col>
             <h3>Costi Smaltimento / Trattamento</h3>
             <p>
               Per inserire una nuova riga dopo la sua compilazione premere il tasto <b>AGGIUNGI</b> e quindi il tasto <b>SALVA</b>.
             </p>
-            <b-row>
-              <b-col class="text-center" xl="1">
+            <tr class="border borders">
+              <td class="text-center">
+                Gestore che sostiene i costi di trattamento /recupero /
+                smaltimento
+              </td>
+              <td class="text-center">
                 Anno
-              </b-col>
-              <b-col class="text-center" xl="2">
+              </td>
+              <td class="text-center">
                 Impianto di smaltimento
-              </b-col>
-              <b-col class="text-center" xl="2">
+              </td>
+              <td class="text-center">
                 Codice CER/Tipo di rifiuto
-              </b-col>
-              <b-col class="text-center" xl="1">
+              </td>
+              <td class="text-center">
                 Tipologia costo
-              </b-col>
-              <b-col class="text-center" xl="1">
+              </td>
+              <td class="text-center">
                 Quantitativi conferiti [ton]
-              </b-col>
-              <b-col class="text-center" xl="2">
-              Prezzo unitario con IVA [€\ton]
-              </b-col>
-              <b-col class="text-center" xl="2">
-              Importo IVA Inclusa
-              </b-col>
-            </b-row>
-            <b-row class="bg-light rounded p-3">
-              <b-col class="p-0 pl-1" xl="1">
+              </td>
+              <td class="text-center" >
+                Prezzo unitario con IVA [€\ton]
+              </td>
+              <td class="text-center">
+                Importo IVA Inclusa
+              </td>
+              <td class="text-center">
+                Tipologia impianto di
+                destinazione
+              </td>
+              <td class="text-center">
+                Gestore Impianto
+              </td>
+              <td class="text-center">
+                Partita IVA
+                Gestore
+                Impianto
+              </td>
+              <td class="text-center">
+                Comune sede
+                Impianto
+              </td>
+              <td class="text-center sfondoArancio">
+                In caso di invio
+                a impianto
+                intermedio,
+                indicare
+                impianto di
+                destinazione
+                finale dei flussi
+                in uscita
+              </td>
+              <td class="text-center">
+                NOTE
+              </td>
+            </tr>
+
+            <tr class="bg-light rounded p-3">
+              <select class="form-control" v-model="add.gestore" >
+                <option value="GESTORE">GESTORE</option>
+                <option value="COMUNE">COMUNE</option>
+              </select>
+
+              <td class="p-0 pl-1" xl="1">
                 <select class="form-control" v-model="add.anno">
                   <option value="2022">2022</option>
                   <option value="2023">2023</option>
                 </select>
-              </b-col>
+              </td>
 
-              <b-col xl="2">
+              <td>
                 <textarea class="form-control" v-model="add.imp_smalt" ></textarea>
                 <b-alert class="mt-2" v-if="add.msg.imp_smalt.length > 0" variant="danger" dismissible show> {{add.msg.imp_smalt}} </b-alert>
 
-              </b-col>
+              </td>
 
-              <b-col xl="2">
+              <td>
                 <textarea class="form-control" v-model="add.tipo_rifiuto" ></textarea>
                 <b-alert class="mt-2" v-if="add.msg.tipo_rifiuto.length > 0" variant="danger" dismissible show>
                   {{add.msg.tipo_rifiuto}}
                 </b-alert>
-              </b-col>
+              </td>
 
-              <b-col class="p-0" xl="1">
+              <td class="p-0">
                 <select class="form-control" v-model="add.tipo_costo" >
                   <option value="CTS">CTS</option>
                   <option value="CTR">CTR</option>
                 </select>
-              </b-col>
+              </td>
 
-              <b-col xl="1">
+              <td>
                 <input class="form-control pl-1" min="0" @change=calcoloImporto() v-model="add.tons" type="number">
-              </b-col>
+              </td>
 
-              <b-col xl="2">
+              <td>
                 <input class="form-control pl-1" min="0" @change=calcoloImporto() v-model="add.prezzo_unitario" type="number">
-              </b-col>
+              </td>
 
-              <b-col xl="2">
+              <td>
                 <input class="form-control pl-1" min="0" v-model="add.importo" type="number">
-              </b-col>
+              </td>
 
-              <b-col xl="1">
+              <td>
+                <b-select v-model="add.tipoImpianto" :options="tipologieImpiantoChoices"></b-select>
+              </td>
+
+              <td>
+                <input class="form-control pl-1" v-model="add.gestoreImpianto" type="text">
+              </td>
+
+              <td>
+                <input class="form-control pl-1" v-model="add.partitaIvaGestoreImpianto" type="text">
+                <b-alert class="mt-2" v-if="add.msg.partitaIvaGestoreImpianto.length > 0" variant="danger" dismissible show>
+                  {{add.msg.partitaIvaGestoreImpianto}}
+                </b-alert>
+              </td>
+
+              <td>
+                <input class="form-control pl-1" v-model="add.comuneSedeImpianto" type="text">
+              </td>
+
+              <td>
+                <input class="form-control pl-1" v-model="add.impiantoDestinazione" type="text">
+              </td>
+
+              <td>
+                <input class="form-control pl-1" v-model="add.note" type="text">
+              </td>
+
+              <td>
                 <b-button @click="aggiungiExtra()" variant="infowaste-2" name="button">
                   Aggiungi
                 </b-button>
-              </b-col>
-            </b-row>
+              </td>
+            </tr>
 
-            <b-row class="border rounded p-3"  v-for="(extra,index) in costi_smaltimento" v-bind:class = "(index % 2==0)?'bg-white':'bg-light'" :key="extra.id">
-              <b-col class="p-0 pl-1" xl="1">
+            <tr class="border rounded p-3"  v-for="(extra,index) in costi_smaltimento" v-bind:class = "(index % 2==0)?'bg-white':'bg-light'" :key="extra.id">
+              <select class="form-control" v-model="extra.gestore" >
+                <option value="GESTORE">GESTORE</option>
+                <option value="COMUNE">COMUNE</option>
+              </select>
+
+              <td class="p-0 pl-1" xl="1">
                 <select class="form-control" v-model="extra.anno">
                   <option value="2022">2022</option>
                   <option value="2023">2023</option>
                 </select>
-              </b-col>
+              </td>
 
-              <b-col xl="2">
+              <td>
                 <textarea class="form-control" v-model="extra.imp_smalt">{{extra.imp_smalt}}</textarea>
-              </b-col>
+              </td>
 
-              <b-col xl="2">
+              <td>
                 <textarea  class="form-control" v-model="extra.tipo_rifiuto">{{extra.tipo_rifiuto}}</textarea>
-              </b-col>
+              </td>
 
-              <b-col class="p-0 pr-1" xl="1">
+              <td class="p-0 pr-1">
                 <select class="form-control" v-model="extra.tipo_costo" >
                   <option value="CTS">CTS</option>
                   <option value="CTR">CTR</option>
                 </select>
-              </b-col>
+              </td>
 
-              <b-col xl="1">
+              <td xl="1">
                 <input class="form-control pl-1" min="0" type="number" @change="extra.importo = extra.tons * extra.prezzo_unitario" v-model="extra.tons">
-              </b-col>
+              </td>
 
-              <b-col xl="2">
+              <td xl="2">
                 <b-input class="form-control pl-1" min="0" type="number" @change="extra.importo = extra.tons * extra.prezzo_unitario" v-model="extra.prezzo_unitario"></b-input>
-              </b-col>
+              </td>
 
-              <b-col xl="2">
+              <td xl="2">
                 <input class="form-control pl-1" min="0" type="number" v-model="extra.importo">
-              </b-col>
+              </td>
 
-              <b-col xl="1">
+              <td>
+                <b-select v-model="extra.tipoImpianto" :options="tipologieImpiantoChoices"></b-select>
+              </td>
+
+              <td>
+                <input class="form-control pl-1" v-model="extra.gestoreImpianto" type="text">
+              </td>
+
+              <td>
+                <input class="form-control pl-1" v-model="extra.partitaIvaGestoreImpianto" type="text">
+
+              </td>
+
+              <td>
+                <input class="form-control pl-1" v-model="extra.comuneSedeImpianto" type="text">
+              </td>
+
+              <td>
+                <input class="form-control pl-1" v-model="extra.impiantoDestinazione" type="text">
+              </td>
+
+              <td>
+                <input class="form-control pl-1" v-model="extra.note" type="text">
+              </td>
+
+              <td>
                 <b-container class="pr-2 mb-5">
                   <b-row>
-                    <b-col xl="5 p-0">
+                    <td class="p-0">
                       <button type="button" @click=modificaExtra(extra) block class="btn btn-success" name="button">
                         <b-icon icon="check-square-fill"></b-icon>
                       </button>
-                    </b-col>
+                    </td>
 
-                    <b-col class="offset-xl-2 p-0" xl="5">
+                    <td class="p-0">
                       <button type="button" @click=eliminaExtra(extra.id) block class="btn btn-danger" name="button">
                         <b-icon icon="trash"></b-icon>
                       </button>
-                    </b-col>
+                    </td>
                   </b-row>
                 </b-container>
-              </b-col>
-            </b-row>
+              </td>
+            </tr>
           </b-col>
         </b-row>
       <Footer :visible="loaded"/>
@@ -683,6 +741,13 @@ import Footer from '../components/Footer'
       </b-modal>
     </main>
   </template>
+
+  <style>
+    .sfondoArancio
+    {
+      background-color:#ffc000;
+    }
+  </style>
 
   <script>
   import axios from '@nuxtjs/axios'
@@ -957,43 +1022,49 @@ import Footer from '../components/Footer'
         {
 
             if(this.add.imp_smalt == "")
-            {
               this.add.msg.imp_smalt = "Campo obbligatorio"
-            }else {
+            else
               this.add.msg.imp_smalt = ""
 
-            }
+
+            if(this.controllaPartitaIVA(this.add.partitaIvaGestoreImpianto) != true)
+              this.add.msg.partitaIvaGestoreImpianto = this.controllaPartitaIVA(this.add.partitaIvaGestoreImpianto)
+            else
+              this.add.msg.partitaIvaGestoreImpianto = ""
+
 
             if(this.add.tipo_rifiuto == "")
-            {
               this.add.msg.tipo_rifiuto = "Campo obbligatorio"
-            }else {
+            else
               this.add.msg.tipo_rifiuto = ""
 
-            }
 
             if(this.add.tipo_rifiuto.length > 0 && this.add.imp_smalt.length > 0)
-            {
+
                 this.$axios.post('/add_costi_smaltimento', {
 
                   daticomune:this.dati_comune.id,
+                  gestore:this.add.gestore,
                   imp_smalt: this.add.imp_smalt,
                   tipo_rifiuto: this.add.tipo_rifiuto,
                   tipo_costo: this.add.tipo_costo,
                   anno: this.add.anno,
                   tons: this.add.tons,
                   prezzo_unitario: this.add.prezzo_unitario,
-                  importo: this.add.importo
+                  importo: this.add.importo,
+
+                  tipoImpianto:this.add.tipoImpianto,
+                  gestoreImpianto:this.add.gestoreImpianto,
+                  partitaIvaGestoreImpianto:this.add.partitaIvaGestoreImpianto,
+                  comuneSedeImpianto:this.add.comuneSedeImpianto,
+                  impiantoDestinazione:this.add.impiantoDestinazione,
+                  note:this.add.note
 
                 })
                 .then((response) => {
                   this.saveDatiComune(this.dati_comune,this.files)
                   location.reload()
                 })
-
-
-            }
-
 
         },
 
@@ -1003,7 +1074,9 @@ import Footer from '../components/Footer'
           this.$axios.post('/update_costi_smaltimento',{
 
             id:extra.id,
+            gestore:extra.gestore,
             daticomune:this.dati_comune.id,
+            gestore: extra.gestore,
             imp_smalt: extra.imp_smalt,
             tipo_rifiuto: extra.tipo_rifiuto,
             tipo_costo: extra.tipo_costo,
@@ -1011,12 +1084,39 @@ import Footer from '../components/Footer'
             tons: extra.tons,
             prezzo_unitario: extra.prezzo_unitario,
             importo: extra.importo,
-
+            tipoImpianto:extra.tipoImpianto,
+            gestoreImpianto:extra.gestoreImpianto,
+            partitaIvaGestoreImpianto:extra.partitaIvaGestoreImpianto,
+            comuneSedeImpianto:extra.comuneSedeImpianto,
+            impiantoDestinazione:extra.impiantoDestinazione,
+            note:extra.note
           })
           this.saveDatiComune(this.dati_comune,this.files)
           location.reload()
 
         },
+
+        controllaPartitaIVA(pi)
+        {
+           if (pi == '')
+            return "Campo obbligatorio";
+           else if (!/^[0-9]{11}$/.test(pi))
+            return 'La partita IVA deve contenere 11 cifre.';
+           else {
+             var s = 0;
+             for (var i=0; i<=9; i+=2) {
+               s += pi.charCodeAt(i) - '0'.charCodeAt(0);
+             }
+             for (var i=1; i<=9; i+=2 ){
+               var c = 2*(pi.charCodeAt(i) - '0'.charCodeAt(0));
+               if (c > 9) c = c - 9;
+               s += c;
+             }
+             var controllo = (10 - s%10)%10;
+             if (controllo != pi.charCodeAt(10) - '0'.charCodeAt(0)) return true;
+             else return 'Partita IVA non corretta';
+           }
+         },
 
         async eliminaExtra(id)
         {
@@ -1213,12 +1313,8 @@ import Footer from '../components/Footer'
             xcent_raccolta_anno_1: dati_comune.xcent_raccolta_anno_1,
             xcent_raccolta_anno_2: dati_comune.xcent_raccolta_anno_2,
             xcent_raccolta_anno_3: dati_comune.xcent_raccolta_anno_3,
-            xcent_media_imp: dati_comune.xcent_media_imp,
-            xcent_media_imp_org: dati_comune.xcent_media_imp_org,
-            xcent_media_imp_cart: dati_comune.xcent_media_imp_cart,
-            xcent_media_imp_plastica: dati_comune.xcent_media_imp_plastica,
-            xcent_media_imp_metallo: dati_comune.xcent_media_imp_metallo,
-            xcent_media_imp_vetro: dati_comune.xcent_media_imp_vetro,
+            idArera: dati_comune.idArera,
+
             current_section: this.current_section,
             completed: is_completed
 
@@ -1273,6 +1369,12 @@ import Footer from '../components/Footer'
 
 
         return {
+                  tipologieImpiantoChoices : [{value:'Compostaggio',text:'Compostaggio'},
+                  {value:'Digestione Anaerobica',text:'Digestione Anaerobica'},
+                  {value:'Integrato Aerobico/Anaerobico',text:'Integrato Aerobico/Anaerobico'},
+                  {value:'Incenerimento con recupero di energia R1',text:'Incenerimento con recupero di energia R1'},
+                  {value:'Incenerimento senza recupero di energia D10',text:'Incenerimento senza recupero di energia D10'},
+                  {value:'TMB/TM',text:'TMB/TM'},{value:'Discarica',text:'Discarica'}],
                   is_logged:undefined,
                   is_company_set:undefined,
                   loaded:false,
@@ -1286,8 +1388,7 @@ import Footer from '../components/Footer'
                     { key:'prefatture_a_2',label: 'Upload file .zip prefatture competenza a-2',type:'file',default:0}
                   ],
                   efficienzaQualDiffItems: undefined,
-                  sections:
-                  [
+                  sections:[
                     {num:1 , text:"Dati Generali",completed:1},
                     {num:5 , text:"Efficienza e qualità differenziata a-2",completed:1},
                     {num:2 , text:"Dati tecnici dell'appalto",completed:1},
@@ -1299,26 +1400,22 @@ import Footer from '../components/Footer'
                   id:0,
 
 
-                  files:
-                  {
+                  files:{
                     cont_commessa_anno1:[],
                     cont_commessa_anno2:[],
                     contratto_appalto:[],
                     ultimo_pef:[]
                   },
-
                   help_message:"",
                   width:0,
                   page_id:0,
-                  save:
-                  {
+                  save:{
                     msg:'',
                     color:''
 
                   },
-
-                  add:
-                  {
+                  add:{
+                      gestore:"",
                       imp_smalt:"",
                       tipo_rifiuto:"",
                       tipo_costo:"CTS",
@@ -1330,11 +1427,18 @@ import Footer from '../components/Footer'
 
                         imp_smalt:"",
                         tipo_rifiuto:"",
+                        partitaIvaGestoreImpianto:""
+                      },
 
-                      }
+                      tipoImpianto:"",
+                      gestoreImpianto:"",
+                      partitaIvaGestoreImpianto:"",
+                      comuneSedeImpianto:"",
+                      impiantoDestinazione:"",
+                      note:"",
+
 
                   },
-
                   container_specs:'col-12 col-xl-6 p-2 pl-3 pr-3 mt-3 mb-3',
                   file1: null,
                   file2: null,
