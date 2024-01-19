@@ -479,7 +479,7 @@ import Footer from '../components/Footer'
                 Comune sede
                 Impianto
               </td>
-              <td class="text-center sfondoArancio">
+              <td class="text-center">
                 In caso di invio
                 a impianto
                 intermedio,
@@ -741,13 +741,6 @@ import Footer from '../components/Footer'
       </b-modal>
     </main>
   </template>
-
-  <style>
-    .sfondoArancio
-    {
-      background-color:#ffc000;
-    }
-  </style>
 
   <script>
   import axios from '@nuxtjs/axios'
