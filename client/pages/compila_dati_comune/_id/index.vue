@@ -381,7 +381,7 @@ import Footer from '../components/Footer'
                     <b-row>
 
                       <b-col cols="12" :class="container_specs">
-                        <FieldTitle req="yes" description="PEF 2022 validato dall'ETC (Delibera + Relazione con allegati in file .zip)" />
+                        <FieldTitle req="yes" description=" PEF 2022 Validato dall'ETC (Delibera + Relazione + tool excel ARERA definitivo in unico file .zip)" />
                         <b-container>
                           <b-row>
                             <b-col cols="10" xl="10">
@@ -402,7 +402,7 @@ import Footer from '../components/Footer'
                         </b-container>
                       </b-col>
                       <b-col cols="12" :class="container_specs">
-                        <FieldTitle req="yes" description="PEF 2023 validato dall'ETC (Delibera + Relazione con allegati in file .zip)" />
+                        <FieldTitle req="no" description="Ove disponibile, PEF 2023 Validato dall'ETC (Delibera + Relazione + tool excel ARERA definitivo in unico file .zip). " />
                         <b-container>
                           <b-row>
                             <b-col cols="10" xl="10">
@@ -869,7 +869,7 @@ import Footer from '../components/Footer'
                   }
 
 
-                  if(this.dati_comune.cont_commessa_anno1 == '' || this.dati_comune.cont_commessa_anno2 == '' || this.dati_comune.contratto_appalto == '' || this.dati_comune.ultimo_pef == '')
+                  if(this.dati_comune.cont_commessa_anno1 == '' || this.dati_comune.cont_commessa_anno2 == '' || this.dati_comune.contratto_appalto == '')
                   {
                     this.sections[2].completed = 0
                   }
@@ -1262,10 +1262,6 @@ import Footer from '../components/Footer'
                     is_completed = 0
                   }
 
-                      if(files.ultimo_pef != '[object File]' && dati_comune.ultimo_pef == '')
-                      {
-                        is_completed = 0
-                      }
 
 
           this.$axios.post('/save_dati_comune', {
