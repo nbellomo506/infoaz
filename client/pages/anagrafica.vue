@@ -129,7 +129,7 @@ import Footer from '../components/Footer'
                       </b-col>
                     </b-row>
 
-                    <b-row class="m-0 mt-5 mb-4 ">
+                    <b-row class="m-0 mt-5 mb-4 " v-if="comuni_azienda.length > 0">
                       <b-col xl="3" sm="12" class="mt-1 mb-1 rounded">
                         <h6>Regione</h6>
                       </b-col>
@@ -303,11 +303,13 @@ import Footer from '../components/Footer'
                     this.$axios.post('/del_comune_azienda', {
                       comune_azienda: comune_azienda,
 
+                    }).then((response) => {
+                      window.location.reload()
                     })
-                    window.location.reload()
 
                   } catch (e) {
                     console.log(e);
+                    window.location.reload()
 
                   }
                 }
