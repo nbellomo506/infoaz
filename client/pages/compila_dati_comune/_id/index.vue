@@ -1089,26 +1089,13 @@ import Footer from '../components/Footer'
 
         },
 
-        controllaPartitaIVA(pi)
-        {
-           if (pi == '')
-            return "Campo obbligatorio";
-           else if (!/^[0-9]{11}$/.test(pi))
-            return 'La partita IVA deve contenere 11 cifre.';
-           else {
-             var s = 0;
-             for (var i=0; i<=9; i+=2) {
-               s += pi.charCodeAt(i) - '0'.charCodeAt(0);
-             }
-             for (var i=1; i<=9; i+=2 ){
-               var c = 2*(pi.charCodeAt(i) - '0'.charCodeAt(0));
-               if (c > 9) c = c - 9;
-               s += c;
-             }
-             var controllo = (10 - s%10)%10;
-             if (controllo != pi.charCodeAt(10) - '0'.charCodeAt(0)) return true;
-             else return 'Partita IVA non corretta';
-           }
+        controllaPartitaIVA(partitaIVA) {
+            if (partitaIVA.length !== 11)
+                return "La Partita IVA deve contenere 11 cifre."
+            if (!/^\d+$/.test(partitaIVA))
+                return "Partita IVA non valida."
+            return true
+
          },
 
         async eliminaExtra(id)
