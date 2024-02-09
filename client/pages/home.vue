@@ -10,11 +10,6 @@ import InputOutputNavTab from '../components/InputOutputNavTab'
 
     <Header/>
     <InputOutputNavTab/>
-    {{dati_comuni.length}}
-    <div v-for="a in dati_comuni">
-      {{a}}
-      <br>
-    </div>
       <b-container v-if="is_logged === true && is_company_set === true && loaded===true"  class="mt-5">
         <b-row>
           <b-col offset-xl="1" xl="10">
@@ -143,7 +138,7 @@ import InputOutputNavTab from '../components/InputOutputNavTab'
           </b-row>
         </b-container>
         <Footer v-if="loaded" :visible="true"/>
-      <table v-for="(dati_comune,index) in dati_comuni" :id="`tab${index}`" border="1">
+      <table v-for="(dati_comune,index) in dati_comuni" :id="`tab${index}`" border="1" hidden>
         INDICE: {{index}}
         <tr>
           <td>
@@ -534,7 +529,6 @@ import InputOutputNavTab from '../components/InputOutputNavTab'
           const contenuto = createWorksheetContent(costi_smaltimento);
 
           addContentToTable(cont, contenuto);
-          console.log("get tabella: "+ cont)
           const tabella = document.getElementById(`tab${cont}`);
           generateWorkbook(cont, nome_comune, tabella);
         }
