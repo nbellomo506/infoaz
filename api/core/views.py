@@ -1,4 +1,4 @@
-# Create your views here.
+﻿# Create your views here.
 import requests
 import json
 import os.path
@@ -56,7 +56,6 @@ from comuni_italiani.models import Comune
 basedir = settings.MEDIA_ROOT
 #basedir = "C:/Users/Administrator/OneDrive/infowaste-aziende/"
 recipients = settings.RECIPIENTS
-#RECIPIENTS = ["nbellomo506@gmail.com"#,"assistenza@bintobit.com"]
 
 class RegisterUserView(CreateAPIView):
     queryset = get_user_model().objects.all()
@@ -346,7 +345,10 @@ def askHelp(request):
 
         try:
             user = User.objects.get(pk = request.session['user_id'])
-            email_plaintext_message = user.email+" ha inviato un messaggio di help nella sezione " + section + ":\n" + message
+            lista = recipients
+            lista.append(user.email)
+            print(lista)
+            email_plaintext_message = user.nome+" "+user.cognome+" ha inviato un messaggio di help nella sezione " + section + ":\n" + message
             #email_plaintext_message = "{}?token={}".format('http://217.61.57.221/new_password' , reset_password_token.key)
             send_mail(
                 # title:
@@ -356,15 +358,16 @@ def askHelp(request):
                 # from:
                 "noreplay@bintobit.com",
                 # to:
-                recipients,
+                lista
             )
             return HttpResponse("Messaggio Inviato")
 
-        except:
+        except Exception as e:
+            print(e)
             return HttpResponse("Invio messaggio fallito")
-
     else:
         return HttpResponse("Accesso negato")
+
 
 def save_dati_comune(request):
 
