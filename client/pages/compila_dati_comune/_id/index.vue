@@ -10,6 +10,7 @@ import Footer from '../components/Footer'
   <template>
     <main>
       <Header/>
+      {{sections}}
         <b-nav v-if="dati_comune !== false && is_company_set === true && is_logged === true" class="mt-3" tabs align="center">
           <b-nav-item :hidden="dati_comune.ricavi_conai != 'IMPRESA' && section.num == 5 " class="text-danger" @click="goToSection(section.num)" style="cursor:pointer" v-for="section in sections" :key="section.num" :active="section.num === current_section">
             <font :class="section.class">
@@ -843,35 +844,21 @@ import Footer from '../components/Footer'
 
                   }
 
-                  if (this.dati_comune.ton_anno_1 === 0  || this.dati_comune.ton_anno_2 === 0 || this.dati_comune.ton_anno_3 === 0)
+
+                  if (this.dati_comune.ton_anno_1 === 0  || this.dati_comune.ton_anno_2 === 0 || this.dati_comune.ton_anno_3 === 0 ||
+                  this.dati_comune.xcent_raccolta_anno_1 === 0 || this.dati_comune.xcent_raccolta_anno_2 === 0 || this.dati_comune.xcent_raccolta_anno_3 === 0)
                   {
-                    this.sections[1].completed = 0
-                    console.log("incompleto")
+                    this.sections[2].completed = 0
+                  }else {
+                    this.sections[2].completed = 1
 
                   }
 
-                  if (this.dati_comune.xcent_raccolta_anno_1 == 0 || this.dati_comune.xcent_raccolta_anno_2 == 0 || this.dati_comune.xcent_raccolta_anno_3 == 0)
-                  {
-
-                    this.sections[1].completed = 0
-                  }
-
-
-                  if(this.dati_comune.xcent_media_imp == 0 ||
-                  this.dati_comune.xcent_media_imp_org == 0 ||
-                  this.dati_comune.xcent_media_imp_cart == 0 ||
-                  this.dati_comune.xcent_media_imp_plastica == 0 ||
-                  this.dati_comune.xcent_media_imp_metallo == 0 ||
-                  this.dati_comune.xcent_media_imp_vetro == 0 )
-                  {
-
-                    this.sections[1].completed = 0
-                  }
 
 
                   if(this.dati_comune.cont_commessa_anno1 == '' || this.dati_comune.cont_commessa_anno2 == '' || this.dati_comune.contratto_appalto == '')
                   {
-                    this.sections[2].completed = 0
+                    this.sections[3].completed = 0
                   }
 
                   this.current_section = this.dati_comune['current_section']
@@ -1089,7 +1076,8 @@ import Footer from '../components/Footer'
 
         },
 
-        controllaPartitaIVA(partitaIVA) {
+        controllaPartitaIVA(partitaIVA)
+        {
             if (partitaIVA.length !== 11)
                 return "La Partita IVA deve contenere 11 cifre."
             if (!/^\d+$/.test(partitaIVA))

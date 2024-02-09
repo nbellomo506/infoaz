@@ -10,6 +10,11 @@ import InputOutputNavTab from '../components/InputOutputNavTab'
 
     <Header/>
     <InputOutputNavTab/>
+    {{dati_comuni.length}}
+    <div v-for="a in dati_comuni">
+      {{a}}
+      <br>
+    </div>
       <b-container v-if="is_logged === true && is_company_set === true && loaded===true"  class="mt-5">
         <b-row>
           <b-col offset-xl="1" xl="10">
@@ -138,7 +143,8 @@ import InputOutputNavTab from '../components/InputOutputNavTab'
           </b-row>
         </b-container>
         <Footer v-if="loaded" :visible="true"/>
-      <table v-for="(dati_comune,index) in dati_comuni" :id="`tab${index}`" border="1" hidden>
+      <table v-for="(dati_comune,index) in dati_comuni" :id="`tab${index}`" border="1">
+        INDICE: {{index}}
         <tr>
           <td>
             <h6>{{index+1}}. Comune:</h6>
@@ -474,7 +480,7 @@ import InputOutputNavTab from '../components/InputOutputNavTab'
 
       async inviaReport()
       {
-        if (this.dati_comuni.length < 1) {
+        if (this.dati_comuni.length <= 0) {
           return;
         }
 
@@ -521,25 +527,23 @@ import InputOutputNavTab from '../components/InputOutputNavTab'
           location.reload();
         };
 
-        for (let i = 0; i < this.dati_comuni.length; i++) {
-          const { id, nome_comune } = this.dati_comuni[i];
+        for (let cont = 0; cont < this.dati_comuni.length; cont++) {
+          const { id, nome_comune } = this.dati_comuni[cont];
 
           const costi_smaltimento = await processCostiSmaltimento(id);
           const contenuto = createWorksheetContent(costi_smaltimento);
 
-          addContentToTable(i, contenuto);
-
-          const tabella = document.getElementById(`tab${i}`);
-          generateWorkbook(i, nome_comune, tabella);
-
-          i++;
+          addContentToTable(cont, contenuto);
+          console.log("get tabella: "+ cont)
+          const tabella = document.getElementById(`tab${cont}`);
+          generateWorkbook(cont, nome_comune, tabella);
         }
 
         const file = XLSX.write(workbook, { booktype: "xlsx", type: "array" });
         const blob = new Blob([file], { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" });
         const formData = new FormData();
 
-        formData.append("export_daticomuni", blob, nome_azienda + ".xlsx");
+        formData.append("export_daticomuni", blob, this.azienda.ragione_sociale + ".xlsx");
 
         this.$axios.post('/upload_company_files', formData, {
           headers: {
