@@ -10,7 +10,6 @@ import Footer from '../components/Footer'
   <template>
     <main>
       <Header/>
-      {{sections}}
         <b-nav v-if="dati_comune !== false && is_company_set === true && is_logged === true" class="mt-3" tabs align="center">
           <b-nav-item :hidden="dati_comune.ricavi_conai != 'IMPRESA' && section.num == 5 " class="text-danger" @click="goToSection(section.num)" style="cursor:pointer" v-for="section in sections" :key="section.num" :active="section.num === current_section">
             <font :class="section.class">
