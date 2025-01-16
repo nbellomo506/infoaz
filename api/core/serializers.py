@@ -116,10 +116,13 @@ class DatiComuneSerializer(serializers.ModelSerializer):
                     "xcent_raccolta_anno_1",
                     "xcent_raccolta_anno_2",
                     "xcent_raccolta_anno_3",
-                    "cont_commessa_anno1",
-                    "cont_commessa_anno2",
+
+                    "cont_commessa_anno_2",
                     "contratto_appalto",
-                    "ultimo_pef",
+                    "pef_valid_ETC_a_2",
+                    "mud_a_2",
+                    "mud_a_1",
+                    
                     "completed"
                     )
 

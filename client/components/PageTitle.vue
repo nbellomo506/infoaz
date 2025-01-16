@@ -16,10 +16,10 @@
 
   <template>
     <div>
-      <b-container class="pl-0">
+      <b-container class="p-0 m-0">
         <b-row>
           <b-col>
-            <h1>{{name}}</h1>
+            <h2>{{name}}</h2>
             <p>{{description}}</p>
           </b-col>
         </b-row>

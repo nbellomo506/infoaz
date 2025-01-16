@@ -98,7 +98,7 @@ import InputOutputNavTab from '../components/InputOutputNavTab'
 
           <b-row v-if="azienda.report_is_sent == false && azienda.report_attempts > 0 && is_ready === false && dati_comuni.length > 0">
             <b-col offset-xl="7" xl="4">
-              <b-alert block show variant="danger" show>
+              <b-alert block show variant="danger">
                 <b-icon variant="danger" icon="exclamation-circle-fill"></b-icon>
                 Potrai inviare il report quando i dati di tutti i comuni saranno completi
               </b-alert>
@@ -107,7 +107,7 @@ import InputOutputNavTab from '../components/InputOutputNavTab'
 
           <b-row v-if="azienda.report_is_sent == false && azienda.report_attempts > 0 && is_ready === false && dati_comuni.length <= 0">
             <b-col offset-xl="7" xl="4">
-              <b-alert block show variant="danger" show>
+              <b-alert block show variant="danger">
                 <b-icon variant="danger" icon="exclamation-circle-fill"></b-icon>
                 Per inviare il report è necessario almeno un comune
               </b-alert>
@@ -330,11 +330,6 @@ import InputOutputNavTab from '../components/InputOutputNavTab'
         <tr>
           <td>Contratto d'appalto vigente</td>
           <td>{{dati_comune.contratto_appalto}}</td>
-        </tr>
-
-        <tr>
-          <td>Ultimo PEF validato dall'ETC (Delibera + Relazione con allegati in file .zip)</td>
-          <td>{{dati_comune.ultimo_pef}}</td>
         </tr>
 
         <tr>

@@ -1,9 +1,4 @@
-﻿
-import Header from '../components/Header'
-import Footer from '../components/Footer'
-
-
-<template>
+﻿<template>
   <main>
     <Header/>
     <b-container mt="5" v-if="loaded === true">
@@ -13,15 +8,15 @@ import Footer from '../components/Footer'
             <b-form class="ml-1 mr-1" >
               <b-form-group  id="email-group" label="Email:" label-for="input-1">
                 <b-form-input id="email" name="email" v-model="email" type="email"></b-form-input>
-                <b-alert class="mt-2" v-if="msg.email.length > 0" show variant="danger">{{msg.email}}</b-alert>
+                <b-alert class="mt-2" v-if="msg.email" show variant="danger">{{msg.email}}</b-alert>
               </b-form-group>
 
               <b-form-group  id="password-group" label="Password:" label-for="input-2">
                 <b-form-input id="password" name="password" v-model="password" type="password"></b-form-input>
-                <b-alert class="mt-2" v-if="msg.password.length > 0" show variant="danger">{{msg.password}}</b-alert>
+                <b-alert class="mt-2" v-if="msg.password" show variant="danger">{{msg.password}}</b-alert>
               </b-form-group>
 
-              <b-alert class="mt-2" v-if="msg.login.length > 0" show variant="danger">{{msg.login}}</b-alert>
+              <b-alert class="mt-2" v-if="msg.login" show variant="danger">{{msg.login}}</b-alert>
 
               <b-container>
                 <b-row class="p-0">
@@ -57,8 +52,6 @@ import Footer from '../components/Footer'
 
 
 <script>
-import axios from '@nuxtjs/axios'
-
 export default {
 
   /*async asyncData({ $axios, params})
@@ -126,86 +119,73 @@ export default {
    },
    methods: {
 
-     async login() {
-
-       if(this.email.length == 0)
-       {
-         this.msg.email="Inserire la propria email"
-       }
-
-       if(this.password.length == 0)
-       {
-         this.msg.password="Inserire la propria password"
-
-       }
-
-       if(this.email.length > 0 && this.password.length > 0)
-       {
-         this.$axios.defaults.withCredentials = true;
-
-             this.$axios.post('/login', {
-
-                   email: this.email,
-                   password: this.password
-
-               })
-              .then((response) => {
-
-               if(response.status >= 200 && response.status <= 208)
-               {
-                  if (response.data == "SI")
-                  {
-                    window.location.replace("./home")
-                  }
-                  else if(response.data == "NO")
-                  {
-                    this.msg.login="Email o password errati"
-                  }
-                }
-              })
-              .catch((error) => {
-
-               if (error.response) {
-                 // The request was made and the server responded with a status code
-                 // that falls out of the range of 2xx
-                 if(error.response.data)
-                 {
-                   this.msg.login="Qualcosa è andato storto"
-                 }
-
-               } else if (error.request) {
-
-                 if(error.response.data)
-                 {
-                   this.msg.login="Qualcosa è andato storto"
-                 }
-                 // The request was made but no response was received
-                 // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
-                 // http.ClientRequest in node.js
-                 console.log(error.request);
-               } else {
-                 // Something happened in setting up the request that triggered an Error
-                 console.log('Error', error.message);
-               }
-               console.log(error.config);
-             });
-
-          }
-
-         /*const data = { 'email': this.email, 'password': this.password }
-         console.log(data);
-         try{
-            const response = await this.$auth.loginWith('local', { data: data})
-            console.log(response)
-            this.$auth.$storage.setUniversal('email', response.data.email)
-            await this.$auth.setUserToken(response.data.access_token, response.data.refresh_token)
-         } catch(e) {
-            console.log(e.message)
-         }*/
-
-
-
+    async login() {
+      // Reset error messages before validating new input
+      this.msg = {
+        email: '',
+        password: '',
+        login: ''
       }
+
+      // Client-side validation
+      if (!this.email) { 
+        this.msg.email = "Inserire la propria email"
+      }
+
+      if (!this.password) { 
+        this.msg.password = "Inserire la propria password"
+      }
+
+      // If the input is not valid, exit early
+      if (!this.email || !this.password) {
+        return
+      }
+
+      // Send login request to server
+      try {
+        const response = await this.$axios.post('/login', {
+          email: this.email,
+          password: this.password
+        })
+
+        // Check the response status and message from the server
+        if (response.status === 200) {
+          if (response.data.message === "OK") {
+            // If the message is "OK", redirect the user to the home page
+            window.location.replace("./home")
+          } else {
+            // If there's a different server message, display it
+            this.msg.login = response.data.message
+          }
+        } else {
+          // If response status is not 200, handle the error
+          this.msg.login = response.data.message || "Si è verificato un errore."
+        }
+
+      } catch (error) {
+        // Handle server errors
+        if (error.response) {
+          const status = error.response.status
+          const message = error.response.data.message
+
+          // Handle different server errors based on the status
+          if (status === 400) {
+            this.msg.login = message || "Email e password sono obbligatori."
+          } else if (status === 401) {
+            this.msg.login = message || "Email o password non validi."
+          } else if (status === 403) {
+            this.msg.login = message || "Il tuo account non è stato verificato."
+          } else if (status === 500) {
+            this.msg.login = "Si è verificato un errore imprevisto, riprova più tardi."
+          } else {
+            this.msg.login = "Si è verificato un errore imprevisto, riprova più tardi."
+          }
+        } else {
+          // Network error (no server response)
+          this.msg.login = "Errore di connessione, riprova più tardi."
+        }
+      }
+    }
    }
 };
 </script>

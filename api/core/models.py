@@ -228,6 +228,9 @@ class DatiComune(models.Model):
     costi_tqrif_flag = models.BooleanField(default = False)
     costi_tqrif = models.FloatField(default = 0)
 
+    idArera = models.CharField(default="",max_length=128,blank=True)
+
+
     #dati tecnici
 
     ton_totali = models.FloatField(default = 0)
@@ -240,13 +243,13 @@ class DatiComune(models.Model):
     xcent_raccolta_anno_2 = models.FloatField(default = 0)
     xcent_raccolta_anno_3 = models.FloatField(default = 0)
 
-    cont_commessa_anno1 = models.CharField(max_length = 512,default = '',blank = True)
-    cont_commessa_anno2 = models.CharField(max_length = 512,default = '',blank = True)
+    cont_commessa_anno_2 = models.CharField(max_length = 512,default = '',blank = True)
     contratto_appalto = models.CharField(max_length = 512,default = '',blank = True)
-    ultimo_pef = models.CharField(max_length = 512,default = '',blank = True)
 
-    idArera = models.CharField(default="",max_length=128,blank=True)
+    pef_valid_ETC_a_2 = models.CharField(max_length = 512,default = '',blank = True)
 
+    mud_a_1 = models.CharField(max_length = 512,default = '',blank = True)
+    mud_a_2 = models.CharField(max_length = 512,default = '',blank = True)
 
     completed = models.BooleanField(default = 0)
 

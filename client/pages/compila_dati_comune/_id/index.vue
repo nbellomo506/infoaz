@@ -12,12 +12,12 @@ import Footer from '../components/Footer'
       <Header/>
         <b-nav v-if="dati_comune !== false && is_company_set === true && is_logged === true" class="mt-3" tabs align="center">
           <b-nav-item :hidden="dati_comune.ricavi_conai != 'IMPRESA' && section.num == 5 " class="text-danger" @click="goToSection(section.num)" style="cursor:pointer" v-for="section in sections" :key="section.num" :active="section.num === current_section">
-            <font :class="section.class">
+            <p :class="section.class">
               {{section.text}}
-            </font>
+            </p>
           </b-nav-item>
         </b-nav>
-      <div class="container-fluid p-0 pb-0 mb-5 m-0 b-0" v-if="dati_comune !== false && is_company_set === true && is_logged === true && loaded === true">
+      <div class="container-fluid p-0 pb-0 mb-0 m-0 b-0" v-if="dati_comune !== false && is_company_set === true && is_logged === true && loaded === true">
           <b-container fluid class=" mt-0 b-0">
           <b-row>
             <b-col class="pt-5 bg-light" xl="2" hidden>
@@ -31,16 +31,17 @@ import Footer from '../components/Footer'
                 </ul>
               </div>
             </b-col>
-            <b-col class="borders-rounded pt-5 pb-5 mb-5" offset-xl="3" xl="6">
+            <b-col class="borders-rounded pt-5 pb-0 mb-0" offset-xl="1" xl="9">
               <ol class="p-0 m-0 b-0">
-              <PageTitle :name="`Comune di ${dati_comune.nome_comune}`"/>
                 <div v-bind:class="{'disabled-container' : azienda.report_is_sent || azienda.report_attempts <= 0 }" class="p-0 b-0 m-0" v-if="current_section === 1">
+                  <h3>Comune di {{dati_comune.nome_comune}}</h3>
                   <h3>{{sections[current_section-1].text}}</h3>
                   <p>
-                    I campi in rosso sono obbligatori e, ove non diversamente specificato, sono riferiti all’annualità 2022.<br>
+                    I campi in rosso sono obbligatori e, ove non diversamente specificato, sono riferiti all’annualità {{ new Date().getFullYear() - 2 }}.<br>
                     Compilare la pagina in ogni sua parte e premere il pulsante <b>SALVA</b> prima di passare alla pagina successiva.<br>
                     Il pulsante <b>HELP</b> è in basso.
                   </p>
+                  <div class="rounded shadow bg-light border p-3">
                   <b-row>
                     <b-col :class="container_specs">
                       <div class="text-secondary pr-4">
@@ -51,7 +52,7 @@ import Footer from '../components/Footer'
                       <b-form-radio-group disabled v-model="azienda.pef_mis_o_ric" :options="opts.tipo2"></b-form-radio-group>
                     </b-col>
                   </b-row>
-                  <b-container  class="p-0 m-0 b-0" name="calc_o_mis" v-show="azienda.pef_mis_o_ric === 'CALCOLATO'">
+                  <b-container class="p-0 m-0 b-0" name="calc_o_mis" v-show="azienda.pef_mis_o_ric === 'CALCOLATO'">
                     <b-row>
                       <b-col :class="container_specs">
                       <FieldTitle letter="a" name="ris_ula_o_ore" req="yes" description="Per ciascuno dei servizi elencati, le risorse umane impiegate sono indicate in:" />
@@ -112,8 +113,10 @@ import Footer from '../components/Footer'
                   <b-row>
                     <b-col :class="container_specs">
                       <FieldTitle name="valore_can" description="Valore del canone contrattuale IVA ESCLUSA nell'anno corrente" />
-                      <input class="form-control" v-model="dati_comune.valore_can" type="number">
-
+                      <b-input-group append="€">
+                        <b-form-input class="form-control" v-model="dati_comune.valore_can" type="text" :formatter="formatCurrency">
+                        </b-form-input>
+                      </b-input-group>
                     </b-col>
 
                     <b-col :class="container_specs">
@@ -220,10 +223,12 @@ import Footer from '../components/Footer'
                       <input class="form-control" v-model="dati_comune.idArera" type="text">
                     </b-col>
 
-                  </b-row>
+                    </b-row>
+                  </div>
                 </div>
 
                 <div v-bind:class="{'disabled-container' : azienda.report_is_sent || azienda.report_attempts <= 0 }" class="p-0 b-0 m-0" v-if="current_section === 5 && dati_comune.ricavi_conai == 'IMPRESA'">
+                  <h3>Comune di {{dati_comune.nome_comune}}</h3>
                   <h4>MACRO-INDICATORE R1</h4>
                   Il MTR-2 aggiornato alle annualità 2024 – 2025 richiede la valorizzazione nel PEF del Macro – Indicatore R1,
                   un indicatore che tiene conto del risultato aggregato dell’efficienza e della qualità della raccolta
@@ -275,389 +280,322 @@ import Footer from '../components/Footer'
 
                 <div v-bind:class="{'disabled-container' : azienda.report_is_sent || azienda.report_attempts <= 0 }" class="p-0 b-0 m-0" v-if="current_section === 2">
                   <b-container class="m-0 p-0 b-0">
+                    <h3>Comune di {{dati_comune.nome_comune}}</h3>
                     <h3>Dati tecnici dell'appalto</h3>
                     <p>
-                      I campi in rosso sono obbligatori e, ove non diversamente specificato, sono riferiti all’annualità 2022..<br>
+                      I campi in rosso sono obbligatori e, ove non diversamente specificato, sono riferiti all’annualità {{new Date().getFullYear() - 2}}.<br>
                       Compilare la pagina in ogni sua parte e premere il pulsante <b>SALVA</b> prima di passare alla pagina successiva.<br>
                       Il pulsante <b>HELP</b> è in basso.
                     </p>
+                    <div class="rounded shadow bg-light border p-3">
                     <b-row>
-                      <b-col :class="container_specs" xl="12">
+                      <b-col xl="12">
                         <FieldTitle req="yes" name="tons" description="Quantitativi totali rifiuti raccolti [ton]" />
                       </b-col>
                     </b-row>
-                    <b-row>
-                      <b-col xl="4" >
-                        <FieldTitle letter="a" req="yes" name="" description="2021" />
+                    <b-row class="mb-4">
+                      <b-col xl="4">
+                        <FieldTitle letter="a" req="yes" name="" description="2022" />
                         <input class="form-control" v-model="dati_comune.ton_anno_1" type="number">
                       </b-col>
                       <b-col xl="4">
-                        <FieldTitle letter="b" req="yes" name="" description="2022" />
+                        <FieldTitle letter="b" req="yes" name="" description="2023" />
                         <input class="form-control" v-model="dati_comune.ton_anno_2" type="number">
                       </b-col>
                       <b-col xl="4">
-                        <FieldTitle letter="c" req="yes" name="" description="2023" />
+                        <FieldTitle letter="c" req="yes" name="" description="2024" />
                         <input class="form-control" v-model="dati_comune.ton_anno_3" type="number">
                       </b-col>
                     </b-row>
-                  </b-container>
-                  <b-container class="m-0 mt-4 p-0 b-0">
+                    <hr>
                     <b-row>
-                      <b-col :class="container_specs" xl="12">
+                      <b-col xl="12">
                         <FieldTitle name="tons" req="yes" description="Percentuali raccolta differenziata" />
                       </b-col>
                     </b-row>
                     <b-row>
                       <b-col xl="4" >
-                        <FieldTitle letter="a" req="yes" name="" description="2021" />
+                        <FieldTitle letter="a" req="yes" name="" description="2022" />
                         <input class="form-control" v-model="dati_comune.xcent_raccolta_anno_1" type="number">
                       </b-col>
                       <b-col xl="4">
-                        <FieldTitle letter="b" req="yes" name="" description="2022" />
+                        <FieldTitle letter="b" req="yes" name="" description="2023" />
                         <input class="form-control" v-model="dati_comune.xcent_raccolta_anno_2" type="number">
                       </b-col>
                       <b-col xl="4">
-                        <FieldTitle letter="c" req="yes" name="" description="2023" />
+                        <FieldTitle letter="c" req="yes" name="" description="2024" />
                         <input class="form-control" v-model="dati_comune.xcent_raccolta_anno_3" type="number">
                       </b-col>
                     </b-row>
+                    </div>
                   </b-container>
                 </div>
 
                 <div v-bind:class="{'disabled-container' : azienda.report_is_sent || azienda.report_attempts <= 0 }" class="p-0 b-0 m-0" v-if="current_section === 3">
                   <b-container class="m-0 p-0 b-0">
+                    <h3>Comune di {{dati_comune.nome_comune}}</h3>
                     <h3>Documenti riferiti all'appalto</h3>
                     <p>
-                      I campi in rosso sono obbligatori e, ove non diversamente specificato, sono riferiti all’annualità 2022..<br>
+                      I campi in rosso sono obbligatori e, ove non diversamente specificato, sono riferiti all’annualità {{ new Date().getFullYear() - 2 }}.<br>
                       Compilare la pagina in ogni sua parte e premere il pulsante <b>SALVA</b> prima di passare alla pagina successiva.<br>
                       Il pulsante <b>HELP</b> è in basso.
                     </p>
-                    <b-row>
-                      <b-col cols="12" :class="container_specs">
-                        <FieldTitle req="yes" description="Contabilità di commessa anno 2022 (in excel)" />
-                        <b-container>
-                          <b-row>
-                            <b-col cols="10" xl="10">
+                    <div class="rounded shadow bg-light border p-3">
+
+                    <b-row class="justify-content-start">
+                      <b-col cols="12" md="6" :class="container_specs">
+                        <FieldTitle req="yes" description="Contabilità di commessa anno 2023 (in excel)" />
+                        <b-row>
+                          <b-col cols="10">
+                            <b-form-group>
                               <b-form-file
-                                v-model="files.cont_commessa_anno1"
+                                v-model="files.cont_commessa_anno_2"
                                 placeholder="File Excel"
                                 drop-placeholder="Rilascia qui...">
                               </b-form-file>
-                              <font v-if="dati_comune.cont_commessa_anno1 != '[object File]'">
-                                {{dati_comune.cont_commessa_anno1}}
+                              <font v-if="dati_comune.cont_commessa_anno_2 != '[object File]'">
+                                {{dati_comune.cont_commessa_anno_2}}
                               </font>
-                            </b-col>
-                            <b-col cols="2" xl="2">
-                              <b-icon v-if="dati_comune.cont_commessa_anno1 !== '' || files.cont_commessa_anno1.length !== 0" class="h4 p-0 b-0 m-0 mt-1" variant="success" icon="check-circle-fill"></b-icon>
-                              <b-icon v-if="dati_comune.cont_commessa_anno1  === '' && files.cont_commessa_anno1.length === 0"  class="h4 p-0 b-0 m-0 mt-1" variant="danger" icon="x-circle-fill"></b-icon>
-                            </b-col>
-                          </b-row>
-                        </b-container>
+                            </b-form-group>
+                          </b-col>
+                          <b-col cols="2" class="text-right">
+                            <b-icon v-if="dati_comune.cont_commessa_anno_2 !== '' || files.cont_commessa_anno_2.length !== 0" 
+                                    class="h4 p-0 b-0 m-0 mt-1" 
+                                    variant="success" 
+                                    icon="check-circle-fill">
+                            </b-icon>
+                            <b-icon v-if="dati_comune.cont_commessa_anno_2 === '' && files.cont_commessa_anno_2.length === 0" 
+                                    class="h4 p-0 b-0 m-0 mt-1" 
+                                    variant="danger" 
+                                    icon="x-circle-fill">
+                            </b-icon>
+                          </b-col>
+                        </b-row>
                       </b-col>
-                      <b-col cols="12" :class="container_specs">
-                        <FieldTitle  req="yes" description="Contratto d'appalto vigente (in pdf)" />
-                        <b-container>
-                          <b-row>
-                            <b-col cols="10" xl="10">
+                      <b-col cols="12" md="6" :class="container_specs">
+                        <FieldTitle req="yes" description="Contratto d'appalto vigente (in pdf)" />
+                        <b-row>
+                          <b-col cols="10">
+                            <b-form-group>
                               <b-form-file
                                 v-model="files.contratto_appalto"
                                 placeholder="File PDF"
                                 drop-placeholder="Rilascia qui...">
                               </b-form-file>
-                              <font v-if="dati_comune.contratto_appalto != '[object File]' ">
+                              <font v-if="dati_comune.contratto_appalto != '[object File]'">
                                 {{dati_comune.contratto_appalto}}
                               </font>
-                            </b-col>
-                            <b-col cols="2" xl="2">
-                              <b-icon v-if="dati_comune.contratto_appalto !== '' || files.contratto_appalto.length !== 0" class="h4 p-0 b-0 m-0 mt-1" variant="success" icon="check-circle-fill"></b-icon>
-                              <b-icon v-if="dati_comune.contratto_appalto  === '' && files.contratto_appalto.length === 0"  class="h4 p-0 b-0 m-0 mt-1" variant="danger" icon="x-circle-fill"></b-icon>
-                            </b-col>
-                          </b-row>
-                        </b-container>
+                            </b-form-group>
+                          </b-col>
+                          <b-col cols="2" class="text-right">
+                            <b-icon v-if="dati_comune.contratto_appalto !== '' || files.contratto_appalto.length !== 0" 
+                                    class="h4 p-0 b-0 m-0 mt-1" 
+                                    variant="success" 
+                                    icon="check-circle-fill">
+                            </b-icon>
+                            <b-icon v-if="dati_comune.contratto_appalto === '' && files.contratto_appalto.length === 0" 
+                                    class="h4 p-0 b-0 m-0 mt-1" 
+                                    variant="danger" 
+                                    icon="x-circle-fill">
+                            </b-icon>
+                          </b-col>
+                        </b-row>
                       </b-col>
-
                     </b-row>
-
-                    <b-row>
-
-                      <b-col cols="12" :class="container_specs">
-                        <FieldTitle req="yes" description=" PEF 2022 Validato dall'ETC (Delibera + Relazione + tool excel ARERA definitivo in unico file .zip)" />
-                        <b-container>
-                          <b-row>
-                            <b-col cols="10" xl="10">
+                    <b-row class="justify-content-start">
+                      <b-col xl="12" md="6">
+                        <FieldTitle req="yes" description="PEF 2022 Validato dall'ETC (Delibera + Relazione + tool excel ARERA definitivo in unico file .zip)" />
+                        <b-row>
+                          <b-col cols="11">
+                            <b-form-group>
                               <b-form-file
-                                v-model="files.cont_commessa_anno2"
+                                v-model="files.pef_valid_ETC_a_2"
                                 placeholder="File Zip"
                                 drop-placeholder="Rilascia qui...">
                               </b-form-file>
-                              <font v-if="dati_comune.cont_commessa_anno2 != '[object File]' ">
-                                {{dati_comune.cont_commessa_anno2}}
+                              <font v-if="dati_comune.pef_valid_ETC_a_2 != '[object File]'">
+                                {{dati_comune.pef_valid_ETC_a_2}}
                               </font>
-                            </b-col>
-                            <b-col cols="2" xl="2">
-                              <b-icon v-if="dati_comune.cont_commessa_anno2  !== '' || files.cont_commessa_anno2.length !== 0" class="h4 p-0 b-0 m-0 mt-1" variant="success" icon="check-circle-fill"></b-icon>
-                              <b-icon v-if="dati_comune.cont_commessa_anno2  === '' && files.cont_commessa_anno2.length === 0"  class="h4 p-0 b-0 m-0 mt-1" variant="danger" icon="x-circle-fill"></b-icon>
-                            </b-col>
-                          </b-row>
-                        </b-container>
+                            </b-form-group>
+                          </b-col>
+                          <b-col cols="1" class="text-right">
+                            <b-icon v-if="dati_comune.pef_valid_ETC_a_2 !== '' || files.pef_valid_ETC_a_2.length !== 0" 
+                                    class="h4 p-0 b-0 m-0 mt-1" 
+                                    variant="success" 
+                                    icon="check-circle-fill">
+                            </b-icon>
+                            <b-icon v-if="dati_comune.pef_valid_ETC_a_2 === '' && files.pef_valid_ETC_a_2.length === 0" 
+                                    class="h4 p-0 b-0 m-0 mt-1" 
+                                    variant="danger" 
+                                    icon="x-circle-fill">
+                            </b-icon>
+                          </b-col>
+                        </b-row>
                       </b-col>
-                      <b-col cols="12" :class="container_specs">
-                        <FieldTitle req="no" description="Ove disponibile, PEF 2023 Validato dall'ETC (Delibera + Relazione + tool excel ARERA definitivo in unico file .zip). " />
-                        <b-container>
-                          <b-row>
-                            <b-col cols="10" xl="10">
+                    </b-row>
+                    <b-row class="justify-content-start">
+                      <b-col cols="12" md="6" :class="container_specs">
+                        <FieldTitle req="yes" description="CARICARE MUD anno a - 1" />
+                        <b-row>
+                          <b-col cols="10">
+                            <b-form-group>
                               <b-form-file
-                                v-model="files.ultimo_pef"
+                                v-model="files.mud_a_1"
                                 placeholder="File Zip"
                                 drop-placeholder="Rilascia qui...">
                               </b-form-file>
-                              <font v-if="dati_comune.ultimo_pef != '[object File]' ">
-                                {{dati_comune.ultimo_pef}}
+                              <font v-if="dati_comune.mud_a_1 != '[object File]'">
+                                {{dati_comune.mud_a_1}}
                               </font>
-                              {{files.ultimo_pef.name}}
-                            </b-col>
-                            <b-col cols="2" xl="2">
-                              <b-icon v-if="dati_comune.ultimo_pef !== '' || files.ultimo_pef.length != 0" class="h4 p-0 b-0 m-0 mt-1" variant="success" icon="check-circle-fill"></b-icon>
-                              <b-icon v-if="dati_comune.ultimo_pef  === '' && files.ultimo_pef.length === 0"  class="h4 p-0 b-0 m-0 mt-1" variant="danger" icon="x-circle-fill"></b-icon>
-                            </b-col>
-                          </b-row>
-                        </b-container>
+                            </b-form-group>
+                          </b-col>
+                          <b-col cols="2" class="text-right">
+                            <b-icon v-if="dati_comune.mud_a_1 !== '' || files.mud_a_1.length !== 0" 
+                                    class="h4 p-0 b-0 m-0 mt-1" 
+                                    variant="success" 
+                                    icon="check-circle-fill">
+                            </b-icon>
+                            <b-icon v-if="dati_comune.mud_a_1 === '' && files.mud_a_1.length === 0" 
+                                    class="h4 p-0 b-0 m-0 mt-1" 
+                                    variant="danger" 
+                                    icon="x-circle-fill">
+                            </b-icon>
+                          </b-col>
+                        </b-row>
+                      </b-col>
+                      <b-col cols="12" md="6" :class="container_specs">
+                        <FieldTitle req="yes" description="CARICARE MUD anno a - 2" />
+                        <b-row>
+                          <b-col cols="10">
+                            <b-form-group>
+                              <b-form-file
+                                v-model="files.mud_a_2"
+                                placeholder="File Zip"
+                                drop-placeholder="Rilascia qui...">
+                              </b-form-file>
+                              <font v-if="dati_comune.mud_a_2 != '[object File]'">
+                                {{dati_comune.mud_a_2}}
+                              </font>
+                            </b-form-group>
+                          </b-col>
+                          <b-col cols="2" class="text-right">
+                            <b-icon v-if="dati_comune.mud_a_2 !== '' || files.mud_a_2.length !== 0" 
+                                    class="h4 p-0 b-0 m-0 mt-1" 
+                                    variant="success" 
+                                    icon="check-circle-fill">
+                            </b-icon>
+                            <b-icon v-if="dati_comune.mud_a_2 === '' && files.mud_a_2.length === 0" 
+                                    class="h4 p-0 b-0 m-0 mt-1" 
+                                    variant="danger" 
+                                    icon="x-circle-fill">
+                            </b-icon>
+                          </b-col>
+                        </b-row>
+                
                       </b-col>
                     </b-row>
+                  </div>
+
                   </b-container>
                 </div>
+              
               </ol>
             </b-col>
           </b-row>
         </b-container>
 
-        <b-row v-bind:class="{'disabled-container' : azienda.report_is_sent || azienda.report_attempts <= 0 }" v-if="current_section === 4" class="ml-3 mr-3 mb-5 pb-5">
+        <b-row v-bind:class="{'disabled-container' : azienda.report_is_sent || azienda.report_attempts <= 0 }" v-if="current_section === 4" class="ml-0 mr-3 mb-5 mt-0 pb-0 p-0 pb-5">
           <b-col>
+            <h3>Comune di {{dati_comune.nome_comune}}</h3>
             <h3>Costi Smaltimento / Trattamento</h3>
             <p>
               Per inserire una nuova riga dopo la sua compilazione premere il tasto <b>AGGIUNGI</b> e quindi il tasto <b>SALVA</b>.
             </p>
-            <tr class="border borders">
-              <td class="text-center">
-                Gestore che sostiene i costi di trattamento /recupero /
-                smaltimento
-              </td>
-              <td class="text-center">
-                Anno
-              </td>
-              <td class="text-center">
-                Impianto di smaltimento
-              </td>
-              <td class="text-center">
-                Codice CER/Tipo di rifiuto
-              </td>
-              <td class="text-center">
-                Tipologia costo
-              </td>
-              <td class="text-center">
-                Quantitativi conferiti [ton]
-              </td>
-              <td class="text-center" >
-                Prezzo unitario con IVA [€\ton]
-              </td>
-              <td class="text-center">
-                Importo IVA Inclusa
-              </td>
-              <td class="text-center">
-                Tipologia impianto di
-                destinazione
-              </td>
-              <td class="text-center">
-                Gestore Impianto
-              </td>
-              <td class="text-center">
-                Partita IVA
-                Gestore
-                Impianto
-              </td>
-              <td class="text-center">
-                Comune sede
-                Impianto
-              </td>
-              <td class="text-center">
-                In caso di invio
-                a impianto
-                intermedio,
-                indicare
-                impianto di
-                destinazione
-                finale dei flussi
-                in uscita
-              </td>
-              <td class="text-center">
-                NOTE
-              </td>
-            </tr>
-
-            <tr class="bg-light rounded p-3">
-              <select class="form-control" v-model="add.gestore" >
-                <option value="GESTORE">GESTORE</option>
-                <option value="COMUNE">COMUNE</option>
-              </select>
-
-              <td class="p-0 pl-1" xl="1">
-                <select class="form-control" v-model="add.anno">
-                  <option value="2022">2022</option>
-                  <option value="2023">2023</option>
-                </select>
-              </td>
-
-              <td>
-                <textarea class="form-control" v-model="add.imp_smalt" ></textarea>
-                <b-alert class="mt-2" v-if="add.msg.imp_smalt.length > 0" variant="danger" dismissible show> {{add.msg.imp_smalt}} </b-alert>
-
-              </td>
-
-              <td>
-                <textarea class="form-control" v-model="add.tipo_rifiuto" ></textarea>
-                <b-alert class="mt-2" v-if="add.msg.tipo_rifiuto.length > 0" variant="danger" dismissible show>
-                  {{add.msg.tipo_rifiuto}}
-                </b-alert>
-              </td>
-
-              <td class="p-0">
-                <select class="form-control" v-model="add.tipo_costo" >
-                  <option value="CTS">CTS</option>
-                  <option value="CTR">CTR</option>
-                </select>
-              </td>
-
-              <td>
-                <input class="form-control pl-1" min="0" @change=calcoloImporto() v-model="add.tons" type="number">
-              </td>
-
-              <td>
-                <input class="form-control pl-1" min="0" @change=calcoloImporto() v-model="add.prezzo_unitario" type="number">
-              </td>
-
-              <td>
-                <input class="form-control pl-1" min="0" v-model="add.importo" type="number">
-              </td>
-
-              <td>
-                <b-select v-model="add.tipoImpianto" :options="tipologieImpiantoChoices"></b-select>
-              </td>
-
-              <td>
-                <input class="form-control pl-1" v-model="add.gestoreImpianto" type="text">
-              </td>
-
-              <td>
-                <input class="form-control pl-1" v-model="add.partitaIvaGestoreImpianto" type="text">
-                <b-alert class="mt-2" v-if="add.msg.partitaIvaGestoreImpianto.length > 0" variant="danger" dismissible show>
-                  {{add.msg.partitaIvaGestoreImpianto}}
-                </b-alert>
-              </td>
-
-              <td>
-                <input class="form-control pl-1" v-model="add.comuneSedeImpianto" type="text">
-              </td>
-
-              <td>
-                <input class="form-control pl-1" v-model="add.impiantoDestinazione" type="text">
-              </td>
-
-              <td>
-                <input class="form-control pl-1" v-model="add.note" type="text">
-              </td>
-
-              <td>
-                <b-button @click="aggiungiExtra()" variant="infowaste-2" name="button">
-                  Aggiungi
-                </b-button>
-              </td>
-            </tr>
-
-            <tr class="border rounded p-3"  v-for="(extra,index) in costi_smaltimento" v-bind:class = "(index % 2==0)?'bg-white':'bg-light'" :key="extra.id">
-              <select class="form-control" v-model="extra.gestore" >
-                <option value="GESTORE">GESTORE</option>
-                <option value="COMUNE">COMUNE</option>
-              </select>
-
-              <td class="p-0 pl-1" xl="1">
-                <select class="form-control" v-model="extra.anno">
-                  <option value="2022">2022</option>
-                  <option value="2023">2023</option>
-                </select>
-              </td>
-
-              <td>
-                <textarea class="form-control" v-model="extra.imp_smalt">{{extra.imp_smalt}}</textarea>
-              </td>
-
-              <td>
-                <textarea  class="form-control" v-model="extra.tipo_rifiuto">{{extra.tipo_rifiuto}}</textarea>
-              </td>
-
-              <td class="p-0 pr-1">
-                <select class="form-control" v-model="extra.tipo_costo" >
-                  <option value="CTS">CTS</option>
-                  <option value="CTR">CTR</option>
-                </select>
-              </td>
-
-              <td xl="1">
-                <input class="form-control pl-1" min="0" type="number" @change="extra.importo = extra.tons * extra.prezzo_unitario" v-model="extra.tons">
-              </td>
-
-              <td xl="2">
-                <b-input class="form-control pl-1" min="0" type="number" @change="extra.importo = extra.tons * extra.prezzo_unitario" v-model="extra.prezzo_unitario"></b-input>
-              </td>
-
-              <td xl="2">
-                <input class="form-control pl-1" min="0" type="number" v-model="extra.importo">
-              </td>
-
-              <td>
-                <b-select v-model="extra.tipoImpianto" :options="tipologieImpiantoChoices"></b-select>
-              </td>
-
-              <td>
-                <input class="form-control pl-1" v-model="extra.gestoreImpianto" type="text">
-              </td>
-
-              <td>
-                <input class="form-control pl-1" v-model="extra.partitaIvaGestoreImpianto" type="text">
-
-              </td>
-
-              <td>
-                <input class="form-control pl-1" v-model="extra.comuneSedeImpianto" type="text">
-              </td>
-
-              <td>
-                <input class="form-control pl-1" v-model="extra.impiantoDestinazione" type="text">
-              </td>
-
-              <td>
-                <input class="form-control pl-1" v-model="extra.note" type="text">
-              </td>
-
-              <td>
-                <b-container class="pr-2 mb-5">
-                  <b-row>
-                    <td class="p-0">
-                      <button type="button" @click=modificaExtra(extra) block class="btn btn-success" name="button">
-                        <b-icon icon="check-square-fill"></b-icon>
-                      </button>
-                    </td>
-
-                    <td class="p-0">
-                      <button type="button" @click=eliminaExtra(extra.id) block class="btn btn-danger" name="button">
-                        <b-icon icon="trash"></b-icon>
-                      </button>
-                    </td>
-                  </b-row>
-                </b-container>
-              </td>
-            </tr>
+            <table
+              bordered
+              fluid
+              class="ml-0 mb-5 mt-5 pl-0 pb-5 b-0 custom-bordered-table"
+              v-if="!loading"
+            >
+              <!-- Table Header -->
+              <tr class="sticky-top bg-infowaste" style="height:30px; padding: 0;">
+                <td
+                  class="p-1 pl-0 pt-1 pb-1 border-theme"
+                  :style="field.style"
+                  v-for="field in costiFields"
+                >
+                  <b-button
+                    size="sm"
+                    class="h-100 w-100 p-1 pt-0 pb-0 border-dark"
+                    @click="orderBy(field, costiFields, costi_smaltimento)"
+                    variant="white"
+                  >
+                    {{ field.label }}
+                    <b-icon
+                      variant="primary"
+                      v-if="field.order == -1"
+                      icon="arrow-down"
+                    ></b-icon>
+                    <b-icon
+                      variant="primary"
+                      v-if="field.order == 0"
+                      icon="arrow-down-up"
+                    ></b-icon>
+                    <b-icon
+                      variant="primary"
+                      v-if="field.order == 1"
+                      icon="arrow-up"
+                    ></b-icon>
+                  </b-button>
+                </td>
+                <td
+                  style="width:150px; justify-content: center; align-items: center;"
+                  class="border-dark"
+                >
+                  <p class="pt-2 text-white text-center">AZIONI</p>
+                </td>
+              </tr>
+              <tr class="bg-light rounded p-2" v-for="(item, index) in costi_smaltimento">
+                <td v-for="field in costiFields" class="p-2 pl-3 border-dark">
+                  <p v-if="field.type === 'euro'">
+                    {{ item[field.key] }}€
+                  </p>
+                  <p v-else>
+                    {{ item[field.key] }}
+                  </p>
+                </td>
+                <td class="pt-1 pb-1 border-dark">
+                  <b-container class="container">
+                    <b-row class="row p-0 m-0">
+                      <b-col class="xl-4 p-1 m-0">
+                        <b-button
+                          class="w-100 h-100 p-0"
+                          v-b-modal.confermaEliminazione
+                          @click="setRowtoDelete(item)"
+                          variant="danger"
+                        >
+                          <b-icon icon="trash"></b-icon>
+                        </b-button>
+                      </b-col>
+                      <b-col class="xl-4 p-1 m-0">
+                        <b-button
+                          class="w-100 h-100 p-0"
+                          v-b-modal.editRow
+                          @click="editingRow(item)"
+                          variant="infowaste"
+                        >
+                          <b-icon icon="pencil"></b-icon>
+                        </b-button>
+                      </b-col>
+                    </b-row>
+                  </b-container>
+                </td>
+              </tr>
+            </table>
           </b-col>
         </b-row>
+
+
       <Footer :visible="loaded"/>
       </div>
 
@@ -703,13 +641,20 @@ import Footer from '../components/Footer'
 
       <div v-if="dati_comune !== false && is_logged === true && is_company_set === true && loaded === true" class="bg-light border fixed-bottom p-2">
         <b-container class="container">
-          <b-row class="row">
-            <b-col class=" text-center xl-1 offset-xl-5">
-              <b-button v-b-modal="'help-tab'" block variant="warning">
-                  Help
+          <b-row class="row" v-if="current_section === 4">
+            <b-col class="xl-2 offset-xl-8">
+              <b-button v-b-modal.addRow block variant="success">
+                  Aggiungi Riga
               </b-button>
             </b-col>
-            <b-col class="xl-1 offset-xl-4">
+            <b-col class="xl-1">
+              <b-button block @click="saveDatiComune(dati_comune,files)" variant="infowaste">
+                  Salva
+              </b-button>
+            </b-col>
+          </b-row>
+          <b-row class="row" v-else>
+            <b-col class="xl-1 offset-xl-10">
               <b-button block @click="saveDatiComune(dati_comune,files)" variant="infowaste">
                   Salva
               </b-button>
@@ -717,12 +662,6 @@ import Footer from '../components/Footer'
           </b-row>
         </b-container>
       </div>
-
-      <b-modal id="help-tab" cancel-variant="danger" ok-variant="infowaste" @ok="askHelp" cancel-title="Annulla" ok-title="Invia">
-        <font class="h5">Messaggio</font><br>
-        (verrà inviata un'email ad assistenza@bintobit.com)
-        <b-form-input v-model="help_message"></b-form-input>
-      </b-modal>
 
       <b-modal id="bv-modal-save-msg" hide-footer>
         <div class="text-center">
@@ -739,6 +678,96 @@ import Footer from '../components/Footer'
           </b-row>
         </b-container>
       </b-modal>
+
+      <!--ROW ADDING-->
+      <b-modal
+        id="addRow"
+        title="Modifica"
+        ok-title="Aggiungi"
+        ok-variant="success"
+        cancel-title="Annulla"
+        cancel-variant="danger"
+        size="lg"
+        class="custom-modal"
+        @ok.prevent="addRow"
+        >
+        <b-container class="container p-3 m-0">
+          <!-- Group fields in pairs -->
+          <b-row class="row p-2 m-0" v-for="rowIndex in Math.ceil(costiFields.length / 2)" :key="rowIndex">
+            <!-- Two fields per row -->
+            <b-col
+              class="offset-xl-0 xl-6 offset-sm-0 sm-12 p-3 m-0 ml-1 mr-1 bg-light rounded border text-sm"
+              v-for="colField in costiFields.slice((rowIndex - 1) * 2, rowIndex * 2)"
+              :key="colField.key"
+            >
+              <label class="form-label text-sm">{{ colField.label }}</label>
+              <template v-if="colField.type === 'text'">
+                <b-input
+                  class="mb-3 text-sm"
+                  :disabled="colField.disabled"
+                  :type="colField.type"
+                  v-model="newItem[colField.key]"
+                ></b-input>
+              </template>
+              <template v-else-if="colField.type === 'select'">
+                <b-select
+                  class="mb-3 text-sm"
+                  :disabled="colField.disabled"
+                  :options="colField.choices"
+                  v-model="newItem[colField.key]"
+                ></b-select>
+              </template>
+              <template v-else-if="colField.type === 'number'">
+                <b-input
+                  class="mb-3 text-sm"
+                  :disabled="colField.disabled"
+                  min="0"
+                  @input="calcoloImportoItem(newItem,colField.key)"
+                  :type="colField.type"
+                  :value="colField.default"
+                  v-model="newItem[colField.key]"
+                ></b-input>
+              </template>
+              <template v-else-if="colField.type === 'euro'">
+                <b-input-group append="€" class="text-sm">
+                    <b-form-input
+                      :ref="colField.key"
+                      :placeholder="colField.placeholder" 
+                      v-model="newItem[colField.key]"
+                      @input="calcoloImportoItem(newItem,colField.key)"
+                      type="text"
+                      :formatter="formatCurrency">
+                    </b-form-input>
+                  </b-input-group>
+              </template>
+              <template v-else-if="colField.type === 'textarea'">
+                <b-form-textarea
+                  class="mb-3 text-sm"
+                  :disabled="colField.disabled"
+                  v-model="newItem[colField.key]"
+                  rows="4"
+                  max-rows="8"
+                ></b-form-textarea>
+              </template>
+              <b-alert
+                variant="danger"
+                fade
+                show
+                v-if="newItemMessages[colField.key]"
+                class="mt-2">
+                {{ newItemMessages[colField.key] }}
+              </b-alert>
+            </b-col>
+          </b-row>
+        </b-container>
+      </b-modal>
+
+      <b-modal id="confermaEliminazione" @ok="deleteRow(),edits=true" ok-variant="danger" cancel-variant="infowaste" ok-title="Si" cancel-title="Annulla" title="Conferma" v-if="rowtoDelete">
+        <p class="my-2">
+           Sei sicuro di voler eliminare la riga selezionata ?
+        </p>
+      </b-modal>
+
     </main>
   </template>
 
@@ -757,6 +786,7 @@ import Footer from '../components/Footer'
     mounted ()
     {
       this.$axios.defaults.withCredentials = true
+
 
       try {
 
@@ -876,7 +906,7 @@ import Footer from '../components/Footer'
                           this.sections[0].completed = 0
                         }
                     }
-                    for (const section of this.sections)
+                    for (const section of this.sections){
 
                       if (section.num >= 1 && section.num  <= 3)
                       {
@@ -889,11 +919,54 @@ import Footer from '../components/Footer'
                       {
                         section.class = 'text-primary'
                       }
+                    }
+                      //Converto il valore testuale in euro
+                      // Ensure the value is a number, then convert it to fixed 2 decimal places and replace the dot with a comma
+                      this.dati_comune.valore_can = parseFloat(this.dati_comune.valore_can).toFixed(2).replace(".", ",");
+
+                      // Check if the length of the string is sufficient to apply formatting
+                      if (this.dati_comune.valore_can.length >= 4) {
+
+                        // Split the value into integer and decimal parts
+                        let [integerPart, decimalPart] = this.dati_comune.valore_can.split(',');
+
+                        // Format the integer part by adding periods every 3 digits
+                        let formattedInteger = '';
+                        let digitsCount = 0;
+
+                        // Loop over the integer part from right to left
+                        for (let i = integerPart.length - 1; i >= 0; i--) {
+                          let char = integerPart[i];
+
+                          // If it's a digit and we need to add a separator every 3 digits
+                          if (digitsCount > 0 && digitsCount % 3 === 0) {
+                            formattedInteger = "." + formattedInteger;  // Add the separator (dot)
+                          }
+
+                          formattedInteger = char + formattedInteger;
+                          digitsCount++;
+                        }
+
+                        // Combine the integer part with the decimal part (if it exists)
+                        if (decimalPart) {
+                          this.dati_comune.valore_can = formattedInteger + "," + decimalPart; // Add the decimal part with comma
+                        } else {
+                          this.dati_comune.valore_can = formattedInteger;  // No decimal part
+                        }
+                      }
 
 
                     this.$axios.$post(`/get_costi_smaltimento` ,{id: this.id})
                     .then((response) => {
                       this.costi_smaltimento = response
+
+                      //Preparo il nuovo item per l'aggiunta
+                      this.newItem = {}
+                      if (this.costiFields && Array.isArray(this.costiFields)) {
+                        for (const field of this.costiFields) {
+                          this.newItemMessages[field.key] = "";
+                        }
+                      }
                       this.loaded = true
 
                     })
@@ -915,6 +988,24 @@ import Footer from '../components/Footer'
 
     methods:
     {
+        setRowtoDelete(item)
+        {
+          this.rowtoDelete = item
+        },
+
+        deleteRow()
+        {
+          this.loading = true
+          this.$axios.post('/del_costi_smaltimento', {
+                daticomune: this.dati_comune.id,
+                id: this.rowtoDelete['id'],
+              })
+              .then((response) => {
+                  this.loading = false
+                  window.location.reload()
+              })
+        },
+
         async askHelp()
         {
           var section = this.sections[this.current_section - 1].text
@@ -943,18 +1034,12 @@ import Footer from '../components/Footer'
             var formData = new FormData();
             var upload = false
 
-            if(dati_comune.cont_commessa_anno1 == '[object File]')
-            {
-              upload = true
-              dati_comune.cont_commessa_anno1 = new File([dati_comune.cont_commessa_anno1],dati_comune.cont_commessa_anno1.name)
-              formData.append("cont_commessa_anno1", dati_comune.cont_commessa_anno1,dati_comune.cont_commessa_anno1.name);
-            }
 
-            if(dati_comune.cont_commessa_anno2 == '[object File]')
+            if(dati_comune.cont_commessa_anno_2 == '[object File]')
             {
               upload = true
-              dati_comune.cont_commessa_anno2 = new File([dati_comune.cont_commessa_anno2],dati_comune.cont_commessa_anno2.name)
-              formData.append("cont_commessa_anno2", dati_comune.cont_commessa_anno2,dati_comune.cont_commessa_anno2.name);
+              dati_comune.cont_commessa_anno_2 = new File([dati_comune.cont_commessa_anno_2],dati_comune.cont_commessa_anno_2.name)
+              formData.append("cont_commessa_anno_2", dati_comune.cont_commessa_anno_2,dati_comune.cont_commessa_anno_2.name);
             }
 
             if(dati_comune.contratto_appalto == '[object File]')
@@ -964,12 +1049,27 @@ import Footer from '../components/Footer'
               formData.append("contratto_appalto", dati_comune.contratto_appalto,dati_comune.contratto_appalto.name);
             }
 
-            if(dati_comune.ultimo_pef == '[object File]')
+            if(dati_comune.pef_valid_ETC_a_2 == '[object File]')
             {
               upload = true
-              dati_comune.ultimo_pef = new File([dati_comune.ultimo_pef],dati_comune.ultimo_pef.name)
-              formData.append("ultimo_pef", dati_comune.ultimo_pef,dati_comune.ultimo_pef.name);
+              dati_comune.pef_valid_ETC_a_2 = new File([dati_comune.pef_valid_ETC_a_2],dati_comune.pef_valid_ETC_a_2.name)
+              formData.append("pef_valid_ETC_a_2", dati_comune.pef_valid_ETC_a_2,dati_comune.pef_valid_ETC_a_2.name);
             }
+
+            if(dati_comune.mud_a_1 == '[object File]')
+            {
+              upload = true
+              dati_comune.mud_a_1 = new File([dati_comune.mud_a_1],dati_comune.mud_a_1.name)
+              formData.append("mud_a_1", dati_comune.mud_a_1,dati_comune.mud_a_1.name);
+            }
+
+            if(dati_comune.mud_a_2 == '[object File]')
+            {
+              upload = true
+              dati_comune.mud_a_2 = new File([dati_comune.mud_a_2],dati_comune.mud_a_2.name)
+              formData.append("mud_a_2", dati_comune.mud_a_2,dati_comune.mud_a_2.name);
+            }
+
 
 
             if (upload)
@@ -997,83 +1097,6 @@ import Footer from '../components/Footer'
 
         },
 
-        async aggiungiExtra()
-        {
-
-            if(this.add.imp_smalt == "")
-              this.add.msg.imp_smalt = "Campo obbligatorio"
-            else
-              this.add.msg.imp_smalt = ""
-
-
-            if(this.controllaPartitaIVA(this.add.partitaIvaGestoreImpianto) != true)
-              this.add.msg.partitaIvaGestoreImpianto = this.controllaPartitaIVA(this.add.partitaIvaGestoreImpianto)
-            else
-              this.add.msg.partitaIvaGestoreImpianto = ""
-
-
-            if(this.add.tipo_rifiuto == "")
-              this.add.msg.tipo_rifiuto = "Campo obbligatorio"
-            else
-              this.add.msg.tipo_rifiuto = ""
-
-
-            if(this.add.tipo_rifiuto.length > 0 && this.add.imp_smalt.length > 0)
-
-                this.$axios.post('/add_costi_smaltimento', {
-
-                  daticomune:this.dati_comune.id,
-                  gestore:this.add.gestore,
-                  imp_smalt: this.add.imp_smalt,
-                  tipo_rifiuto: this.add.tipo_rifiuto,
-                  tipo_costo: this.add.tipo_costo,
-                  anno: this.add.anno,
-                  tons: this.add.tons,
-                  prezzo_unitario: this.add.prezzo_unitario,
-                  importo: this.add.importo,
-
-                  tipoImpianto:this.add.tipoImpianto,
-                  gestoreImpianto:this.add.gestoreImpianto,
-                  partitaIvaGestoreImpianto:this.add.partitaIvaGestoreImpianto,
-                  comuneSedeImpianto:this.add.comuneSedeImpianto,
-                  impiantoDestinazione:this.add.impiantoDestinazione,
-                  note:this.add.note
-
-                })
-                .then((response) => {
-                  this.saveDatiComune(this.dati_comune,this.files)
-                  location.reload()
-                })
-
-        },
-
-        async modificaExtra(extra)
-        {
-
-          this.$axios.post('/update_costi_smaltimento',{
-
-            id:extra.id,
-            gestore:extra.gestore,
-            daticomune:this.dati_comune.id,
-            gestore: extra.gestore,
-            imp_smalt: extra.imp_smalt,
-            tipo_rifiuto: extra.tipo_rifiuto,
-            tipo_costo: extra.tipo_costo,
-            anno: extra.anno,
-            tons: extra.tons,
-            prezzo_unitario: extra.prezzo_unitario,
-            importo: extra.importo,
-            tipoImpianto:extra.tipoImpianto,
-            gestoreImpianto:extra.gestoreImpianto,
-            partitaIvaGestoreImpianto:extra.partitaIvaGestoreImpianto,
-            comuneSedeImpianto:extra.comuneSedeImpianto,
-            impiantoDestinazione:extra.impiantoDestinazione,
-            note:extra.note
-          })
-          this.saveDatiComune(this.dati_comune,this.files)
-          location.reload()
-
-        },
 
         controllaPartitaIVA(partitaIVA)
         {
@@ -1085,23 +1108,68 @@ import Footer from '../components/Footer'
 
          },
 
-        async eliminaExtra(id)
+
+        async calcoloImportoItem(item,key)
         {
-          this.$axios.post('/del_costi_smaltimento',
-           {
-             daticomune:this.dati_comune.id,
-             id: id
-           }).then((response) => {
-             this.saveDatiComune(this.dati_comune,this.files)
-             location.reload()
-           })
+          if(key == "tons" || key == "prezzo_unitario"){
+            
+            // Ensure prezzo_unitario and tonnellate are properly initialized
+            let prezzoUnitario = item.prezzo_unitario || '0';
+            let tonnellate = item.tons || '0';
 
+            // Convert prezzo_unitario to a string if it's not already
+            if (typeof prezzoUnitario !== 'string') {
+              prezzoUnitario = prezzoUnitario.toString();
+            }
 
+            // Replace commas with periods for float conversion
+            prezzoUnitario = prezzoUnitario.replace(/\./g, "");
+            prezzoUnitario = prezzoUnitario.replace(',', '.');
+            
+            // Parse both values
+            const prezzoUnitarioNumber = parseFloat(prezzoUnitario);
+            const tonnellateNumber = parseFloat(tonnellate);
+
+            // Only calculate if both values are valid numbers
+            if (!isNaN(prezzoUnitarioNumber) && !isNaN(tonnellateNumber)) {
+              // Calculate importo and format to 2 decimal places
+              item.importo = (tonnellateNumber * prezzoUnitarioNumber).toFixed(2).replace('.', ',');
+              
+              // Ensure Vue updates the UI
+              this.$forceUpdate();
+            }
+          }
         },
 
-        async calcoloImporto()
+        orderBy(field,fields,items)
         {
-            this.add.importo = this.add.tons * this.add.prezzo_unitario
+          //set fields order to 0
+          for (var i = 0; i < fields.length; i++)
+          {
+            if (field.key != fields[i].key)
+            {
+              fields[i].order = 0
+            }
+          }
+
+          if (field.order == 0)
+          {
+            field.order = 1
+          }
+          else {
+            field.order = field.order * -1
+          }
+
+          if (field.order == -1)
+          {
+            items = items.sort((t1,t2) => t1[field.key] > t2[field.key] ? -1 : 1)
+
+          }
+          if (field.order == 1)
+          {
+            items = items.sort((t1,t2) => t1[field.key] < t2[field.key] ? -1 : 1)
+
+          }
         },
 
         async saveDatiComune(dati_comune,files)
@@ -1142,6 +1210,12 @@ import Footer from '../components/Footer'
             dati_comune.altri_gestori=""
 
           }
+
+          //converto la valuta in numero di macchina
+          dati_comune.valore_can = dati_comune.valore_can.replace(/\./g, "");
+          dati_comune.valore_can = parseFloat(dati_comune.valore_can.replace(",", "."));
+             
+           
 
           if(dati_comune.serv_exra_arera_flag == true)
           {
@@ -1220,21 +1294,31 @@ import Footer from '../components/Footer'
             is_completed = 0
           }
 
-          //controllo invio dei FILES
-          if(files.cont_commessa_anno1 != '[object File]' && dati_comune.cont_commessa_anno1 == '')
+
+          if(files.cont_commessa_anno_2 != '[object File]' && dati_comune.cont_commessa_anno_2 == '')
           {
             is_completed = 0
           }
 
-              if(files.cont_commessa_anno2 != '[object File]' && dati_comune.cont_commessa_anno2 == '')
-              {
-                is_completed = 0
-              }
+          if(files.contratto_appalto != '[object File]' && dati_comune.contratto_appalto == '')
+          {
+            is_completed = 0
+          }
 
-                  if(files.contratto_appalto != '[object File]' && dati_comune.contratto_appalto == '')
-                  {
-                    is_completed = 0
-                  }
+          if(files.pef_valid_ETC_a_2 != '[object File]' && dati_comune.pef_valid_ETC_a_2 == '')
+          {
+            is_completed = 0
+          }
+
+          if(files.mud_a_1 != '[object File]' && dati_comune.mud_a_1 == '')
+          {
+              is_completed = 0
+          }
+            
+          if(files.mud_a_2 != '[object File]' && dati_comune.mud_a_2 == '')
+          {
+              is_completed = 0
+          }
 
 
 
@@ -1332,6 +1416,15 @@ import Footer from '../components/Footer'
 
 
         return {
+                  rowEditingError:undefined,
+                  rowtoDelete:undefined,
+                  itemID:undefined,
+                  item:undefined,
+                  editingItemMessages:{},
+                  newItemMessages:{},
+                  newItem:0,
+
+
                   tipologieImpiantoChoices : [{value:'Compostaggio',text:'Compostaggio'},
                   {value:'Digestione Anaerobica',text:'Digestione Anaerobica'},
                   {value:'Integrato Aerobico/Anaerobico',text:'Integrato Aerobico/Anaerobico'},
@@ -1362,13 +1455,14 @@ import Footer from '../components/Footer'
                   current_section:0,
                   id:0,
 
-
                   files:{
-                    cont_commessa_anno1:[],
-                    cont_commessa_anno2:[],
+                    cont_commessa_anno_2:[],
                     contratto_appalto:[],
-                    ultimo_pef:[]
+                    pef_valid_ETC_a_2:[],
+                    mud_a_1:[],
+                    mud_a_2:[]
                   },
+
                   help_message:"",
                   width:0,
                   page_id:0,
@@ -1399,10 +1493,29 @@ import Footer from '../components/Footer'
                       comuneSedeImpianto:"",
                       impiantoDestinazione:"",
                       note:"",
-
-
                   },
-                  container_specs:'col-12 col-xl-6 p-2 pl-3 pr-3 mt-3 mb-3',
+                  costiFields: [
+                    { style: 'height:30px;width:6.5%', order: 0, type: 'select', key: 'gestore', label: 'Gestore che sostiene i costi di tr', choices: ['GESTORE', 'COMUNE'], model: 'add.gestore' },
+                    //{ style: 'height:30px;width:6.5%', order: 0, type: 'select', key: 'gestore', label: 'Gestore che sostiene i costi di trattamento/recupero/smaltimento', choices: ['GESTORE', 'COMUNE'], model: 'add.gestore' },
+                    { style: 'height:30px;width:6.5%', order: 0, type: 'select', key: 'anno', label: 'Anno', options: ['2022', '2023'], model: 'add.anno' },
+                    { style: 'height:30px;width:10%', order: 0, type: 'textarea', key: 'imp_smalt', label: 'Impianto di smaltimento', model: 'add.imp_smalt', alertMessage: 'add.msg.imp_smalt' },
+                    { style: 'height:30px;width:12%', order: 0, type: 'textarea', key: 'tipo_rifiuto', label: 'Codice CER/Tipo di rifiuto', model: 'add.tipo_rifiuto', alertMessage: 'add.msg.tipo_rifiuto' },
+                    { style: 'height:30px;width:8%', order: 0, type: 'select', key: 'tipo_costo', label: 'Tipologia costo', options: ['CTS', 'CTR'], model: 'add.tipo_costo' },
+                    { style: 'height:30px;width:10%', order: 0, type: 'number', key: 'tons', label: 'Quantitativi conferiti [ton]', model: 'add.tons', onChange: 'calcoloImporto()' },
+                    { style: 'height:30px;width:10%', order: 0, type: 'euro', key: 'prezzo_unitario', label: 'Prezzo unitario con IVA [€/ton]', model: 'add.prezzo_unitario', onChange: 'calcoloImporto()' },
+                    { style: 'height:30px;width:10%', order: 0, type: 'euro', key: 'importo', label: 'Importo IVA Inclusa', model: 'add.importo' },
+                    { style: 'height:30px;width:12%', order: 0, type: 'select', key: 'tipoImpianto', label: 'Tipologia impianto di destinazione', options: 'tipologieImpiantoChoices', model: 'add.tipoImpianto' },
+                    { style: 'height:30px;width:9%', order: 0, type: 'text', key: 'gestoreImpianto', label: 'Gestore Impianto', model: 'add.gestoreImpianto' },
+                    { style: 'height:30px;width:9%', order: 0, type: 'text', key: 'partitaIvaGestoreImpianto', label: 'Partita IVA Gestore Impianto', model: 'add.partitaIvaGestoreImpianto', alertMessage: 'add.msg.partitaIvaGestoreImpianto' },
+                    { style: 'height:30px;width:9%', order: 0, type: 'text', key: 'comuneSedeImpianto', label: 'Comune sede Impianto', model: 'add.comuneSedeImpianto' },
+                    //{ style: 'height:30px;width:14%', order: 0, type: 'text', key: 'impiantoDestinazione', label: 'In caso di invio a impianto intermedio, indicare impianto di destinazione finale dei flussi in uscita', model: 'add.impiantoDestinazione' },
+                    { style: 'height:30px;width:14%', order: 0, type: 'text', key: 'impiantoDestinazione', label: 'impianto di destinazione finale ', model: 'add.impiantoDestinazione' },
+                    { style: 'height:30px;width:6%', order: 0, type: 'textarea', key: 'note', label: 'NOTE', model: 'add.note' }
+                  ],
+
+
+
+                  container_specs:'col-12 col-xl-6 p-2 pl-3 pr-3 mt-1 mb-1',
                   file1: null,
                   file2: null,
                   file3: null,

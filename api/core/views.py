@@ -584,23 +584,11 @@ def upload_comune_files(request):
             if azienda == request.session['azienda']:
                 obj = DatiComune.objects.get(pk = id , azienda_id = azienda)
                 az = Azienda.objects.get(pk = azienda)
-
                 try:
-
-                    if 'cont_commessa_anno1' in request.FILES is not None:
-                         file = request.FILES['cont_commessa_anno1']
-                         obj.cont_commessa_anno1 = file.name
+                    if 'cont_commessa_anno_2' in request.FILES is not None:
+                         file = request.FILES['cont_commessa_anno_2']
+                         obj.cont_commessa_anno_2 = file.name
                          obj.save()
-
-                         with open(basedir + '/' + az.ragione_sociale + '/' + str(obj.comune) + '/' + file.name,'wb+') as destination:
-                             for chunk in file.chunks():
-                                 destination.write(chunk)
-
-                    if 'cont_commessa_anno2' in request.FILES is not None:
-                         file = request.FILES['cont_commessa_anno2']
-                         obj.cont_commessa_anno2 = file.name
-                         obj.save()
-
                          with open(basedir + '/' + az.ragione_sociale + '/' + str(obj.comune) + '/' + file.name,'wb+') as destination:
                              for chunk in file.chunks():
                                  destination.write(chunk)
@@ -609,19 +597,36 @@ def upload_comune_files(request):
                          file = request.FILES['contratto_appalto']
                          obj.contratto_appalto = file.name
                          obj.save()
-
                          with open(basedir + '/' + az.ragione_sociale + '/' + str(obj.comune) + '/' + file.name,'wb+') as destination:
                              for chunk in file.chunks():
                                  destination.write(chunk)
 
-                    if 'ultimo_pef' in request.FILES is not None:
-                         file = request.FILES['ultimo_pef']
-                         obj.ultimo_pef = file.name
+                    if 'pef_valid_ETC_a_2' in request.FILES is not None:
+                         file = request.FILES['pef_valid_ETC_a_2']
+                         obj.pef_valid_ETC_a_2 = file.name
                          obj.save()
-
                          with open(basedir + '/' + az.ragione_sociale + '/' + str(obj.comune) + '/' + file.name,'wb+') as destination:
                              for chunk in file.chunks():
                                  destination.write(chunk)
+
+                    
+                    if 'mud_a_2' in request.FILES is not None:
+                         file = request.FILES['mud_a_2']
+                         obj.mud_a_2 = file.name
+                         obj.save()
+                         with open(basedir + '/' + az.ragione_sociale + '/' + str(obj.comune) + '/' + file.name,'wb+') as destination:
+                             for chunk in file.chunks():
+                                 destination.write(chunk)
+
+                    if 'mud_a_1' in request.FILES is not None:
+                         file = request.FILES['mud_a_1']
+                         obj.mud_a_1 = file.name
+                         obj.save()
+                         with open(basedir + '/' + az.ragione_sociale + '/' + str(obj.comune) + '/' + file.name,'wb+') as destination:
+                             for chunk in file.chunks():
+                                 destination.write(chunk)
+                    
+
                     error= "OK"
                     return HttpResponse(error)
 
@@ -629,7 +634,6 @@ def upload_comune_files(request):
 
                     error = "Qualcosa è andato storto"
                     return HttpResponse(error)
-
 
             else:
                 return HttpResponse("company not match")
@@ -980,43 +984,47 @@ def get_user_data(request):
         return JsonResponse(False,content_type="application/json",safe=False)
 
 def login(request):
+    
+    body = json.loads(request.body.decode('utf-8'))
+    email, password = body['email'], body['password']
 
-    body_unicode = request.body.decode('utf-8')
-    body = json.loads(body_unicode)
-
-    email = body['email']
-    password = body['password']
-
-    #request.session.flush()
-
+    # Authenticate user
     user = authenticate(email=email, password=password)
 
-    if user is not None:
-        if user.verified is True:
-            #login(request,user)
-            user = get_user_model().objects.filter(email=email).first()
+    if not user:
+        return JsonResponse({'message': "Email o password errati."}, status=400)
 
-            if user.azienda is not None:
-                request.session['azienda'] = user.azienda.id
+    if user.verified and user.is_active:
+        # If the user is associated with a company
+        if user.azienda:
+            request.session.update({
+                'azienda': user.azienda.id
+            })
 
-            request.session['logged'] = True
-            request.session['user_id'] = user.id
-            request.session.modified = True
-            request.session['email'] = user.email
-            request.session['verified'] = user.verified
-            request.session['nome'] = user.nome
-            request.session['cognome'] = user.cognome
-            request.session['is_assigned'] = user.is_assigned
-            request.session['is_admin'] = user.is_admin
-            request.session['is_staff'] = user.is_staff
-            request.session['is_active'] = user.is_active
-            message="SI"
+        # Update session variables
+        request.session.update({
+            'logged': True,
+            'user_id': user.id,
+            'email': user.email,
+            'verified': user.verified,
+            'nome': user.nome,
+            'cognome': user.cognome,
+            'is_assigned': user.is_assigned,
+            'is_admin': user.is_admin,
+            'is_staff': user.is_staff,
+            'is_active': user.is_active,
+        })
 
-        else:
-            message="NO"
+        return JsonResponse({'message': "OK"}, status=200)
+
+    elif not user.verified:
+        return JsonResponse({'message': "Il tuo account non è stato verificato."}, status=403)
+
     else:
-        message="NO"
-    return HttpResponse(message)
+        return JsonResponse({'message': "Email o password errati."}, status=400)
+
+
+    
 
 def logout(request):
 

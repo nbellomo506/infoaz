@@ -114,3 +114,14 @@
     pointer-events: none;
     opacity: 0.4;
 }
+
+.custom-bordered-table {
+  border: 1px solid black;
+}
+
+.custom-bordered-table td,
+.custom-bordered-table th,
+.custom-bordered-table tr {
+  border: 1px solid black !important;
+  
+}
