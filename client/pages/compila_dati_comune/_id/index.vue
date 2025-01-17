@@ -509,7 +509,7 @@ import Footer from '../components/Footer'
             <h3>Comune di {{dati_comune.nome_comune}}</h3>
             <h3>Costi Smaltimento / Trattamento</h3>
             <p>
-              Per inserire una nuova riga alla tabella premere il tasto <b>AGGIUNGI RIGA</b>.<br> Il <b>SALVATAGGIO</b> è <b>AUTOMATICO</b>.
+              Per inserire una nuova riga alla tabella premere il tasto <b>AGGIUNGI RIGA</b>. Il <b>SALVATAGGIO</b> è <b>AUTOMATICO</b>.
             </p>
             <table
               bordered
@@ -591,6 +591,11 @@ import Footer from '../components/Footer'
                   </b-container>
                 </td>
               </tr>
+              <tr v-if="costi_smaltimento.length == 0">
+                <td colspan="100%">
+                La tabella è vuota
+                </td>
+              </tr>
             </table>
           </b-col>
         </b-row>
@@ -641,7 +646,14 @@ import Footer from '../components/Footer'
 
       <div v-if="dati_comune !== false && is_logged === true && is_company_set === true && loaded === true" class="bg-light border fixed-bottom p-2">
         <b-container class="container">
-          <b-row class="row">
+          <b-row class="row" v-if="current_section == 4">
+            <b-col class="xl-1 offset-xl-10">
+              <b-button v-b-modal.addRow block variant="success">
+                  AGGIUNGI RIGA
+              </b-button>
+            </b-col>
+          </b-row>
+          <b-row class="row" v-else>
             <b-col class="xl-1 offset-xl-10">
               <b-button block @click="saveDatiComune(dati_comune,files)" variant="infowaste">
                   Salva
@@ -1145,10 +1157,11 @@ import Footer from '../components/Footer'
                         centered: true, // Optional: centers the modal
                       })
                       .then(value => {
-                        if(value == true)
+                        if(value == true){
                           this.current_section = num
                           this.updateSection();
                           window.location.reload();
+                        }
                       })
                       .catch(err => {
                         // An error occurred
