@@ -5,7 +5,7 @@ import Header from '../components/Header'
 <template>
   <main>
     <Header/>
-      <b-container mt="5">
+      <b-container mt="5" v-if="loading == false">
         <b-row class="mr-1 ml-1 mt-5">
           <b-col class="text-center" xl="4" offset-xl="4">
             ©Copyright, all rights reserved <br>
@@ -30,11 +30,13 @@ export default {
    data() {
       return {
 
-
+        loading:true
+        
       }
    },
    mounted () {
 
+    this.loading = false
 
    },
    methods: {

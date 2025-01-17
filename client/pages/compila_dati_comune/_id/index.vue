@@ -6,17 +6,17 @@ import Loading from '../components/Loading'
 import Footer from '../components/Footer'
 
 
-
   <template>
     <main>
       <Header/>
-        <b-nav v-if="dati_comune !== false && is_company_set === true && is_logged === true" class="mt-3" tabs align="center">
-          <b-nav-item :hidden="dati_comune.ricavi_conai != 'IMPRESA' && section.num == 5 " class="text-danger" @click="goToSection(section.num)" style="cursor:pointer" v-for="section in sections" :key="section.num" :active="section.num === current_section">
-            <p :class="section.class">
-              {{section.text}}
-            </p>
-          </b-nav-item>
-        </b-nav>
+      <b-nav v-if="dati_comune !== false && is_company_set === true && is_logged === true" class="mt-3" tabs align="center">
+        <b-nav-item :hidden="dati_comune.ricavi_conai != 'IMPRESA' && section.num == 5 " class="text-danger" @click="goToSection(section.num)" style="cursor:pointer" v-for="section in sections" :key="section.num" :active="section.num === current_section">
+          <p :class="section.class">
+            {{section.text}}
+          </p>
+        </b-nav-item>
+      </b-nav>
+
       <div class="container-fluid p-0 pb-0 mb-0 m-0 b-0" v-if="dati_comune !== false && is_company_set === true && is_logged === true && loaded === true">
           <b-container fluid class=" mt-0 b-0">
           <b-row>
@@ -33,13 +33,13 @@ import Footer from '../components/Footer'
             </b-col>
             <b-col class="borders-rounded pt-5 pb-0 mb-0" offset-xl="1" xl="9">
               <ol class="p-0 m-0 b-0">
-                <div v-bind:class="{'disabled-container' : azienda.report_is_sent || azienda.report_attempts <= 0 }" class="p-0 b-0 m-0" v-if="current_section === 1">
+                <div v-bind:class="{'disabled-container' : azienda.report_is_sent || azienda.report_attempts <= 0 }" class="p-0 b-0 m-0" v-if="current_section === 1" @change="sections[0].edits = true">
                   <h3>Comune di {{dati_comune.nome_comune}}</h3>
                   <h3>{{sections[current_section-1].text}}</h3>
                   <p>
                     I campi in rosso sono obbligatori e, ove non diversamente specificato, sono riferiti all’annualità {{ new Date().getFullYear() - 2 }}.<br>
                     Compilare la pagina in ogni sua parte e premere il pulsante <b>SALVA</b> prima di passare alla pagina successiva.<br>
-                    Il pulsante <b>HELP</b> è in basso.
+                    <!--Il pulsante <b>HELP</b> è in basso.-->
                   </p>
                   <div class="rounded shadow bg-light border p-3">
                   <b-row>
@@ -227,7 +227,7 @@ import Footer from '../components/Footer'
                   </div>
                 </div>
 
-                <div v-bind:class="{'disabled-container' : azienda.report_is_sent || azienda.report_attempts <= 0 }" class="p-0 b-0 m-0" v-if="current_section === 5 && dati_comune.ricavi_conai == 'IMPRESA'">
+                <div v-bind:class="{'disabled-container' : azienda.report_is_sent || azienda.report_attempts <= 0 }" class="p-0 b-0 m-0" v-if="current_section === 5 && dati_comune.ricavi_conai == 'IMPRESA'" @change="sections[1].edits = true">
                   <h3>Comune di {{dati_comune.nome_comune}}</h3>
                   <h4>MACRO-INDICATORE R1</h4>
                   Il MTR-2 aggiornato alle annualità 2024 – 2025 richiede la valorizzazione nel PEF del Macro – Indicatore R1,
@@ -278,14 +278,14 @@ import Footer from '../components/Footer'
                   </table>
                 </div>
 
-                <div v-bind:class="{'disabled-container' : azienda.report_is_sent || azienda.report_attempts <= 0 }" class="p-0 b-0 m-0" v-if="current_section === 2">
+                <div v-bind:class="{'disabled-container' : azienda.report_is_sent || azienda.report_attempts <= 0 }" class="p-0 b-0 m-0" v-if="current_section === 2" @change="sections[2].edits = true">
                   <b-container class="m-0 p-0 b-0">
                     <h3>Comune di {{dati_comune.nome_comune}}</h3>
                     <h3>Dati tecnici dell'appalto</h3>
                     <p>
                       I campi in rosso sono obbligatori e, ove non diversamente specificato, sono riferiti all’annualità {{new Date().getFullYear() - 2}}.<br>
                       Compilare la pagina in ogni sua parte e premere il pulsante <b>SALVA</b> prima di passare alla pagina successiva.<br>
-                      Il pulsante <b>HELP</b> è in basso.
+                      <!--Il pulsante <b>HELP</b> è in basso.-->
                     </p>
                     <div class="rounded shadow bg-light border p-3">
                     <b-row>
@@ -331,14 +331,14 @@ import Footer from '../components/Footer'
                   </b-container>
                 </div>
 
-                <div v-bind:class="{'disabled-container' : azienda.report_is_sent || azienda.report_attempts <= 0 }" class="p-0 b-0 m-0" v-if="current_section === 3">
+                <div v-bind:class="{'disabled-container' : azienda.report_is_sent || azienda.report_attempts <= 0 }" class="p-0 b-0 m-0" v-if="current_section === 3" @change="sections[3].edits = true">
                   <b-container class="m-0 p-0 b-0">
                     <h3>Comune di {{dati_comune.nome_comune}}</h3>
                     <h3>Documenti riferiti all'appalto</h3>
                     <p>
                       I campi in rosso sono obbligatori e, ove non diversamente specificato, sono riferiti all’annualità {{ new Date().getFullYear() - 2 }}.<br>
                       Compilare la pagina in ogni sua parte e premere il pulsante <b>SALVA</b> prima di passare alla pagina successiva.<br>
-                      Il pulsante <b>HELP</b> è in basso.
+                      <!--Il pulsante <b>HELP</b> è in basso.-->
                     </p>
                     <div class="rounded shadow bg-light border p-3">
 
@@ -435,7 +435,7 @@ import Footer from '../components/Footer'
                     </b-row>
                     <b-row class="justify-content-start">
                       <b-col cols="12" md="6" :class="container_specs">
-                        <FieldTitle req="yes" description="CARICARE MUD anno a - 1" />
+                        <FieldTitle req="no" description="CARICARE MUD anno a - 1" />
                         <b-row>
                           <b-col cols="10">
                             <b-form-group>
@@ -464,7 +464,7 @@ import Footer from '../components/Footer'
                         </b-row>
                       </b-col>
                       <b-col cols="12" md="6" :class="container_specs">
-                        <FieldTitle req="yes" description="CARICARE MUD anno a - 2" />
+                        <FieldTitle req="no" description="CARICARE MUD anno a - 2" />
                         <b-row>
                           <b-col cols="10">
                             <b-form-group>
@@ -509,7 +509,7 @@ import Footer from '../components/Footer'
             <h3>Comune di {{dati_comune.nome_comune}}</h3>
             <h3>Costi Smaltimento / Trattamento</h3>
             <p>
-              Per inserire una nuova riga dopo la sua compilazione premere il tasto <b>AGGIUNGI</b> e quindi il tasto <b>SALVA</b>.
+              Per inserire una nuova riga alla tabella premere il tasto <b>AGGIUNGI RIGA</b>.<br> Il <b>SALVATAGGIO</b> è <b>AUTOMATICO</b>.
             </p>
             <table
               bordered
@@ -641,19 +641,7 @@ import Footer from '../components/Footer'
 
       <div v-if="dati_comune !== false && is_logged === true && is_company_set === true && loaded === true" class="bg-light border fixed-bottom p-2">
         <b-container class="container">
-          <b-row class="row" v-if="current_section === 4">
-            <b-col class="xl-2 offset-xl-8">
-              <b-button v-b-modal.addRow block variant="success">
-                  Aggiungi Riga
-              </b-button>
-            </b-col>
-            <b-col class="xl-1">
-              <b-button block @click="saveDatiComune(dati_comune,files)" variant="infowaste">
-                  Salva
-              </b-button>
-            </b-col>
-          </b-row>
-          <b-row class="row" v-else>
+          <b-row class="row">
             <b-col class="xl-1 offset-xl-10">
               <b-button block @click="saveDatiComune(dati_comune,files)" variant="infowaste">
                   Salva
@@ -679,8 +667,94 @@ import Footer from '../components/Footer'
         </b-container>
       </b-modal>
 
+      <!--ROW EDITING-->
+      <b-modal
+        v-if="item !== undefined"
+        id="editRow"
+        title="Modifica"
+        ok-title="Salva"
+        ok-variant="infowaste"
+        cancel-title="Annulla"
+        cancel-variant="danger"
+        size="lg"
+        class="custom-modal"
+        @ok.prevent="editRow"
+        >
+        <b-container class="container p-3 m-0" @change="sections[4].edits = true">
+          <!-- Group fields in pairs -->
+          <b-row class="row p-2 m-0" v-for="rowIndex in Math.ceil(costiFields.length / 2)" :key="rowIndex">
+            <!-- Two fields per row -->
+            <b-col
+              class="offset-xl-0 xl-6 offset-sm-0 sm-12 p-3 m-0 ml-1 mr-1 bg-light rounded border text-sm"
+              v-for="colField in costiFields.slice((rowIndex - 1) * 2, rowIndex * 2)"
+              :key="colField.key"
+            >
+              <label class="form-label text-sm">{{ colField.label }}</label>
+              <template v-if="colField.type === 'text'">
+                <b-input
+                  class="mb-3 text-sm"
+                  :disabled="colField.disabled"
+                  :type="colField.type"
+                  v-model="item[colField.key]"
+                ></b-input>
+              </template>
+              <template v-else-if="colField.type === 'select'">
+                <b-select
+                  class="mb-3 text-sm"
+                  :disabled="colField.disabled"
+                  :options="colField.choices"
+                  v-model="item[colField.key]"
+                ></b-select>
+              </template>
+              <template v-else-if="colField.type === 'number'">
+                <b-input
+                  class="mb-3 text-sm"
+                  :disabled="colField.disabled"
+                  @input="calcoloImportoItem(item,colField.key)"
+                  min="0"
+                  :type="colField.type"
+                  :value="colField.default"
+                  v-model="item[colField.key]"
+                ></b-input>
+              </template>
+              <template v-else-if="colField.type === 'euro'">
+                <b-input-group append="€" class="text-sm">
+                    <b-form-input
+                      :ref="colField.key"
+                      :placeholder="colField.placeholder" 
+                      v-model="item[colField.key]"
+                      type="text"
+                      @input="calcoloImportoItem(item,colField.key)"
+                      :formatter="formatCurrency">
+                    </b-form-input>
+                  </b-input-group>
+              </template>
+              <template v-else-if="colField.type === 'textarea'">
+                <b-form-textarea
+                  class="mb-3 text-sm"
+                  :disabled="colField.disabled"
+                  v-model="item[colField.key]"
+                  rows="4"
+                  max-rows="8"
+                ></b-form-textarea>
+              </template>
+              <b-alert
+                variant="danger"
+                fade
+                show
+                v-if="editingItemMessages[colField.key]"
+                class="mt-2"
+              >
+                {{ editingItemMessages[colField.key] }}
+              </b-alert>
+            </b-col>
+          </b-row>
+        </b-container>
+      </b-modal>
+
       <!--ROW ADDING-->
       <b-modal
+        @change="sections[4].edits = true"
         id="addRow"
         title="Modifica"
         ok-title="Aggiungi"
@@ -786,7 +860,6 @@ import Footer from '../components/Footer'
     mounted ()
     {
       this.$axios.defaults.withCredentials = true
-
 
       try {
 
@@ -967,6 +1040,21 @@ import Footer from '../components/Footer'
                           this.newItemMessages[field.key] = "";
                         }
                       }
+
+                      this.items = response
+                      for(const item of this.items)
+                      {
+                        item.importo = item.importo.toFixed(2).replace(".", ",");
+                        item.prezzo_unitario = item.prezzo_unitario.toFixed(2).replace(".", ",");
+
+                        item.importo = this.addDots(item.importo)
+                        item.prezzo_unitario = this.addDots(item.prezzo_unitario)
+
+                        item.editing=false
+                        item.error=""
+                      }
+                      this.items = this.items.sort((t1,t2) => t1["id"] > t2["id"] ? -1 : 1)
+
                       this.loaded = true
 
                     })
@@ -979,15 +1067,49 @@ import Footer from '../components/Footer'
       } catch (e) {
         console.log(e)
       }
-
-
-
-
-
     },
 
     methods:
     {
+        formatCurrency(value) {
+          this.formatting = true
+          // Remove decimals, keeping only two digits after the comma
+          value = this.rimuoviDecimali(value,2);
+          // Clean the value and remove invalid characters
+          value = this.eliminaCaratteri(value);
+
+          this.formatting=false
+          return value;
+        },
+        
+        eliminaCaratteri(str) {
+            let result = '';
+            let commaFound = false;
+            for (let i = 0; i < str.length; i++) {
+              if (str[i] >= "0" && str[i] <= "9") {
+                result += str[i];
+              }
+              if (str[i] === '.') {
+                result += str[i];
+              }
+              if (str[i] === ',' && !commaFound) {
+                result += str[i];
+                commaFound = true;
+              }
+            }
+            return result;
+        },
+
+        rimuoviDecimali(str, maxDec) {
+          let commaIndex = str.indexOf(",");
+          if (commaIndex === -1) return str; // No decimals
+
+          let integerPart = str.slice(0, commaIndex);
+          let decimalPart = str.slice(commaIndex + 1, commaIndex + 1 + maxDec);
+
+          return integerPart + ',' + decimalPart;
+        },
+
         setRowtoDelete(item)
         {
           this.rowtoDelete = item
@@ -1006,26 +1128,37 @@ import Footer from '../components/Footer'
               })
         },
 
-        async askHelp()
-        {
-          var section = this.sections[this.current_section - 1].text
-          section = section
-          this.$axios.post('/askHelp', {
-
-            message: this.help_message,
-            section: section,
-
-          })
-
-        },
-
         async goToSection(num)
         {
-           if (num >= 1 &&  num <= this.sections.length)
+           if (num >= 1 &&  num <= this.sections.length  && num !== this.current_section)
            {
-                this.current_section = num
-          }
-
+                for(var i=0; i < this.sections.length; i++){
+                  if(this.sections[i].num == this.current_section){
+                    if(this.sections[i].edits == true){
+                      this.$bvModal
+                      .msgBoxConfirm('Sei sicuro di voler cambiare pagina? Le modifiche non salvate andranno perse', {
+                        title: 'Conferma Azione',
+                        okTitle: 'Conferma',
+                        cancelTitle: 'Annulla',
+                        okVariant: 'infowaste',
+                        cancelVariant: 'danger',
+                        centered: true, // Optional: centers the modal
+                      })
+                      .then(value => {
+                        if(value == true)
+                          this.current_section = num
+                          this.updateSection();
+                          window.location.reload();
+                      })
+                      .catch(err => {
+                        // An error occurred
+                      })
+                    }else{
+                      this.current_section = num
+                    }
+                  }
+                }
+            }
         },
 
         async uploadFiles(dati_comune)
@@ -1097,6 +1230,107 @@ import Footer from '../components/Footer'
 
         },
 
+        editingRow(row) {
+          if (!row) return; // Ensure row is valid
+
+          // Reset editing state and set the selected row to editing in one loop
+          for (const item of this.costi_smaltimento) {
+            this.$set(item, 'editing', item.id === row.id);
+          }
+
+          // Update component state
+          this.itemID = row.id;
+          this.item = JSON.parse(JSON.stringify(row)); // Deep clone to avoid mutations
+
+          // Ensure editingItemMessages exists
+          if (!this.editingItemMessages) {
+            this.editingItemMessages = {};
+          }
+
+          // Reset messages
+          if (this.costiFields && Array.isArray(this.costiFields)) {
+            for (const field of this.costiFields) {
+              this.editingItemMessages[field.key] = "";
+            }
+          }
+        },
+
+        validateEditItem()
+        {
+          var field = ""
+          var valid = true
+          for(const field of this.costiFields){
+            if(field.key!= 'id'){
+              if (this.item[field.key] === "" || this.item[field.key] === null || this.item[field.key] === undefined){
+                this.editingItemMessages[field.key] = "Campo obbligatorio"
+                valid = false
+              }else {
+                this.editingItemMessages[field.key] = ""
+              }
+              if(field.key === 'partitaIvaGestoreImpianto')
+              {
+                this.editingItemMessages[field.key] = this.controllaPartitaIVA(this.item[field.key]);
+                if( this.editingItemMessages[field.key].length > 0)
+                valid=false
+              }
+            }
+          }
+          this.$forceUpdate()
+          return valid
+        },
+
+        editRow(){
+          if(this.validateEditItem() == true){
+            this.loading = true
+            this.item.importo = this.item.importo.replace(/\./g, "");
+            this.item.importo = parseFloat(this.item.importo.replace(",", "."));
+
+            this.item.prezzo_unitario = this.item.prezzo_unitario.replace(/\./g, "");
+            this.item.prezzo_unitario = parseFloat(this.item.prezzo_unitario.replace(",", "."));
+
+            this.$axios.post('/update_costi_smaltimento', {
+                  data: this.item,
+                })
+                .then((response) => {
+                    this.loading = false
+                    this.updateSection();
+                    window.location.reload()
+                })
+          }
+        },
+
+        addDots(value){
+          if (value.length >= 4) {
+
+            // Split the value into integer and decimal parts
+            let [integerPart, decimalPart] = value.split(',');
+
+            // Format the integer part by adding periods every 3 digits
+            let formattedInteger = '';
+            let digitsCount = 0;
+
+            // Loop over the integer part from right to left
+            for (let i = integerPart.length - 1; i >= 0; i--) {
+              let char = integerPart[i];
+
+              // If it's a digit and we need to add a separator every 3 digits
+              if (digitsCount > 0 && digitsCount % 3 === 0) {
+                formattedInteger = "." + formattedInteger;  // Add the separator (dot)
+              }
+
+              formattedInteger = char + formattedInteger;
+              digitsCount++;
+            }
+
+            // Combine the integer part with the decimal part (if it exists)
+            if (decimalPart) {
+              value = formattedInteger + "," + decimalPart; // Add the decimal part with comma
+            } else {
+              value = formattedInteger;  // No decimal part
+            }
+            return value;
+          }
+        },
 
         controllaPartitaIVA(partitaIVA)
         {
@@ -1104,10 +1338,74 @@ import Footer from '../components/Footer'
                 return "La Partita IVA deve contenere 11 cifre."
             if (!/^\d+$/.test(partitaIVA))
                 return "Partita IVA non valida."
-            return true
+            return ""
 
-         },
+        },
 
+        validateNewItem(){
+          var valid = true
+          for(const field of this.costiFields)
+          {
+            if(field.key!= 'id')
+            {
+                if (this.newItem[field.key] === "" || this.newItem[field.key] === null || this.newItem[field.key] === undefined)
+                {
+                  this.newItemMessages[field.key] = "Campo obbligatorio"
+                  valid = false
+                }
+                else if(field.key === 'partitaIvaGestoreImpianto')
+                {
+                  this.newItemMessages[field.key] = this.controllaPartitaIVA(this.newItem[field.key]);
+                  this.$forceUpdate()
+                  if(this.controllaPartitaIVA(this.newItem[field.key]).length > 0)
+                  valid=false
+                }else {
+                  this.newItemMessages[field.key] = ""
+                }
+            }
+          }
+          this.$forceUpdate()
+          return valid
+        },
+
+        addRow() {
+            if (this.newItem) {
+                if (this.validateNewItem() === true) {
+                    this.loading = true;
+
+                    // Convert `importo` and `prezzo_unitario` to proper formats
+                    this.newItem.importo = this.newItem.importo.replace(/\./g, "");
+                    this.newItem.importo = parseFloat(this.newItem.importo.replace(",", "."));
+
+                    this.newItem.prezzo_unitario = this.newItem.prezzo_unitario.replace(/\./g, "");
+                    this.newItem.prezzo_unitario = parseFloat(this.newItem.prezzo_unitario.replace(",", "."));
+
+
+                    this.newItem.daticomune = this.dati_comune['id']
+                    // Send the request with the `data` wrapper
+                    this.$axios
+                        .post("/add_costi_smaltimento", {
+                            data: this.newItem,
+                        })
+                        .then((response) => {
+                            this.loading = false;
+                            if (response.data && !response.data.error) {
+                                // Successfully added the item
+                                this.updateSection();
+                                window.location.reload();
+                            } else {
+                                // Handle error response
+                                alert(response.data.error || "Si è verificato un errore");
+                            }
+                        })
+                        .catch((error) => {
+                            this.loading = false;
+                            console.error("Error:", error);
+                            alert("Impossibile aggiungere i dati");
+                        });
+                }
+            }
+        },
 
         async calcoloImportoItem(item,key)
         {
@@ -1139,6 +1437,18 @@ import Footer from '../components/Footer'
               this.$forceUpdate();
             }
           }
+        },
+
+        updateSection()
+        {
+          this.$axios.post('/update_compiling_section', {
+            azienda : this.dati_comune.azienda,
+            id: this.dati_comune.id,
+            current_section: this.current_section
+            })
+            .catch(error => {
+                console.log(error)
+            });
         },
 
         orderBy(field,fields,items)
@@ -1214,8 +1524,8 @@ import Footer from '../components/Footer'
           //converto la valuta in numero di macchina
           dati_comune.valore_can = dati_comune.valore_can.replace(/\./g, "");
           dati_comune.valore_can = parseFloat(dati_comune.valore_can.replace(",", "."));
-             
-           
+            
+          
 
           if(dati_comune.serv_exra_arera_flag == true)
           {
@@ -1310,6 +1620,7 @@ import Footer from '../components/Footer'
             is_completed = 0
           }
 
+          /* Non sono obbligatori
           if(files.mud_a_1 != '[object File]' && dati_comune.mud_a_1 == '')
           {
               is_completed = 0
@@ -1318,7 +1629,7 @@ import Footer from '../components/Footer'
           if(files.mud_a_2 != '[object File]' && dati_comune.mud_a_2 == '')
           {
               is_completed = 0
-          }
+          }*/
 
 
 
@@ -1386,10 +1697,10 @@ import Footer from '../components/Footer'
               }
               formData.append('comune',this.dati_comune.comune)
               this.$axios.post('/saveEfficienzaQualitaDifferenziata', formData,{
-                 headers: {
-                   'Content-Type': "multipart/form-data; charset='utf-8';",
+                headers: {
+                  'Content-Type': "multipart/form-data; charset='utf-8';",
 
-                 },
+                },
               }).then((response) => {
                 //window.location.reload()
                 this.uploadFiles(this.files)
@@ -1399,8 +1710,8 @@ import Footer from '../components/Footer'
 
           .catch(error => {
 
-              this.save.msg=error
-              this.save.color="Errore nel salvataggio dati, se il problema persiste , contatta l'assistenza"
+              this.save.msg = error
+              this.save.color = "Errore nel salvataggio dati, se il problema persiste , contattare l'assistenza"
               this.$bvModal.show('bv-modal-save-msg')
 
           });
@@ -1413,6 +1724,12 @@ import Footer from '../components/Footer'
     data()
     {
       const booleanChoices = [{"value":true,"text":"SI"},{"value":false,"text":"NO"}]
+      const tipologieImpiantoChoices = [{value:'Compostaggio',text:'Compostaggio'},
+                  {value:'Digestione Anaerobica',text:'Digestione Anaerobica'},
+                  {value:'Integrato Aerobico/Anaerobico',text:'Integrato Aerobico/Anaerobico'},
+                  {value:'Incenerimento con recupero di energia R1',text:'Incenerimento con recupero di energia R1'},
+                  {value:'Incenerimento senza recupero di energia D10',text:'Incenerimento senza recupero di energia D10'},
+                  {value:'TMB/TM',text:'TMB/TM'},{value:'Discarica',text:'Discarica'}]
 
 
         return {
@@ -1424,13 +1741,6 @@ import Footer from '../components/Footer'
                   newItemMessages:{},
                   newItem:0,
 
-
-                  tipologieImpiantoChoices : [{value:'Compostaggio',text:'Compostaggio'},
-                  {value:'Digestione Anaerobica',text:'Digestione Anaerobica'},
-                  {value:'Integrato Aerobico/Anaerobico',text:'Integrato Aerobico/Anaerobico'},
-                  {value:'Incenerimento con recupero di energia R1',text:'Incenerimento con recupero di energia R1'},
-                  {value:'Incenerimento senza recupero di energia D10',text:'Incenerimento senza recupero di energia D10'},
-                  {value:'TMB/TM',text:'TMB/TM'},{value:'Discarica',text:'Discarica'}],
                   is_logged:undefined,
                   is_company_set:undefined,
                   loaded:false,
@@ -1445,11 +1755,11 @@ import Footer from '../components/Footer'
                   ],
                   efficienzaQualDiffItems: undefined,
                   sections:[
-                    {num:1 , text:"Dati Generali",completed:1},
-                    {num:5 , text:"Efficienza e qualità differenziata a-2",completed:1},
-                    {num:2 , text:"Dati tecnici dell'appalto",completed:1},
-                    {num:3 , text:"Documenti riferiti all'appalto",completed:1},
-                    {num:4 , text:"Costi Smaltimento / Trattamento",completed:1}
+                    {num:1 , text:"Dati Generali",completed:1,edits:false},
+                    {num:5 , text:"Efficienza e qualità differenziata a-2",completed:1,edits:false},
+                    {num:2 , text:"Dati tecnici dell'appalto",completed:1,edits:false},
+                    {num:3 , text:"Documenti riferiti all'appalto",completed:1,edits:false},
+                    {num:4 , text:"Costi Smaltimento / Trattamento",completed:1,edits:false}
                   ],
                   costi_smaltimento:[],
                   current_section:0,
@@ -1463,7 +1773,6 @@ import Footer from '../components/Footer'
                     mud_a_2:[]
                   },
 
-                  help_message:"",
                   width:0,
                   page_id:0,
                   save:{
@@ -1497,14 +1806,14 @@ import Footer from '../components/Footer'
                   costiFields: [
                     { style: 'height:30px;width:6.5%', order: 0, type: 'select', key: 'gestore', label: 'Gestore che sostiene i costi di tr', choices: ['GESTORE', 'COMUNE'], model: 'add.gestore' },
                     //{ style: 'height:30px;width:6.5%', order: 0, type: 'select', key: 'gestore', label: 'Gestore che sostiene i costi di trattamento/recupero/smaltimento', choices: ['GESTORE', 'COMUNE'], model: 'add.gestore' },
-                    { style: 'height:30px;width:6.5%', order: 0, type: 'select', key: 'anno', label: 'Anno', options: ['2022', '2023'], model: 'add.anno' },
+                    { style: 'height:30px;width:6.5%', order: 0, type: 'select', key: 'anno', label: 'Anno', choices: ['2023', '2024'], model: 'add.anno' },
                     { style: 'height:30px;width:10%', order: 0, type: 'textarea', key: 'imp_smalt', label: 'Impianto di smaltimento', model: 'add.imp_smalt', alertMessage: 'add.msg.imp_smalt' },
                     { style: 'height:30px;width:12%', order: 0, type: 'textarea', key: 'tipo_rifiuto', label: 'Codice CER/Tipo di rifiuto', model: 'add.tipo_rifiuto', alertMessage: 'add.msg.tipo_rifiuto' },
-                    { style: 'height:30px;width:8%', order: 0, type: 'select', key: 'tipo_costo', label: 'Tipologia costo', options: ['CTS', 'CTR'], model: 'add.tipo_costo' },
+                    { style: 'height:30px;width:8%', order: 0, type: 'select', key: 'tipo_costo', label: 'Tipologia costo', choices: ['CTS', 'CTR'], model: 'add.tipo_costo' },
                     { style: 'height:30px;width:10%', order: 0, type: 'number', key: 'tons', label: 'Quantitativi conferiti [ton]', model: 'add.tons', onChange: 'calcoloImporto()' },
                     { style: 'height:30px;width:10%', order: 0, type: 'euro', key: 'prezzo_unitario', label: 'Prezzo unitario con IVA [€/ton]', model: 'add.prezzo_unitario', onChange: 'calcoloImporto()' },
                     { style: 'height:30px;width:10%', order: 0, type: 'euro', key: 'importo', label: 'Importo IVA Inclusa', model: 'add.importo' },
-                    { style: 'height:30px;width:12%', order: 0, type: 'select', key: 'tipoImpianto', label: 'Tipologia impianto di destinazione', options: 'tipologieImpiantoChoices', model: 'add.tipoImpianto' },
+                    { style: 'height:30px;width:12%', order: 0, type: 'select', key: 'tipoImpianto', label: 'Tipologia impianto di destinazione', choices: tipologieImpiantoChoices, model: 'add.tipoImpianto' },
                     { style: 'height:30px;width:9%', order: 0, type: 'text', key: 'gestoreImpianto', label: 'Gestore Impianto', model: 'add.gestoreImpianto' },
                     { style: 'height:30px;width:9%', order: 0, type: 'text', key: 'partitaIvaGestoreImpianto', label: 'Partita IVA Gestore Impianto', model: 'add.partitaIvaGestoreImpianto', alertMessage: 'add.msg.partitaIvaGestoreImpianto' },
                     { style: 'height:30px;width:9%', order: 0, type: 'text', key: 'comuneSedeImpianto', label: 'Comune sede Impianto', model: 'add.comuneSedeImpianto' },

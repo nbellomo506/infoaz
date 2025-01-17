@@ -4,14 +4,14 @@
 </style>
 <template>
   <main>
-      <div>
-        <b-container fluid class="bg-light p-3">
-          <b-row align-v="center" class="ml-0">
-            <b-col offset-xl="1" xl="3">
-              <b-img src="../static/img/logo_infowaste.png" width="232" height="99"> </b-img>
-            </b-col>
-          </b-row>
-        </b-container>
+        <div>
+          <b-container fluid class="bg-light p-3">
+            <b-row align-v="center" class="ml-0">
+              <b-col offset-xl="1" xl="3">
+                <b-img src="../static/img/logo_infowaste.png" width="232" height="99"> </b-img>
+              </b-col>
+            </b-row>
+          </b-container>
         </div>
 
         <b-container fluid class="bg-infowaste m-0 b-0 p-0">
@@ -49,9 +49,8 @@
           </b-row>
         </b-container>
         <meta name="google" value="notranslate">
-        <b-modal id="help-tab" cancel-variant="danger" ok-variant="infowaste" @ok="askHelp" cancel-title="Annulla" ok-title="Invia">
-          <font class="h5">Messaggio</font><br>
-          (verrà inviata un'email ad assistenza@bintobit.com)
+        <b-modal id="help-tab" cancel-variant="danger" title="Messaggio" ok-variant="infowaste" @ok="askHelp" cancel-title="Annulla" ok-title="Invia">
+          Verrà inviata un'email ad assistenza@bintobit.com
           <b-form-input v-model="help_message"></b-form-input>
         </b-modal>
       </main>
@@ -119,13 +118,6 @@
           })
 
         })
-
-        
-
-
-
-
-
     },
 
 
@@ -169,7 +161,6 @@
 
       askHelp(){
         this.$axios.post('/askHelp', {
-
           message: this.help_message,
           section: this.$route.name,
         })

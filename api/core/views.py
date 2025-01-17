@@ -446,6 +446,32 @@ def save_dati_comune(request):
 
                             return HttpResponse("OK")
 
+def update_compiling_section(request):
+    try:
+        body_unicode = request.body.decode('utf-8')
+        body = json.loads(body_unicode)
+
+        id = body['id']
+        azienda = body['azienda']
+        current_section = body.get('current_section')
+
+        if 'logged' in request.session and request.session['logged']:
+            if 'user_id' in request.session and 'azienda' in request.session:
+                if azienda == request.session['azienda']:
+                    try:
+                        obj = DatiComune.objects.get(pk=id, azienda_id=azienda)
+                        obj.current_section = current_section
+                        obj.save()
+                        return HttpResponse("OK")
+                    except DatiComune.DoesNotExist:
+                        return HttpResponse("Errore", status=404)
+
+        return HttpResponse("Non autorizzato", status=401)
+
+    except Exception as e:
+        return HttpResponse(f"Error: {str(e)}", status=500)
+
+
 def getEfficienzaQualitaDifferenziata(request):
 
     if 'logged' in request.session is not None and 'azienda' in request.session is not None:
@@ -760,108 +786,131 @@ def get_costi_smaltimento(request):
             return JsonResponse("Not Logged",content_type="application/json",safe=False)
 
 def add_costi_smaltimento(request):
+    try:
+        body_unicode = request.body.decode('utf-8')
+        body = json.loads(body_unicode)
+        new_item = body.get('data', {})  # Adjusted to handle `data` wrapper
 
-    body_unicode = request.body.decode('utf-8')
-    body = json.loads(body_unicode)
+        # Extracting fields from the nested `data` dictionary
+        daticomune = new_item.get('daticomune')
+        gestore = new_item.get('gestore')
+        imp_smalt = new_item.get('imp_smalt')
+        tipo_rifiuto = new_item.get('tipo_rifiuto')
+        tipo_costo = new_item.get('tipo_costo')
+        anno = new_item.get('anno')
+        tons = new_item.get('tons')
+        prezzo_unitario = new_item.get('prezzo_unitario')
+        importo = new_item.get('importo')
+        tipoImpianto = new_item.get('tipoImpianto')
+        gestoreImpianto = new_item.get('gestoreImpianto')
+        partitaIvaGestoreImpianto = new_item.get('partitaIvaGestoreImpianto')
+        comuneSedeImpianto = new_item.get('comuneSedeImpianto')
+        impiantoDestinazione = new_item.get('impiantoDestinazione')
+        note = new_item.get('note')
 
-    daticomune = body['daticomune']
-    gestore = body['gestore']
-    imp_smalt = body['imp_smalt']
-    tipo_rifiuto = body['tipo_rifiuto']
-    tipo_costo = body['tipo_costo']
-    anno = body['anno']
-    tons = body['tons']
-    prezzo_unitario = body['prezzo_unitario']
-    importo =  body['importo']
-
-    tipoImpianto=body["tipoImpianto"]
-    gestoreImpianto=body["gestoreImpianto"]
-    partitaIvaGestoreImpianto=body["partitaIvaGestoreImpianto"]
-    comuneSedeImpianto=body["comuneSedeImpianto"]
-    impiantoDestinazione=body["impiantoDestinazione"]
-    note=body["note"]
-
-    if 'logged' and 'azienda' in request.session is not None:
-        if request.session['logged'] == True:
-            if request.session['azienda'] > 0 and request.session['is_assigned'] == True:
+        # Check session validity
+        if request.session.get('logged') and request.session.get('azienda'):
+            if request.session['azienda'] > 0 and request.session.get('is_assigned', False):
                 try:
-                 qs = DatiComune.objects.get(pk = daticomune ,azienda = request.session['azienda'])
-                 serializer = DatiComuneSerializer(qs)
+                    qs = DatiComune.objects.get(pk=daticomune, azienda=request.session['azienda'])
+                    serializer = DatiComuneSerializer(qs)
 
-                 obj = CostoSmaltimento.objects.create(daticomune = qs,gestore=gestore,imp_smalt=imp_smalt,tipo_rifiuto=tipo_rifiuto,
-                 tipo_costo=tipo_costo,anno=anno,tons=tons,prezzo_unitario=prezzo_unitario,importo=importo,tipoImpianto=tipoImpianto,
-                 gestoreImpianto=gestoreImpianto,partitaIvaGestoreImpianto=partitaIvaGestoreImpianto,comuneSedeImpianto=comuneSedeImpianto,
-                 impiantoDestinazione=impiantoDestinazione,note=note)
+                    # Create the CostoSmaltimento object
+                    obj = CostoSmaltimento.objects.create(
+                        daticomune=qs,
+                        gestore=gestore,
+                        imp_smalt=imp_smalt,
+                        tipo_rifiuto=tipo_rifiuto,
+                        tipo_costo=tipo_costo,
+                        anno=anno,
+                        tons=tons,
+                        prezzo_unitario=prezzo_unitario,
+                        importo=importo,
+                        tipoImpianto=tipoImpianto,
+                        gestoreImpianto=gestoreImpianto,
+                        partitaIvaGestoreImpianto=partitaIvaGestoreImpianto,
+                        comuneSedeImpianto=comuneSedeImpianto,
+                        impiantoDestinazione=impiantoDestinazione,
+                        note=note
+                    )
+                    obj.save()
 
-                 obj.save()
-
-                 return JsonResponse(serializer.data,content_type="application/json",safe=False)
+                    return JsonResponse(serializer.data, content_type="application/json", safe=False)
                 except DatiComune.DoesNotExist:
-                 return JsonResponse(False,content_type="application/json",safe=False)
+                    return JsonResponse({"error": "Impossibile stabilire il comune di riferimento"}, content_type="application/json", safe=False)
 
-            else:
-                return JsonResponse("No Company",content_type="application/json",safe=False)
+            return JsonResponse({"error": "Non sei ancora associato ad un'azienda"}, content_type="application/json", safe=False)
 
-        else:
-            return JsonResponse("Not Logged",content_type="application/json",safe=False)
+        return JsonResponse({"error": "Devi effettuare prima l'accesso"}, content_type="application/json", safe=False)
+
+    except Exception as e:
+        return JsonResponse({"error": str(e)}, content_type="application/json", safe=False)
+
 
 def update_costi_smaltimento(request):
+    try:
+        body_unicode = request.body.decode('utf-8')
+        body = json.loads(body_unicode)
+        updated_item = body.get('data', {})  # Adjusted to handle `data` wrapper
 
-    body_unicode = request.body.decode('utf-8')
-    body = json.loads(body_unicode)
+        # Extracting fields from the nested `data` dictionary
+        id = updated_item.get('id')
+        daticomune = updated_item.get('daticomune')
+        gestore = updated_item.get('gestore')
+        imp_smalt = updated_item.get('imp_smalt')
+        tipo_rifiuto = updated_item.get('tipo_rifiuto')
+        tipo_costo = updated_item.get('tipo_costo')
+        anno = updated_item.get('anno')
+        tons = updated_item.get('tons')
+        prezzo_unitario = updated_item.get('prezzo_unitario')
+        importo = updated_item.get('importo')
+        tipoImpianto = updated_item.get('tipoImpianto')
+        gestoreImpianto = updated_item.get('gestoreImpianto')
+        partitaIvaGestoreImpianto = updated_item.get('partitaIvaGestoreImpianto')
+        comuneSedeImpianto = updated_item.get('comuneSedeImpianto')
+        impiantoDestinazione = updated_item.get('impiantoDestinazione')
+        note = updated_item.get('note')
 
-    id = body['id']
-    daticomune = body['daticomune']
-    gestore = body['gestore']
-    imp_smalt = body['imp_smalt']
-    tipo_rifiuto = body['tipo_rifiuto']
-    tipo_costo = body['tipo_costo']
-    anno = body['anno']
-    tons = body['tons']
-    prezzo_unitario = body['prezzo_unitario']
-    importo =  body['importo']
-
-    tipoImpianto=body["tipoImpianto"]
-    gestoreImpianto=body["gestoreImpianto"]
-    partitaIvaGestoreImpianto=body["partitaIvaGestoreImpianto"]
-    comuneSedeImpianto=body["comuneSedeImpianto"]
-    impiantoDestinazione=body["impiantoDestinazione"]
-    note=body["note"]
-
-    if 'logged' and 'azienda' in request.session is not None:
-        if request.session['logged'] == True:
-            if request.session['azienda'] > 0 and request.session['is_assigned'] == True:
+        # Check session validity
+        if request.session.get('logged') and request.session.get('azienda'):
+            if request.session['azienda'] > 0 and request.session.get('is_assigned', False):
                 try:
-                 qs = DatiComune.objects.get(pk = daticomune ,azienda = request.session['azienda'])
-                 serializer = DatiComuneSerializer(qs)
+                    qs = DatiComune.objects.get(pk=daticomune, azienda=request.session['azienda'])
+                    serializer = DatiComuneSerializer(qs)
 
-                 obj = CostoSmaltimento.objects.get(pk = id)
-                 obj.imp_smalt = body['imp_smalt']
-                 obj.gestore = body['gestore']
-                 obj.tipo_rifiuto = body['tipo_rifiuto']
-                 obj.tipo_costo = body['tipo_costo']
-                 obj.anno = body['anno']
-                 obj.tons = body['tons']
-                 obj.prezzo_unitario = body['prezzo_unitario']
-                 obj.importo = body['importo']
+                    try:
+                        # Retrieve and update the CostoSmaltimento object
+                        obj = CostoSmaltimento.objects.get(pk=id)
+                        obj.daticomune = qs
+                        obj.gestore = gestore
+                        obj.imp_smalt = imp_smalt
+                        obj.tipo_rifiuto = tipo_rifiuto
+                        obj.tipo_costo = tipo_costo
+                        obj.anno = anno
+                        obj.tons = tons
+                        obj.prezzo_unitario = prezzo_unitario
+                        obj.importo = importo
+                        obj.tipoImpianto = tipoImpianto
+                        obj.gestoreImpianto = gestoreImpianto
+                        obj.partitaIvaGestoreImpianto = partitaIvaGestoreImpianto
+                        obj.comuneSedeImpianto = comuneSedeImpianto
+                        obj.impiantoDestinazione = impiantoDestinazione
+                        obj.note = note
+                        obj.save()
 
-                 obj.tipoImpianto=body["tipoImpianto"]
-                 obj.gestoreImpianto=body["gestoreImpianto"]
-                 obj.partitaIvaGestoreImpianto=body["partitaIvaGestoreImpianto"]
-                 obj.comuneSedeImpianto=body["comuneSedeImpianto"]
-                 obj.impiantoDestinazione=body["impiantoDestinazione"]
-                 obj.note=body["note"]
-                 obj.save()
+                        return JsonResponse(serializer.data, content_type="application/json", safe=False)
+                    except CostoSmaltimento.DoesNotExist:
+                        return JsonResponse({"error": "CostoSmaltimento does not exist"}, content_type="application/json", safe=False)
 
-                 return JsonResponse(serializer.data,content_type="application/json",safe=False)
                 except DatiComune.DoesNotExist:
-                 return JsonResponse(False,content_type="application/json",safe=False)
+                    return JsonResponse({"error": "DatiComune does not exist"}, content_type="application/json", safe=False)
 
-            else:
-                return JsonResponse("No Company",content_type="application/json",safe=False)
+            return JsonResponse({"error": "No valid company assigned"}, content_type="application/json", safe=False)
 
-        else:
-            return JsonResponse("Not Logged",content_type="application/json",safe=False)
+        return JsonResponse({"error": "User not logged in"}, content_type="application/json", safe=False)
+
+    except Exception as e:
+        return JsonResponse({"error": str(e)}, content_type="application/json", safe=False)
 
 def del_costi_smaltimento(request):
 

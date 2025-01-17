@@ -2,14 +2,12 @@
 import Header from '../components/Header'
 import Loading from '../components/Loading'
 import Footer from '../components/Footer'
-import InputOutputNavTab from '../components/InputOutputNavTab'
 
 
 <template>
   <main>
 
     <Header/>
-    <InputOutputNavTab/>
       <b-container v-if="is_logged === true && is_company_set === true && loaded===true"  class="mt-5">
         <b-row>
           <b-col offset-xl="1" xl="10">
@@ -275,19 +273,19 @@ import InputOutputNavTab from '../components/InputOutputNavTab'
 
 
         <tr>
-          <td>2020</td>
+          <td>2022</td>
           <td>{{dati_comune.ton_anno_1}} ton</td>
         </tr>
 
 
         <tr>
-          <td>2021</td>
+          <td>2023</td>
           <td>{{dati_comune.ton_anno_2}} ton</td>
         </tr>
 
 
         <tr>
-          <td>2022</td>
+          <td>2024</td>
           <td>{{dati_comune.ton_anno_3}} ton</td>
         </tr>
 
@@ -296,19 +294,19 @@ import InputOutputNavTab from '../components/InputOutputNavTab'
         </tr>
 
         <tr>
-          <td>2020</td>
+          <td>2022</td>
           <td>{{dati_comune.xcent_raccolta_anno_1}}</td>
         </tr>
 
 
         <tr>
-          <td>2021</td>
+          <td>2023</td>
           <td>{{dati_comune.xcent_raccolta_anno_2}}</td>
         </tr>
 
 
         <tr>
-          <td>2022</td>
+          <td>2024</td>
           <td>{{dati_comune.xcent_raccolta_anno_3}}</td>
         </tr>
 
@@ -316,20 +314,29 @@ import InputOutputNavTab from '../components/InputOutputNavTab'
           <td colspan="2"><b>Documenti riferiti all'appalto</b></td>
         </tr>
 
-
         <tr>
-          <td>Contabilità di commessa anno 2020 (in excel)</td>
-          <td>{{dati_comune.cont_commessa_anno1}}</td>
-        </tr>
-
-        <tr>
-          <td>Contabilità di commessa anno 2021 (in excel)</td>
+          <td>Contabilità di commessa anno 2023 (in excel)</td>
           <td>{{dati_comune.cont_commessa_anno2}}</td>
         </tr>
 
         <tr>
-          <td>Contratto d'appalto vigente</td>
+          <td>Contratto d'appalto vigente (in .pdf)</td>
           <td>{{dati_comune.contratto_appalto}}</td>
+        </tr>
+
+        <tr>
+          <td>PEF 2022 Validato dall'ETC (Delibera + Relazione + tool excel ARERA definitivo in unico file .zip)</td>
+          <td>{{dati_comune.pef_valid_ETC_a_2}}</td>
+        </tr>
+
+        <tr>
+          <td>CARICARE MUD anno a - 1</td>
+          <td>{{dati_comune.mud_a_1}}</td>
+        </tr>
+
+        <tr>
+          <td>CARICARE MUD anno a - 2</td>
+          <td>{{dati_comune.mud_a_2}}</td>
         </tr>
 
         <tr>
