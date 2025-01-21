@@ -44,7 +44,7 @@ import Footer from '../components/Footer'
                   <b-row class="pb-4">
                     <b-col>
                       <p class="font-1">
-                        In questa sezione è richiesto il file del <b>bilancio depositato</b> riferito all'anno 2022.<br>
+                        In questa sezione è richiesto il file del <b>bilancio depositato</b> riferito all'anno 2023.<br>
 
                         Per quanto attiene i <b>CESPITI</b> l’utente deve scaricare e compilare il file excel che si intende riferito alla totalità dei beni impiegati nella conduzione degli appalti in tutti i Comuni, precisando per ogni bene le percentuali di impiego riferite a ciascun Comune (colonna S e successive).
                       </p>
@@ -74,7 +74,7 @@ import Footer from '../components/Footer'
                   <b-row class="p-2">
                     <b-col offset-xl="1" xl="4">
                       <p>
-                        Bilancio Depositato 2022
+                        Bilancio Depositato 2023
                       </p>
                     </b-col>
                     <b-col cols="11" xl="5">

@@ -9,7 +9,7 @@ import Footer from '../components/Footer'
   <template>
     <main>
       <Header/>
-      <b-nav v-if="dati_comune !== false && is_company_set === true && is_logged === true" class="mt-3" tabs align="center">
+      <b-nav v-if="loaded === true && dati_comune !== false && is_company_set === true && is_logged === true" class="mt-3" tabs align="center">
         <b-nav-item :hidden="dati_comune.ricavi_conai != 'IMPRESA' && section.num == 5 " class="text-danger" @click="goToSection(section.num)" style="cursor:pointer" v-for="section in sections" :key="section.num" :active="section.num === current_section">
           <p :class="section.class">
             {{section.text}}
@@ -33,7 +33,7 @@ import Footer from '../components/Footer'
             </b-col>
             <b-col class="borders-rounded pt-5 pb-0 mb-0" offset-xl="1" xl="9">
               <ol class="p-0 m-0 b-0">
-                <div v-bind:class="{'disabled-container' : azienda.report_is_sent || azienda.report_attempts <= 0 }" class="p-0 b-0 m-0" v-if="current_section === 1" @change="sections[0].edits = true">
+                <div v-bind:class="{'disabled-container' : azienda.report_is_sent || azienda.report_attempts <= 0 }" class="p-0 b-0 m-0" v-if="loaded == true && current_section === 1" @change="sections[0].edits = true">
                   <h3>Comune di {{dati_comune.nome_comune}}</h3>
                   <h3>{{sections[current_section-1].text}}</h3>
                   <p>
@@ -227,7 +227,7 @@ import Footer from '../components/Footer'
                   </div>
                 </div>
 
-                <div v-bind:class="{'disabled-container' : azienda.report_is_sent || azienda.report_attempts <= 0 }" class="p-0 b-0 m-0" v-if="current_section === 5 && dati_comune.ricavi_conai == 'IMPRESA'" @change="sections[1].edits = true">
+                <div v-bind:class="{'disabled-container' : azienda.report_is_sent || azienda.report_attempts <= 0 }" class="p-0 b-0 m-0" v-if="loaded == true && current_section === 5 && dati_comune.ricavi_conai == 'IMPRESA'" @change="sections[1].edits = true">
                   <h3>Comune di {{dati_comune.nome_comune}}</h3>
                   <h4>MACRO-INDICATORE R1</h4>
                   Il MTR-2 aggiornato alle annualità 2024 – 2025 richiede la valorizzazione nel PEF del Macro – Indicatore R1,
@@ -278,7 +278,7 @@ import Footer from '../components/Footer'
                   </table>
                 </div>
 
-                <div v-bind:class="{'disabled-container' : azienda.report_is_sent || azienda.report_attempts <= 0 }" class="p-0 b-0 m-0" v-if="current_section === 2" @change="sections[2].edits = true">
+                <div v-bind:class="{'disabled-container' : azienda.report_is_sent || azienda.report_attempts <= 0 }" class="p-0 b-0 m-0" v-if="loaded == true && current_section === 2" @change="sections[2].edits = true">
                   <b-container class="m-0 p-0 b-0">
                     <h3>Comune di {{dati_comune.nome_comune}}</h3>
                     <h3>Dati tecnici dell'appalto</h3>
@@ -316,22 +316,29 @@ import Footer from '../components/Footer'
                     <b-row>
                       <b-col xl="4" >
                         <FieldTitle letter="a" req="yes" name="" description="2022" />
-                        <input class="form-control" v-model="dati_comune.xcent_raccolta_anno_1" type="number">
+                        <b-input-group append="%">
+                          <input class="form-control" v-model="dati_comune.xcent_raccolta_anno_1" type="number">
+                        </b-input-group>
                       </b-col>
                       <b-col xl="4">
                         <FieldTitle letter="b" req="yes" name="" description="2023" />
-                        <input class="form-control" v-model="dati_comune.xcent_raccolta_anno_2" type="number">
+                        <b-input-group append="%">
+                          <input class="form-control" v-model="dati_comune.xcent_raccolta_anno_2" type="number">
+                        </b-input-group>
                       </b-col>
                       <b-col xl="4">
                         <FieldTitle letter="c" req="yes" name="" description="2024" />
-                        <input class="form-control" v-model="dati_comune.xcent_raccolta_anno_3" type="number">
+                        <b-input-group append="%">
+                          <input class="form-control" v-model="dati_comune.xcent_raccolta_anno_3" type="number">
+                        </b-input-group>
+
                       </b-col>
                     </b-row>
                     </div>
                   </b-container>
                 </div>
 
-                <div v-bind:class="{'disabled-container' : azienda.report_is_sent || azienda.report_attempts <= 0 }" class="p-0 b-0 m-0" v-if="current_section === 3" @change="sections[3].edits = true">
+                <div v-bind:class="{'disabled-container' : azienda.report_is_sent || azienda.report_attempts <= 0 }" class="p-0 b-0 m-0" v-if="loaded == true && current_section === 3" @change="sections[3].edits = true">
                   <b-container class="m-0 p-0 b-0">
                     <h3>Comune di {{dati_comune.nome_comune}}</h3>
                     <h3>Documenti riferiti all'appalto</h3>
@@ -441,7 +448,7 @@ import Footer from '../components/Footer'
                             <b-form-group>
                               <b-form-file
                                 v-model="files.mud_a_1"
-                                placeholder="File Zip"
+                                placeholder="File PDF"
                                 drop-placeholder="Rilascia qui...">
                               </b-form-file>
                               <font v-if="dati_comune.mud_a_1 != '[object File]'">
@@ -470,7 +477,7 @@ import Footer from '../components/Footer'
                             <b-form-group>
                               <b-form-file
                                 v-model="files.mud_a_2"
-                                placeholder="File Zip"
+                                placeholder="File PDF"
                                 drop-placeholder="Rilascia qui...">
                               </b-form-file>
                               <font v-if="dati_comune.mud_a_2 != '[object File]'">
@@ -504,7 +511,7 @@ import Footer from '../components/Footer'
           </b-row>
         </b-container>
 
-        <b-row v-bind:class="{'disabled-container' : azienda.report_is_sent || azienda.report_attempts <= 0 }" v-if="current_section === 4" class="ml-0 mr-3 mb-5 mt-0 pb-0 p-0 pb-5">
+        <b-row v-bind:class="{'disabled-container' : azienda.report_is_sent || azienda.report_attempts <= 0 }" v-if="loaded == true && current_section === 4" class="ml-0 mr-3 mb-5 mt-0 pb-0 p-0 pb-5">
           <b-col>
             <h3>Comune di {{dati_comune.nome_comune}}</h3>
             <h3>Costi Smaltimento / Trattamento</h3>
@@ -515,7 +522,7 @@ import Footer from '../components/Footer'
               bordered
               fluid
               class="ml-0 mb-5 mt-5 pl-0 pb-5 b-0 custom-bordered-table"
-              v-if="!loading"
+              v-if="loaded"
             >
               <!-- Table Header -->
               <tr class="sticky-top bg-infowaste" style="height:30px; padding: 0;">
@@ -1065,8 +1072,7 @@ import Footer from '../components/Footer'
                         item.editing=false
                         item.error=""
                       }
-                      this.items = this.items.sort((t1,t2) => t1["id"] > t2["id"] ? -1 : 1)
-
+                      this.items = this.items.sort((t1,t2) => t1["id"] < t2["id"] ? -1 : 1)
                       this.loaded = true
 
                     })
@@ -1129,49 +1135,15 @@ import Footer from '../components/Footer'
 
         deleteRow()
         {
-          this.loading = true
+          this.loaded = true
           this.$axios.post('/del_costi_smaltimento', {
                 daticomune: this.dati_comune.id,
                 id: this.rowtoDelete['id'],
               })
               .then((response) => {
-                  this.loading = false
+                  this.loaded = false
                   window.location.reload()
               })
-        },
-
-        async goToSection(num)
-        {
-           if (num >= 1 &&  num <= this.sections.length  && num !== this.current_section)
-           {
-                for(var i=0; i < this.sections.length; i++){
-                  if(this.sections[i].num == this.current_section){
-                    if(this.sections[i].edits == true){
-                      this.$bvModal
-                      .msgBoxConfirm('Sei sicuro di voler cambiare pagina? Le modifiche non salvate andranno perse', {
-                        title: 'Conferma Azione',
-                        okTitle: 'Conferma',
-                        cancelTitle: 'Annulla',
-                        okVariant: 'infowaste',
-                        cancelVariant: 'danger',
-                        centered: true, // Optional: centers the modal
-                      })
-                      .then(value => {
-                        if(value == true){
-                          this.current_section = num
-                          this.updateSection();
-                          window.location.reload();
-                        }
-                      })
-                      .catch(err => {
-                        // An error occurred
-                      })
-                    }else{
-                      this.current_section = num
-                    }
-                  }
-                }
-            }
         },
 
         async uploadFiles(dati_comune)
@@ -1265,8 +1237,7 @@ import Footer from '../components/Footer'
             for (const field of this.costiFields) {
               this.editingItemMessages[field.key] = "";
             }
-          }
-        },
+          }},
 
         validateEditItem()
         {
@@ -1275,8 +1246,10 @@ import Footer from '../components/Footer'
           for(const field of this.costiFields){
             if(field.key!= 'id'){
               if (this.item[field.key] === "" || this.item[field.key] === null || this.item[field.key] === undefined){
-                this.editingItemMessages[field.key] = "Campo obbligatorio"
-                valid = false
+                if(field.required == true){
+                  this.editingItemMessages[field.key] = "Campo obbligatorio"
+                  valid = false
+                }
               }else {
                 this.editingItemMessages[field.key] = ""
               }
@@ -1294,7 +1267,7 @@ import Footer from '../components/Footer'
 
         editRow(){
           if(this.validateEditItem() == true){
-            this.loading = true
+            this.loaded = true
             this.item.importo = this.item.importo.replace(/\./g, "");
             this.item.importo = parseFloat(this.item.importo.replace(",", "."));
 
@@ -1305,7 +1278,7 @@ import Footer from '../components/Footer'
                   data: this.item,
                 })
                 .then((response) => {
-                    this.loading = false
+                    this.loaded = false
                     this.updateSection();
                     window.location.reload()
                 })
@@ -1347,6 +1320,7 @@ import Footer from '../components/Footer'
 
         controllaPartitaIVA(partitaIVA)
         {
+            if(partitaIVA)
             if (partitaIVA.length !== 11)
                 return "La Partita IVA deve contenere 11 cifre."
             if (!/^\d+$/.test(partitaIVA))
@@ -1363,8 +1337,10 @@ import Footer from '../components/Footer'
             {
                 if (this.newItem[field.key] === "" || this.newItem[field.key] === null || this.newItem[field.key] === undefined)
                 {
-                  this.newItemMessages[field.key] = "Campo obbligatorio"
-                  valid = false
+                  if(field.required == true){
+                    this.newItemMessages[field.key] = "Campo obbligatorio"
+                    valid = false
+                  }
                 }
                 else if(field.key === 'partitaIvaGestoreImpianto')
                 {
@@ -1384,7 +1360,7 @@ import Footer from '../components/Footer'
         addRow() {
             if (this.newItem) {
                 if (this.validateNewItem() === true) {
-                    this.loading = true;
+                    this.loaded = true;
 
                     // Convert `importo` and `prezzo_unitario` to proper formats
                     this.newItem.importo = this.newItem.importo.replace(/\./g, "");
@@ -1401,7 +1377,7 @@ import Footer from '../components/Footer'
                             data: this.newItem,
                         })
                         .then((response) => {
-                            this.loading = false;
+                            this.loaded = false;
                             if (response.data && !response.data.error) {
                                 // Successfully added the item
                                 this.updateSection();
@@ -1412,7 +1388,7 @@ import Footer from '../components/Footer'
                             }
                         })
                         .catch((error) => {
-                            this.loading = false;
+                            this.loaded = false;
                             console.error("Error:", error);
                             alert("Impossibile aggiungere i dati");
                         });
@@ -1452,16 +1428,272 @@ import Footer from '../components/Footer'
           }
         },
 
-        updateSection()
-        {
-          this.$axios.post('/update_compiling_section', {
-            azienda : this.dati_comune.azienda,
-            id: this.dati_comune.id,
-            current_section: this.current_section
-            })
-            .catch(error => {
-                console.log(error)
+        async goToSection(num) {
+          if (num >= 1 && num <= this.sections.length && num !== this.current_section) {
+            const currentSection = this.sections.find((section) => section.num === this.current_section);
+
+            if (currentSection && currentSection.edits) {
+              try {
+                const confirmed = await this.$bvModal.msgBoxConfirm(
+                  'Sei sicuro di voler cambiare pagina? Le modifiche non salvate andranno perse',
+                  {
+                    title: 'Conferma Azione',
+                    okTitle: 'Conferma',
+                    cancelTitle: 'Annulla',
+                    okVariant: 'infowaste',
+                    cancelVariant: 'danger',
+                    centered: true,
+                  }
+                );
+
+                if (confirmed) {
+                  this.loaded = false;
+                  this.$forceUpdate()
+                  await this.updateSection(num);
+                }
+              } catch (error) {
+                console.error('Errore', error);
+              }
+            } else {
+              // If no edits are pending, switch sections directly
+              this.loaded = false;
+              this.$forceUpdate()
+              await this.updateSection(num);
+            }
+          }
+        },
+
+        async updateSection(num) {
+          try {
+            this.section_updated = false;
+            await this.$axios.post('/update_compiling_section', {
+              azienda: this.dati_comune.azienda,
+              id: this.dati_comune.id,
+              current_section: num,
             });
+            this.section_updated = true;
+          } catch (error) {
+            console.error('Error updating section:', error);
+          } finally{
+            window.location.reload()
+          }
+      
+          
+
+        },
+
+        getNewData(num) {
+
+          this.$axios.defaults.withCredentials = true
+          this.loaded = false
+          try {
+
+
+            this.$axios.$get(`/is_company_set`)
+            .then((response) => {
+              this.is_company_set = response
+              this.$axios.$get(`/is_logged`)
+              .then((response) => {
+                this.is_logged = response
+                this.$axios.$get(`/role`)
+                .then((response) => {
+                  this.role = response
+                  this.$axios.$get(`/getEfficienzaQualitaDifferenziata`)
+                  .then((response) => {
+                    this.efficienzaQualDiffItems = response
+                    this.$axios.$post(`/get_dati_comune`,{id: this.id})
+                    .then((response) => {
+                      this.dati_comune = response
+                      if(this.dati_comune.altri_gestori_flag == true)
+                      {
+                        if(this.dati_comune.altri_gestori == "")
+                        {
+                          this.sections[0].completed = 0
+                        }
+                      }else {
+                        this.dati_comune.altri_gestori=""
+
+                      }
+
+                      if(this.dati_comune.serv_exra_arera_flag == true)
+                      {
+                        if(this.dati_comune.serv_exra_arera == "")
+                        {
+                          this.sections[0].completed = 0
+                        }
+                      }else {
+                        this.dati_comune.serv_exra_arera=""
+
+                      }
+
+                      if(this.dati_comune.lav_in_corso_flag == true)
+                      {
+                        if(this.dati_comune.lav_in_corso == "")
+                        {
+                          this.sections[0].completed = 0
+                        }
+                      }else {
+                        this.dati_comune.lav_in_corso=""
+
+                      }
+
+                      if(this.dati_comune.var_gest_flag == true)
+                      {
+                        if(this.dati_comune.var_gest == "")
+                        {
+                          this.sections[0].completed = 0
+
+                        }
+                      }else {
+                        this.dati_comune.var_gest=""
+
+                      }
+
+                      if(this.dati_comune.miglior_qual_flag == true)
+                      {
+                        if(this.dati_comune.miglior_qual == "")
+                        {
+                          this.sections[0].completed = 0
+                        }
+                      }else {
+                        this.dati_comune.miglior_qual=""
+
+                      }
+
+                      if(this.dati_comune.costi_tqrif_flag == true)
+                      {
+                        if(this.dati_comune.costi_tqrif == 0)
+                        {
+                          this.sections[0].completed = 0
+                        }
+                      }else {
+                        this.dati_comune.costi_tqrif=0
+
+                      }
+
+
+                      if (this.dati_comune.ton_anno_1 === 0  || this.dati_comune.ton_anno_2 === 0 || this.dati_comune.ton_anno_3 === 0 ||
+                      this.dati_comune.xcent_raccolta_anno_1 === 0 || this.dati_comune.xcent_raccolta_anno_2 === 0 || this.dati_comune.xcent_raccolta_anno_3 === 0)
+                      {
+                        this.sections[2].completed = 0
+                      }else {
+                        this.sections[2].completed = 1
+
+                      }
+
+
+
+                      if(this.dati_comune.cont_commessa_anno1 == '' || this.dati_comune.cont_commessa_anno2 == '' || this.dati_comune.contratto_appalto == '')
+                      {
+                        this.sections[3].completed = 0
+                      }
+
+                      this.current_section = this.dati_comune['current_section']
+                      this.$axios.$get(`/get_company_data`)
+                      .then((response) => {
+                        this.azienda = response
+                        if(this.azienda.pef_mis_o_ric === "CALCOLATO")
+                        {
+                          if( this.dati_comune.ris_ula_o_ore === "" ||
+                              this.dati_comune.tot_app <= 0 ||
+                              this.dati_comune.app_servizi <= 0 ||
+                              this.dati_comune.app_rifiuti_diff <= 0 ||
+                              this.dati_comune.app_rifiuti_indiff <= 0 ||
+                              this.dati_comune.app_igiene <= 0 )
+                            {
+                              this.sections[0].completed = 0
+                            }
+                        }
+                        for (const section of this.sections){
+
+                          if (section.num >= 1 && section.num  <= 3)
+                          {
+                              if (section.completed)
+                                section.class = 'text-success'
+                              else
+                                section.class = 'text-danger'
+                          }
+                          else
+                          {
+                            section.class = 'text-primary'
+                          }
+                        }
+                          //Converto il valore testuale in euro
+                          // Ensure the value is a number, then convert it to fixed 2 decimal places and replace the dot with a comma
+                          this.dati_comune.valore_can = parseFloat(this.dati_comune.valore_can).toFixed(2).replace(".", ",");
+
+                          // Check if the length of the string is sufficient to apply formatting
+                          if (this.dati_comune.valore_can.length >= 4) {
+
+                            // Split the value into integer and decimal parts
+                            let [integerPart, decimalPart] = this.dati_comune.valore_can.split(',');
+
+                            // Format the integer part by adding periods every 3 digits
+                            let formattedInteger = '';
+                            let digitsCount = 0;
+
+                            // Loop over the integer part from right to left
+                            for (let i = integerPart.length - 1; i >= 0; i--) {
+                              let char = integerPart[i];
+
+                              // If it's a digit and we need to add a separator every 3 digits
+                              if (digitsCount > 0 && digitsCount % 3 === 0) {
+                                formattedInteger = "." + formattedInteger;  // Add the separator (dot)
+                              }
+
+                              formattedInteger = char + formattedInteger;
+                              digitsCount++;
+                            }
+
+                            // Combine the integer part with the decimal part (if it exists)
+                            if (decimalPart) {
+                              this.dati_comune.valore_can = formattedInteger + "," + decimalPart; // Add the decimal part with comma
+                            } else {
+                              this.dati_comune.valore_can = formattedInteger;  // No decimal part
+                            }
+                          }
+
+
+                        this.$axios.$post(`/get_costi_smaltimento` ,{id: this.id})
+                        .then((response) => {
+                          this.costi_smaltimento = response
+
+                          //Preparo il nuovo item per l'aggiunta
+                          this.newItem = {}
+                          if (this.costiFields && Array.isArray(this.costiFields)) {
+                            for (const field of this.costiFields) {
+                              this.newItemMessages[field.key] = "";
+                            }
+                          }
+
+                          this.items = response
+                          for(const item of this.items)
+                          {
+                            item.importo = item.importo.toFixed(2).replace(".", ",");
+                            item.prezzo_unitario = item.prezzo_unitario.toFixed(2).replace(".", ",");
+
+                            item.importo = this.addDots(item.importo)
+                            item.prezzo_unitario = this.addDots(item.prezzo_unitario)
+
+                            item.editing=false
+                            item.error=""
+                          }
+                          this.items = this.items.sort((t1,t2) => t1["id"] < t2["id"] ? -1 : 1)
+                          this.loaded = true
+
+                        })
+                      })
+                    })
+                  })
+                })
+              })
+            })
+          } catch (e) {
+            console.log(e)
+          }finally{
+            this.loaded = true
+          }
+
         },
 
         orderBy(field,fields,items)
@@ -1696,7 +1928,6 @@ import Footer from '../components/Footer'
               var formData = new FormData();
               var upload = false
               var file = false
-              //this.loading=true
 
               for (const item of this.efficienzaQualDiffItems)
               {
@@ -1753,7 +1984,7 @@ import Footer from '../components/Footer'
                   editingItemMessages:{},
                   newItemMessages:{},
                   newItem:0,
-
+                  section_updated:false,
                   is_logged:undefined,
                   is_company_set:undefined,
                   loaded:false,
@@ -1817,22 +2048,21 @@ import Footer from '../components/Footer'
                       note:"",
                   },
                   costiFields: [
-                    { style: 'height:30px;width:6.5%', order: 0, type: 'select', key: 'gestore', label: 'Gestore che sostiene i costi di tr', choices: ['GESTORE', 'COMUNE'], model: 'add.gestore' },
-                    //{ style: 'height:30px;width:6.5%', order: 0, type: 'select', key: 'gestore', label: 'Gestore che sostiene i costi di trattamento/recupero/smaltimento', choices: ['GESTORE', 'COMUNE'], model: 'add.gestore' },
-                    { style: 'height:30px;width:6.5%', order: 0, type: 'select', key: 'anno', label: 'Anno', choices: ['2023', '2024'], model: 'add.anno' },
-                    { style: 'height:30px;width:10%', order: 0, type: 'textarea', key: 'imp_smalt', label: 'Impianto di smaltimento', model: 'add.imp_smalt', alertMessage: 'add.msg.imp_smalt' },
-                    { style: 'height:30px;width:12%', order: 0, type: 'textarea', key: 'tipo_rifiuto', label: 'Codice CER/Tipo di rifiuto', model: 'add.tipo_rifiuto', alertMessage: 'add.msg.tipo_rifiuto' },
-                    { style: 'height:30px;width:8%', order: 0, type: 'select', key: 'tipo_costo', label: 'Tipologia costo', choices: ['CTS', 'CTR'], model: 'add.tipo_costo' },
-                    { style: 'height:30px;width:10%', order: 0, type: 'number', key: 'tons', label: 'Quantitativi conferiti [ton]', model: 'add.tons', onChange: 'calcoloImporto()' },
-                    { style: 'height:30px;width:10%', order: 0, type: 'euro', key: 'prezzo_unitario', label: 'Prezzo unitario con IVA [€/ton]', model: 'add.prezzo_unitario', onChange: 'calcoloImporto()' },
-                    { style: 'height:30px;width:10%', order: 0, type: 'euro', key: 'importo', label: 'Importo IVA Inclusa', model: 'add.importo' },
-                    { style: 'height:30px;width:12%', order: 0, type: 'select', key: 'tipoImpianto', label: 'Tipologia impianto di destinazione', choices: tipologieImpiantoChoices, model: 'add.tipoImpianto' },
-                    { style: 'height:30px;width:9%', order: 0, type: 'text', key: 'gestoreImpianto', label: 'Gestore Impianto', model: 'add.gestoreImpianto' },
-                    { style: 'height:30px;width:9%', order: 0, type: 'text', key: 'partitaIvaGestoreImpianto', label: 'Partita IVA Gestore Impianto', model: 'add.partitaIvaGestoreImpianto', alertMessage: 'add.msg.partitaIvaGestoreImpianto' },
-                    { style: 'height:30px;width:9%', order: 0, type: 'text', key: 'comuneSedeImpianto', label: 'Comune sede Impianto', model: 'add.comuneSedeImpianto' },
+                    //{ style: 'height:30px;width:6.5%', order: 0, type: 'text', key: 'id', label: 'id'},
+                    { required: true,style: 'height:30px;width:6.5%', order: 0, type: 'select', key: 'anno', label: 'Anno', choices: ['2023', '2024'], model: 'add.anno' },
+                    { required: true,style: 'height:30px;width:10%', order: 0, type: 'textarea', key: 'imp_smalt', label: 'Impianto di smaltimento', model: 'add.imp_smalt', alertMessage: 'add.msg.imp_smalt' },
+                    { required: true,style: 'height:30px;width:12%', order: 0, type: 'textarea', key: 'tipo_rifiuto', label: 'Codice CER/Tipo di rifiuto', model: 'add.tipo_rifiuto', alertMessage: 'add.msg.tipo_rifiuto' },
+                    { required: true,style: 'height:30px;width:8%', order: 0, type: 'select', key: 'tipo_costo', label: 'Tipologia costo', choices: ['CTS', 'CTR'], model: 'add.tipo_costo' },
+                    { required: true,style: 'height:30px;width:10%', order: 0, type: 'number', key: 'tons', label: 'Quantitativi conferiti [ton]', model: 'add.tons', onChange: 'calcoloImporto()' },
+                    { required: true,style: 'height:30px;width:10%', order: 0, type: 'euro', key: 'prezzo_unitario', label: 'Prezzo unitario con IVA [€/ton]', model: 'add.prezzo_unitario', onChange: 'calcoloImporto()' },
+                    { required: true,style: 'height:30px;width:10%', order: 0, type: 'euro', key: 'importo', label: 'Importo IVA Inclusa', model: 'add.importo' },
+                    { required: true,style: 'height:30px;width:12%', order: 0, type: 'select', key: 'tipoImpianto', label: 'Tipologia impianto di destinazione', choices: tipologieImpiantoChoices, model: 'add.tipoImpianto' },
+                    { required: true,style: 'height:30px;width:9%', order: 0, type: 'text', key: 'gestoreImpianto', label: 'Gestore Impianto', model: 'add.gestoreImpianto' },
+                    { required: true,style: 'height:30px;width:9%', order: 0, type: 'text', key: 'partitaIvaGestoreImpianto', label: 'Partita IVA Gestore Impianto', model: 'add.partitaIvaGestoreImpianto', alertMessage: 'add.msg.partitaIvaGestoreImpianto' },
+                    { required: true,style: 'height:30px;width:9%', order: 0, type: 'text', key: 'comuneSedeImpianto', label: 'Comune sede Impianto', model: 'add.comuneSedeImpianto' },
                     //{ style: 'height:30px;width:14%', order: 0, type: 'text', key: 'impiantoDestinazione', label: 'In caso di invio a impianto intermedio, indicare impianto di destinazione finale dei flussi in uscita', model: 'add.impiantoDestinazione' },
-                    { style: 'height:30px;width:14%', order: 0, type: 'text', key: 'impiantoDestinazione', label: 'impianto di destinazione finale ', model: 'add.impiantoDestinazione' },
-                    { style: 'height:30px;width:6%', order: 0, type: 'textarea', key: 'note', label: 'NOTE', model: 'add.note' }
+                    { required: true,style: 'height:30px;width:14%', order: 0, type: 'text', key: 'impiantoDestinazione', label: 'Impianto di destino ', model: 'add.impiantoDestinazione' },
+                    { required: false,style: 'height:30px;width:6%', order: 0, type: 'textarea', key: 'note', label: 'NOTE', model: 'add.note' }
                   ],
 
 

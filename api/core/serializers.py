@@ -135,7 +135,7 @@ class EfficienzaQualitaDifferenziataSerializer(serializers.ModelSerializer):
 class CostoSmaltimentoSerializer(serializers.ModelSerializer):
     class Meta:
         model = CostoSmaltimento
-        fields = ("id", "daticomune" ,"imp_smalt", "tipo_rifiuto","tipo_costo","gestore","anno","tons","prezzo_unitario","importo",
+        fields = ("id", "daticomune" ,"imp_smalt", "tipo_rifiuto","tipo_costo","anno","tons","prezzo_unitario","importo",
                 "tipoImpianto",
                 "gestoreImpianto",
                 "partitaIvaGestoreImpianto",

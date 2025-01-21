@@ -496,7 +496,7 @@ import Footer from '../components/Footer'
 
           return costi_smaltimento.map((item) => {
 
-            return `<tr><td>${item.gestore}</td><td>${item.anno}</td><td>${item.imp_smalt}</td><td>${item.tipo_rifiuto}</td><td>${item.tipo_costo}</td><td>${item.tons}</td><td>${item.prezzo_unitario}</td><td>${item.importo}</td></tr><td>${item.tipoImpianto}</td><td>${item.gestoreImpianto}</td><td>${item.partitaIvaGestoreImpianto}</td><td>${item.comuneSedeImpianto}</td><td>${item.impiantoDestinazione}</td><td>${item.note}</td>`;
+            return `<tr><td>${item.anno}</td><td>${item.imp_smalt}</td><td>${item.tipo_rifiuto}</td><td>${item.tipo_costo}</td><td>${item.tons}</td><td>${item.prezzo_unitario}</td><td>${item.importo}</td></tr><td>${item.tipoImpianto}</td><td>${item.gestoreImpianto}</td><td>${item.partitaIvaGestoreImpianto}</td><td>${item.comuneSedeImpianto}</td><td>${item.impiantoDestinazione}</td><td>${item.note}</td>`;
           }).join("");
         };
 

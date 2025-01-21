@@ -286,12 +286,6 @@ class CostoSmaltimento(models.Model):
     )
     tipo_costo = models.CharField(default='', max_length=3, choices=scelte_tipo_costo)
 
-    scelte_gestore = (
-        [('GESTORE', 'GESTORE'),
-        ('COMUNE', 'COMUNE')]
-    )
-    gestore = models.CharField(default='', max_length=16, choices=scelte_gestore)
-
     scelte_anno = (
         ('2022', '2022'),
         ('2023', '2023')

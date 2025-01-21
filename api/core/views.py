@@ -327,6 +327,74 @@ def add_comune_azienda(request):
 
                 obj = DatiComune.objects.create(comune_id =  comune , azienda_id = request.session['azienda'])
                 obj.save()
+
+                CostoSmaltimento.objects.create(
+                        daticomune = obj,
+                        anno='2023',
+                        imp_smalt='Impianto1',
+                        tipo_rifiuto='CER2000301',
+                        tipo_costo='CTS',
+                        tons=1000,
+                        prezzo_unitario=10,
+                        importo=10000,
+                        tipoImpianto='TMB/TM',
+                        gestoreImpianto='Gestore1',
+                        note='Indifferenziato').save()
+
+                CostoSmaltimento.objects.create(
+                        daticomune = obj,
+                        anno='2023',
+                        imp_smalt='Impianto2',
+                        tipo_rifiuto='CER2000108',
+                        tipo_costo='CTR',
+                        tons=1000,
+                        prezzo_unitario=10,
+                        importo=10000,
+                        tipoImpianto='Compostaggio',
+                        gestoreImpianto='Gestore2',
+                        note='Frazione organica').save()
+
+                
+                CostoSmaltimento.objects.create(
+                        daticomune = obj,
+                        anno='2023',
+                        imp_smalt='Impianto3',
+                        tipo_rifiuto='CER200101',
+                        tipo_costo='CTR',
+                        tons=100,
+                        prezzo_unitario=10,
+                        importo=1000,
+                        tipoImpianto='TMB/TM',
+                        gestoreImpianto='Gestore3',
+                        note='Carta').save()
+                
+                CostoSmaltimento.objects.create(
+                        daticomune = obj,
+                        anno='2023',
+                        imp_smalt='Impianto4',
+                        tipo_rifiuto='CER200102',
+                        tipo_costo='CTR',
+                        tons=100,
+                        prezzo_unitario=10,
+                        importo=1000,
+                        tipoImpianto='TMB/TM',
+                        gestoreImpianto='Gestore4',
+                        note='Vetro').save()
+
+                
+                CostoSmaltimento.objects.create(
+                        daticomune = obj,
+                        anno='2023',
+                        imp_smalt='Impianto5',
+                        tipo_rifiuto='CER150102',
+                        tipo_costo='CTR',
+                        tons=100,
+                        prezzo_unitario=10,
+                        importo=1000,
+                        tipoImpianto='TMB/TM',
+                        gestoreImpianto='Gestore5',
+                        note='Plastica').save()
+
                 comune = str(obj.comune)
                 azienda = str(obj.azienda)
                 os.mkdir(os.path.join(basedir, azienda+'/'+comune))
@@ -793,7 +861,6 @@ def add_costi_smaltimento(request):
 
         # Extracting fields from the nested `data` dictionary
         daticomune = new_item.get('daticomune')
-        gestore = new_item.get('gestore')
         imp_smalt = new_item.get('imp_smalt')
         tipo_rifiuto = new_item.get('tipo_rifiuto')
         tipo_costo = new_item.get('tipo_costo')
@@ -818,7 +885,6 @@ def add_costi_smaltimento(request):
                     # Create the CostoSmaltimento object
                     obj = CostoSmaltimento.objects.create(
                         daticomune=qs,
-                        gestore=gestore,
                         imp_smalt=imp_smalt,
                         tipo_rifiuto=tipo_rifiuto,
                         tipo_costo=tipo_costo,
