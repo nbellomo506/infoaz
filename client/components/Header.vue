@@ -136,7 +136,8 @@
           admin:'admin',
           login:'login',
           credits:'credits'
-        }
+        },
+        help_message:""
 
       }
     },

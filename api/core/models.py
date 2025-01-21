@@ -255,6 +255,9 @@ class DatiComune(models.Model):
 
     def __str__(self):
         return f'{self.azienda},{self.comune}'
+    
+    class Meta:
+        unique_together = ('comune', 'azienda')
 
 
 class EfficienzaQualitaDifferenziata(models.Model):

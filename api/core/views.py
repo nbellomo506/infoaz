@@ -30,6 +30,7 @@ from django.core import serializers
 from django.conf import settings
 from django.core.mail import send_mail
 from django.db import models
+from django.db import IntegrityError
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager,PermissionsMixin
 
 from django.core.files.base import ContentFile
@@ -319,87 +320,83 @@ def add_comune_azienda(request):
         az = Azienda.objects.get(pk = request.session['azienda'])
         if az.report_is_sent == False:
             try:
-                obj = DatiComune.objects.get(comune_id =  comune , azienda_id = request.session['azienda'])
-                error = "Il comune inserito è già presente"
-                return HttpResponse(error)
-
-            except DatiComune.DoesNotExist:
-
-                obj = DatiComune.objects.create(comune_id =  comune , azienda_id = request.session['azienda'])
+                obj = DatiComune.objects.create(comune_id=comune, azienda_id=request.session['azienda'])
                 obj.save()
 
                 CostoSmaltimento.objects.create(
-                        daticomune = obj,
-                        anno='2023',
-                        imp_smalt='Impianto1',
-                        tipo_rifiuto='CER2000301',
-                        tipo_costo='CTS',
-                        tons=1000,
-                        prezzo_unitario=10,
-                        importo=10000,
-                        tipoImpianto='TMB/TM',
-                        gestoreImpianto='Gestore1',
-                        note='Indifferenziato').save()
+                    daticomune=obj,
+                    anno='2023',
+                    imp_smalt='Impianto1',
+                    tipo_rifiuto='CER2000301',
+                    tipo_costo='CTS',
+                    tons=1000,
+                    prezzo_unitario=10,
+                    importo=10000,
+                    tipoImpianto='TMB/TM',
+                    gestoreImpianto='Gestore1',
+                    note='Indifferenziato').save()
 
                 CostoSmaltimento.objects.create(
-                        daticomune = obj,
-                        anno='2023',
-                        imp_smalt='Impianto2',
-                        tipo_rifiuto='CER2000108',
-                        tipo_costo='CTR',
-                        tons=1000,
-                        prezzo_unitario=10,
-                        importo=10000,
-                        tipoImpianto='Compostaggio',
-                        gestoreImpianto='Gestore2',
-                        note='Frazione organica').save()
+                    daticomune=obj,
+                    anno='2023',
+                    imp_smalt='Impianto2',
+                    tipo_rifiuto='CER2000108',
+                    tipo_costo='CTR',
+                    tons=1000,
+                    prezzo_unitario=10,
+                    importo=10000,
+                    tipoImpianto='Compostaggio',
+                    gestoreImpianto='Gestore2',
+                    note='Frazione organica').save()
 
-                
                 CostoSmaltimento.objects.create(
-                        daticomune = obj,
-                        anno='2023',
-                        imp_smalt='Impianto3',
-                        tipo_rifiuto='CER200101',
-                        tipo_costo='CTR',
-                        tons=100,
-                        prezzo_unitario=10,
-                        importo=1000,
-                        tipoImpianto='TMB/TM',
-                        gestoreImpianto='Gestore3',
-                        note='Carta').save()
-                
-                CostoSmaltimento.objects.create(
-                        daticomune = obj,
-                        anno='2023',
-                        imp_smalt='Impianto4',
-                        tipo_rifiuto='CER200102',
-                        tipo_costo='CTR',
-                        tons=100,
-                        prezzo_unitario=10,
-                        importo=1000,
-                        tipoImpianto='TMB/TM',
-                        gestoreImpianto='Gestore4',
-                        note='Vetro').save()
+                    daticomune=obj,
+                    anno='2023',
+                    imp_smalt='Impianto3',
+                    tipo_rifiuto='CER200101',
+                    tipo_costo='CTR',
+                    tons=100,
+                    prezzo_unitario=10,
+                    importo=1000,
+                    tipoImpianto='TMB/TM',
+                    gestoreImpianto='Gestore3',
+                    note='Carta').save()
 
-                
                 CostoSmaltimento.objects.create(
-                        daticomune = obj,
-                        anno='2023',
-                        imp_smalt='Impianto5',
-                        tipo_rifiuto='CER150102',
-                        tipo_costo='CTR',
-                        tons=100,
-                        prezzo_unitario=10,
-                        importo=1000,
-                        tipoImpianto='TMB/TM',
-                        gestoreImpianto='Gestore5',
-                        note='Plastica').save()
+                    daticomune=obj,
+                    anno='2023',
+                    imp_smalt='Impianto4',
+                    tipo_rifiuto='CER200102',
+                    tipo_costo='CTR',
+                    tons=100,
+                    prezzo_unitario=10,
+                    importo=1000,
+                    tipoImpianto='TMB/TM',
+                    gestoreImpianto='Gestore4',
+                    note='Vetro').save()
+
+                CostoSmaltimento.objects.create(
+                    daticomune=obj,
+                    anno='2023',
+                    imp_smalt='Impianto5',
+                    tipo_rifiuto='CER150102',
+                    tipo_costo='CTR',
+                    tons=100,
+                    prezzo_unitario=10,
+                    importo=1000,
+                    tipoImpianto='TMB/TM',
+                    gestoreImpianto='Gestore5',
+                    note='Plastica').save()
 
                 comune = str(obj.comune)
                 azienda = str(obj.azienda)
-                os.mkdir(os.path.join(basedir, azienda+'/'+comune))
+                os.mkdir(os.path.join(basedir, azienda + '/' + comune))
 
                 return HttpResponse("OK")
+
+            except IntegrityError:  # Assuming a database-level unique constraint
+                error = "Il comune inserito è già presente"
+                return HttpResponse(error)
 
 def askHelp(request):
 
