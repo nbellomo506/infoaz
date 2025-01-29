@@ -533,7 +533,8 @@ import Footer from '../components/Footer'
                 >
                   <b-button
                     size="sm"
-                    class="h-100 w-100 p-1 pt-0 pb-0 border-dark"
+                    class="w-100 p-1 pt-0 pb-0 border-dark"
+                    style="height:115px"
                     @click="orderBy(field, costiFields, costi_smaltimento)"
                     variant="white"
                   >
@@ -606,9 +607,6 @@ import Footer from '../components/Footer'
             </table>
           </b-col>
         </b-row>
-
-
-      <Footer :visible="loaded"/>
       </div>
 
       <b-container v-if="loaded === false">
