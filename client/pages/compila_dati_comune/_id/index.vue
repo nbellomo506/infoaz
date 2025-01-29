@@ -17,7 +17,7 @@ import Footer from '../components/Footer'
         </b-nav-item>
       </b-nav>
 
-      <div class="container-fluid p-0 pb-0 mb-0 m-0 b-0" v-if="dati_comune !== false && is_company_set === true && is_logged === true && loaded === true">
+      <div class="container-fluid p-0 pb-0 mb-5 pb-5 m-0 b-0" v-if="dati_comune !== false && is_company_set === true && is_logged === true && loaded === true">
           <b-container fluid class=" mt-0 b-0">
           <b-row>
             <b-col class="pt-5 bg-light" xl="2" hidden>
